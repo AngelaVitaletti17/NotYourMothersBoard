@@ -54,7 +54,6 @@ public class cameraLook : MonoBehaviour {
 				transform.eulerAngles = Vector3.RotateTowards (transform.eulerAngles, newRotation, 10f, 10f);
 			yield return null;
 		}
-		print (transform.position == newPosition);
 	}
 	void PlaceCubeNear(Vector3 clickPoint){
 		Vector3 final = grid.GetNearestPointOnGrid (clickPoint);
