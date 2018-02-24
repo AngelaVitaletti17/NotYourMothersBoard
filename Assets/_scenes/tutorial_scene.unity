@@ -731,6 +731,10 @@ Prefab:
       propertyPath: m_Name
       value: BreadBoard
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 4e852a9cc5c6a6e4093dd71e20e79016, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4e852a9cc5c6a6e4093dd71e20e79016, type: 3}
   m_IsPrefabParent: 0
@@ -1706,7 +1710,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.1046846, y: 0.12606277, z: 0.0053788233}
   m_Center: {x: 0, y: 0, z: 0.002867977}
---- !u!114 &1338342438
+--- !u!114 &1338342435
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -1718,6 +1722,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zoomedIn: 0
+--- !u!114 &1338342436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1338342432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1134a95e2aec4d14a9300493c529d418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 1
+  rend: {fileID: 0}
+  holeCount: 8
+  rowCount: 8
 --- !u!1 &1389849212
 GameObject:
   m_ObjectHideFlags: 0
