@@ -12,7 +12,7 @@ public class circuitComponent : MonoBehaviour
 	public bool isLocked;
 
 	//Empty constructor
-	circuitComponent()
+    public circuitComponent()
 	{
 		componentType = 0;
 		inputNode = null;
@@ -23,7 +23,7 @@ public class circuitComponent : MonoBehaviour
 	}
 
 	//Full constructor
-	circuitComponent(int initComponentType, componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked)
+	public circuitComponent(int initComponentType, componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked)
 	{
 		componentType = initComponentType;
 		inputNode = initInputNode;
