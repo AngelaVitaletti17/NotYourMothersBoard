@@ -18,7 +18,6 @@ public class gridLayout : MonoBehaviour
 	{
 		Vector3 result = Vector3.zero;
 		for (int i = 0; i < gridPositions.Length; i++) {
-			print (gridPositions [i]);
 			if (i == 0) {
 				result = gridPositions [i];
 			}

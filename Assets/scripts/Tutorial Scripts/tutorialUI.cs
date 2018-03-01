@@ -15,6 +15,23 @@ public class tutorialUI : MonoBehaviour {
 	public Button[] buttonArray; //Holds the buttons for spawning component gameobjects
 	public GameObject[] instantiateItem; // Holds the GameObjects that should be spawned from the button
 
+	//Connect to cameraLook
+	public Camera mainCam;
+	private cameraLook cam;
+
+	//For breadboard grid
+	private gridLayout grid;
+
+	//For dragging
+	private GameObject newItem;
+	private bool isSpawned = false;
+	private Vector3 mousePosition, itemPosition;
+
+	void Awake(){
+		cam = mainCam.GetComponent<cameraLook> ();
+		grid = FindObjectOfType<gridLayout> ();
+	}
+
 	void Start () {
 	//*OPEN-CLOSE INVENTORY*
 		//Inventory is closed by default
@@ -25,18 +42,50 @@ public class tutorialUI : MonoBehaviour {
 		//When we click the buttons, do something
 		openInventory.onClick.AddListener (openPartsCatalogue);
 		closeInventory.onClick.AddListener (closePartsCatalogue);
-
 	//*INVENTORY ITEMS*
-		//for (int i = 0; i < buttonArray.Length; i++) {
-		//	buttonArray [i].onClick.AddListener (delegate {spawnItem(instantiateItem[i], buttonArray[i]);});
-		//}
+		for (int i = 0; i < buttonArray.Length; i++) {
+			GameObject item = instantiateItem [i];
+			buttonArray [i].onClick.AddListener (() => {spawnItem(item);});
+		}
 
 		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (Input.GetMouseButtonDown (0) && !isSpawned) {
+			RaycastHit hit;
+			Ray ray = mainCam.GetComponent<Camera> ().ScreenPointToRay (Input.mousePosition);
+			if (Physics.Raycast (ray, out hit)) {
+				if (hit.transform.name == "BreadBoard") {
+					hit.transform.gameObject.GetComponent<selectGlow> ().zoomedIn = true;
+					hit.transform.gameObject.GetComponent<Collider> ().enabled = false;
+					StartCoroutine (cam.zoomIn ());
+				} else if (hit.transform.gameObject.tag == "battery") {
+					isSpawned = true;
+					newItem = hit.transform.gameObject;
+					hit.transform.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
+				}else if (hit.transform.gameObject.tag == "component"){
+					isSpawned = true;
+					newItem = hit.transform.gameObject;
+					hit.transform.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
+				}
+			}
+		} else if (isSpawned) {
+			closePartsCatalogue ();
+			itemPosition = Input.mousePosition;
+			itemPosition.z = 0.4f;
+			newItem.transform.position = Camera.main.ScreenToWorldPoint(itemPosition);
+			if (Input.GetMouseButton (1)) {
+				isSpawned = false;
+				newItem.GetComponent<Rigidbody> ().isKinematic = false;
+				if (newItem.tag == "component")
+					PlaceCubeNear (Camera.main.ScreenToWorldPoint(itemPosition), newItem);
+			}
+			if (Input.GetKeyDown(KeyCode.R)) {
+				newItem.transform.eulerAngles = new Vector3 (newItem.transform.eulerAngles.x, newItem.transform.eulerAngles.y + 90f, newItem.transform.eulerAngles.z);
+			}
+		}
 	}
 
 	void openPartsCatalogue(){
@@ -51,7 +100,20 @@ public class tutorialUI : MonoBehaviour {
 		inventory.SetActive (false);
 	}
 
-	void spawnItem(GameObject item, Button spawner){
-		GameObject newItem = Instantiate (item, spawner.gameObject.transform.position, item.transform.rotation);
+	void spawnItem(GameObject item){
+		Vector3 position = Input.mousePosition;
+		position.z = 2.0f;
+		newItem = Instantiate (item, Camera.main.ScreenToWorldPoint(position), item.transform.rotation);
+		newItem.GetComponent<Rigidbody> ().isKinematic = true;
+		isSpawned = true;
+		itemPosition = position;
+	}
+
+	void PlaceCubeNear(Vector3 clickPoint, GameObject hit){
+		Vector3 final = grid.GetNearestPointOnGrid (clickPoint);
+		hit.transform.position = final;
+		//GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Cube);
+		//cube.transform.localScale = cube.transform.localScale * 0.05f;
+		//cube.transform.position = final;
 	}
 }

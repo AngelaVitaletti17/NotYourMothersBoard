@@ -11,27 +11,12 @@ public class cameraLook : MonoBehaviour {
 	private Vector3 currentRotation;
 	private bool left, right = false;
 
-	private gridLayout grid;
-
 	void Start () {
-		grid = FindObjectOfType<gridLayout> ();
 		currentRotation = Vector3.zero;
 	}
 
 	void Update(){
-		if (Input.GetMouseButtonDown (0)) {
-			RaycastHit hit;
-			Ray ray = gameObject.GetComponent<Camera> ().ScreenPointToRay (Input.mousePosition);
-			if (Physics.Raycast (ray, out hit)) {
-				if (hit.transform.name == "BreadBoard") {
-					hit.transform.gameObject.GetComponent<selectGlow> ().zoomedIn = true;
-					hit.transform.gameObject.GetComponent<Collider> ().enabled = false;
-					StartCoroutine (zoomIn ());
-				} else {
-					PlaceCubeNear (hit.point);
-				}
-			}
-		}
+		
 	}
 
 	void FixedUpdate () {
@@ -47,18 +32,16 @@ public class cameraLook : MonoBehaviour {
 		}
 	}
 
-	IEnumerator zoomIn(){
+	public IEnumerator zoomIn(){
 		while (transform.position != newPosition) {
 			transform.position = Vector3.MoveTowards (transform.position, newPosition, 10f * Time.deltaTime);
-			if (transform.eulerAngles != newRotation)
-				transform.eulerAngles = Vector3.RotateTowards (transform.eulerAngles, newRotation, 10f, 10f);
+			if (transform.eulerAngles != newRotation) {
+				transform.eulerAngles = Vector3.RotateTowards (transform.eulerAngles, newRotation, 10f, 250f * Time.deltaTime);
+				yield return null;
+			}
 			yield return null;
 		}
-	}
-	void PlaceCubeNear(Vector3 clickPoint){
-		Vector3 final = grid.GetNearestPointOnGrid (clickPoint);
-		GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Cube);
-		cube.transform.localScale = cube.transform.localScale * 0.05f;
-		cube.transform.position = final;
+		GetComponent<Camera> ().orthographic = true;
+		GetComponent<Camera> ().orthographicSize = 0.4f;
 	}
 }

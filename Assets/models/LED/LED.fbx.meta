@@ -6,11 +6,16 @@ ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Leads
     400000: //RootNode
+    400002: Leads
     2100000: No Name
     2300000: //RootNode
+    2300002: Leads
     3300000: //RootNode
+    3300002: Leads
     4300000: Light
+    4300002: Leads
   externalObjects: {}
   materials:
     importMaterials: 1
