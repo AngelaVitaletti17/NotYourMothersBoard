@@ -63,7 +63,6 @@ public class led : circuitComponent  // child of diode class?
     //method to perform component function
     public new bool doComponentLogic()
     {
-		//transform.GetChild (0).GetComponent<Light> ().enabled = true; used to turn the light on if everything checks out with the voltage and whatnot
         return false;
     }
 }
