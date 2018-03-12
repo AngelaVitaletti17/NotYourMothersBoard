@@ -136,6 +136,9 @@ public class boardLogic : MonoBehaviour
 		else if (referenceNode.previousNode != null)
 		{
 			referenceNode = referenceNode.previousNode[0];
+
+			//Placeholder return value
+			return true;
 		}
 		//If there's no battery, return false
 		else return false;
@@ -155,7 +158,11 @@ public class boardLogic : MonoBehaviour
 			else if (referenceNode.previousNode != null)
 			{
 				referenceNode = referenceNode.previousNode[0];
+
+
 			}
+			//Error fix return statement
+			return 0.0;
 		}
 		//If there's no battery, return a negative value for voltage
 		else return -1.0;
