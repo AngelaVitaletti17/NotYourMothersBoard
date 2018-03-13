@@ -112,5 +112,8 @@ public class tutorialUI : MonoBehaviour {
 	void PlaceCubeNear(Vector3 clickPoint, GameObject hit){
 		Vector3 final = grid.GetNearestPointOnGrid (clickPoint);
 		hit.transform.position = final;
+		//GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Cube);
+		//cube.transform.localScale = cube.transform.localScale * 0.05f;
+		//cube.transform.position = final;
 	}
 }
