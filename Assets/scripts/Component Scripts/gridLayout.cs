@@ -34,7 +34,7 @@ public class gridLayout : MonoBehaviour
 		BoxCollider b = GetComponent<BoxCollider> ();
 
 		Gizmos.color = Color.cyan;
-		Vector3 start = transform.TransformPoint (b.center - new Vector3 (b.size.x - 0.017f, -b.size.y - 0.01f, -b.size.z) * 0.5f);
+		Vector3 start = transform.TransformPoint (b.center - new Vector3 (b.size.x - 0.0115f, -b.size.y - 0.005f, -b.size.z - 0.0f) * 0.5f);
 		Vector3 newPos = start;
 		float rowCountTemp = rowCount;
 		int k = 0;
@@ -44,16 +44,16 @@ public class gridLayout : MonoBehaviour
 		{
 			for (float z = 0; z < rowCount; z += size)
 			{
-				if (rowCountTemp == 8) {
-					newPos = new Vector3 (start.x, newPos.y, newPos.z + 0.085f);
+				if (rowCountTemp == 16) {
+					newPos = new Vector3 (start.x, newPos.y, newPos.z + 0.0415f);
 					rowCountTemp = 0;
 				} else {
-					newPos = new Vector3 (newPos.x + 0.07f, newPos.y, newPos.z);
+					newPos = new Vector3 (newPos.x + 0.036f, newPos.y, newPos.z);
 				}
 				gridPositions [k] = newPos;
 				k++;
 				rowCountTemp++;
-				Gizmos.DrawSphere(newPos, 0.02f);
+				Gizmos.DrawSphere(newPos, 0.01f);
 			}
 		}
 	}
