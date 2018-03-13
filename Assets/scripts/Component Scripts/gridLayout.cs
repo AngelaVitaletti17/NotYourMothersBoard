@@ -33,7 +33,8 @@ public class gridLayout : MonoBehaviour
 	{
 		BoxCollider b = GetComponent<BoxCollider> ();
 
-		Gizmos.color = Color.cyan;
+		Color ballColor = new Color (135f/255f, 0f/255f, 255f/255f, 255/255);
+		Gizmos.color = ballColor;
 		Vector3 start = transform.TransformPoint (b.center - new Vector3 (b.size.x - 0.017f, -b.size.y - 0.01f, -b.size.z) * 0.5f);
 		Vector3 newPos = start;
 		float rowCountTemp = rowCount;

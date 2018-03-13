@@ -25,8 +25,8 @@ public class componentNode : MonoBehaviour
 	public componentNode()
 	{
 		parentComponent = null;
-		xPos = null;
-		yPos = null;
+		xPos = -1f;
+		yPos = -1f;
 		previousNode = null;
 		nextNode = null;
 	}
@@ -47,12 +47,12 @@ public class componentNode : MonoBehaviour
 		return parentComponent.transform.name;
 	}
 
-	public int getXPos()
+	public float getXPos()
 	{
 		return xPos;
 	}
 
-	public int getYPos()
+	public float getYPos()
 	{
 		return yPos;
 	}

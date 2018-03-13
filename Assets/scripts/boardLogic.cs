@@ -30,6 +30,7 @@ public class boardLogic : MonoBehaviour
 
 			//Update values based on results
 			updateComponentValues (startNode, endNode, circuitVoltage, circuitCurrent);
+			return true;
 		}
 		else return false;
 	}
@@ -54,8 +55,8 @@ public class boardLogic : MonoBehaviour
 	{
 		componentNode currentNode = startNode;
 		while (currentNode.nextNode != null && currentNode != endNode) {
-			if (currentNode.parentComponent.doComponentLogic(circuitVoltage, circuitCurrent)) {
-				currentNode = currentNode.nextNode;
+			if (currentNode.parentComponent.doComponentLogic()) {
+				//currentNode = currentNode.nextNode;
 			} else
 				return false;
 		}
@@ -82,9 +83,11 @@ public class boardLogic : MonoBehaviour
 
 	public double sumResistance(componentNode startNode, componentNode endNode)
 	{
+		return 0;
 	}
 
 	public double sumVoltage(componentNode startNode, componentNode endNode)
 	{
+		return 0;
 	}
 }

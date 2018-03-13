@@ -28,8 +28,9 @@ public class cameraLook : MonoBehaviour {
 		}
 		if (Input.GetKey (KeyCode.D) ) {
 			currentRotation.x = -1 * currentRotation.x;
-			transform.Rotate (new Vector3 (0.25f, transform.rotation.y, transform.rotation.z));
+			transform.Rotate (currentRotation * 75f * Time.deltaTime);
 		}
+		print (transform.eulerAngles);
 	}
 
 	public IEnumerator zoomIn(){
