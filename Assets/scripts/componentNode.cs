@@ -57,7 +57,7 @@ public class componentNode : MonoBehaviour
 		return yPos;
 	}
 
-	public Vector2 getXY()
+	public Vector2 getXZ()
 	{
 		Vector2 pos = new Vector2 (xPos, yPos);
 		return pos;
@@ -74,12 +74,12 @@ public class componentNode : MonoBehaviour
 	}
 
 	//Mutator methods
-	public void setXY(float newXPos, float newYPos)
+	public void setXZ(float newXPos, float newYPos)
 	{
 		this.xPos = newXPos;
 		this.yPos = newYPos;
 	}
-	public void setXY(Vector2 newXY)
+	public void setXZ(Vector2 newXY)
 	{
 		this.xPos = newXY.x;
 		this.yPos = newXY.y;

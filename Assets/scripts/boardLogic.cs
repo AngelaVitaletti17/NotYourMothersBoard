@@ -30,6 +30,7 @@ public class boardLogic : MonoBehaviour
 
 			//Update values based on results
 			updateComponentValues (startNode, endNode, circuitVoltage, circuitCurrent);
+
 			return true;
 		}
 		else return false;
@@ -54,11 +55,13 @@ public class boardLogic : MonoBehaviour
 	public bool updateComponentValues(componentNode startNode, componentNode endNode, double circuitVoltage, double circuitCurrent)
 	{
 		componentNode currentNode = startNode;
-		while (currentNode.nextNode != null && currentNode != endNode) {
-			if (currentNode.parentComponent.doComponentLogic()) {
-				//currentNode = currentNode.nextNode;
-			} else
-				return false;
+		while (currentNode.nextNode != null && currentNode != endNode)
+		{
+			if (currentNode.parentComponent.doComponentLogic())
+			{
+				currentNode = currentNode.nextNode[0];
+			}
+			else return false;
 		}
 		return true;
 	}
@@ -81,13 +84,87 @@ public class boardLogic : MonoBehaviour
 		return voltage / resistance;
 	}
 
+	//For each node's parent component between startNode and endNode, find their Resistance values and return the sum of them all
 	public double sumResistance(componentNode startNode, componentNode endNode)
 	{
-		return 0;
+		double resistance = 0.0;
+		componentNode currentNode = startNode;
+
+		while (currentNode.nextNode != null && currentNode != endNode)
+		{
+			//Find value of current node's parent's resistance. Add it to resistance running total
+			//resistance += currentNode.getParentComponent.componentResistance;
+
+			currentNode = currentNode.nextNode[0];
+		}
+		return resistance;
 	}
 
+	//For each node between startNode and endNode, find their Resistance values and return the sum of them all
 	public double sumVoltage(componentNode startNode, componentNode endNode)
 	{
-		return 0;
+		double voltage = 0.0;
+		componentNode currentNode = startNode;
+
+		while (currentNode.nextNode != null && currentNode != endNode)
+		{
+			//Find value of current node's parent's voltage drop. Subtract it from the voltage running total
+			//voltage += currentNode.getParentComponent.componentVoltage;
+			currentNode = currentNode.nextNode[0];
+		}
+
+		//Find power source's voltage and subtract the running total from it
+		if (traceBack(startNode, 99))
+		{
+			if (getOriginalVoltage(startNode) - voltage < 0.0)
+			{
+				return 0.0;
+			}
+			else return getOriginalVoltage(startNode) - voltage;
+		}
+		else return -1.0;
+	}
+
+	public bool traceBack(componentNode referenceNode, int componentType)
+	{
+		//If this node's parent is a battery, return true
+		if (referenceNode.parentComponent.componentType == 99)
+		{
+			return true;
+		}
+		//If not, go back a node and check again
+		else if (referenceNode.previousNode != null)
+		{
+			referenceNode = referenceNode.previousNode[0];
+
+			//Placeholder return value
+			return true;
+		}
+		//If there's no battery, return false
+		else return false;
+	}
+
+	public double getOriginalVoltage(componentNode referenceNode)
+	{
+		//Make sure a battery is attached
+		if (traceBack(referenceNode, 99))
+		{
+			//If this node's parent is a battery, return its voltage
+			if (referenceNode.parentComponent.componentType == 99)
+			{
+				return referenceNode.parentComponent.componentVoltage;
+			}
+			//If not, go back a node and try again
+			else if (referenceNode.previousNode != null)
+			{
+				referenceNode = referenceNode.previousNode[0];
+
+
+			}
+			//Error fix return statement
+			return 0.0;
+		}
+		//If there's no battery, return a negative value for voltage
+		else return -1.0;
 	}
 }
