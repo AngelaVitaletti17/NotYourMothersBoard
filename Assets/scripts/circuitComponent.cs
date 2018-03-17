@@ -9,6 +9,7 @@ public class circuitComponent : MonoBehaviour
 	public componentNode[] outputNode;
 	public double componentCurrent;
 	public double componentVoltage;
+	public double componentResistance;
 	public bool isLocked;
 
 	//Empty constructor
