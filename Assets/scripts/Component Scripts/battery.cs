@@ -14,13 +14,14 @@ public class battery : circuitComponent
     public battery()
     {
         voltage = 0;
+        componentType = 1;
     }
 
-    //Full constructor
-    //Sets Voltage, and then usees Constructor from Circuit Component to set rest of varaibles
-    public battery( int initVoltage, int initComponentType, componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked) : base(initComponentType, initInputNode, initOutputNode, initIsLocked)
+    //Full constructor    
+    public battery( int initVoltage,  componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked) : base(initInputNode, initOutputNode, initIsLocked)
     {
         this.voltage = initVoltage;
+        componentType = 1;
     }
 
 
@@ -38,8 +39,9 @@ public class battery : circuitComponent
     }
 
     //method to perform component function
-    public new bool doComponentLogic()
+    public new bool doComponentLogic(double circuitVoltage, double circuitCurrent)
     {
-        return false;
+       
+        return true;
     }
 }

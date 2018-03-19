@@ -10,12 +10,14 @@ public class capacitor : circuitComponent
     public capacitor()
     {
         farads = 0;
+        componentType = 4;
     }
 
     //Full constructor
-    public capacitor(int initFarads, int initComponentType, componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked) : base(initComponentType, initInputNode, initOutputNode, initIsLocked)
+    public capacitor(int initFarads, componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked) : base(initInputNode, initOutputNode, initIsLocked)
     {
         this.farads = initFarads;
+        this.componentType = 4;
     }
 
     //Accessor methods
@@ -31,8 +33,9 @@ public class capacitor : circuitComponent
     }
 
     //method to perform component function
-    public new bool doComponentLogic()
+    public new bool doComponentLogic(double circuitVoltage, double circuitCurrent)
     {
-        return false;
+       
+        return true;
     }
 }
