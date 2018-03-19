@@ -1,17 +1,31 @@
 fileFormatVersion: 2
-guid: 4e852a9cc5c6a6e4093dd71e20e79016
-timeCreated: 1518921663
+guid: 8311f6e48fcb5544da0ae0ba8110ce08
+timeCreated: 1520908403
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
+    100002: bboard
+    100004: bboard.001
     400000: //RootNode
+    400002: bboard
+    400004: bboard.001
     2100000: Material.002
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: Cube
-  externalObjects: {}
+    2300000: bboard
+    2300002: bboard.001
+    2300004: //RootNode
+    3300000: bboard
+    3300002: bboard.001
+    3300004: //RootNode
+    4300000: bboard.001
+    4300002: bboard
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.002
+    second: {fileID: 2100000, guid: f41a3660533ee5448aa21ebbe2b51089, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
