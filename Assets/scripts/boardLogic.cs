@@ -46,8 +46,7 @@ public class boardLogic : MonoBehaviour
 	//Check if this specific node is part of a complete series circuit
 	public bool isCompleteCircuitSeries(componentNode referenceNode)
 	{
-		//placeholder
-		return true;
+		return(traceBack(referenceNode, 99) && traceForward(referenceNode, 99));
 	}
 
 	//Update values such as voltage and current throughout a section of the circuit
@@ -57,11 +56,12 @@ public class boardLogic : MonoBehaviour
 		componentNode currentNode = startNode;
 		while (currentNode.nextNode != null && currentNode != endNode)
 		{
-			if (currentNode.parentComponent.doComponentLogic())
+			componentNode nexNode = currentNode.nextNode [0];
+			if (currentNode.parentComponent == nexNode.parentComponent)
 			{
-				currentNode = currentNode.nextNode[0];
+				currentNode.parentComponent.doComponentLogic();
 			}
-			else return false;
+			currentNode = currentNode.nextNode [0];
 		}
 		return true;
 	}
@@ -92,15 +92,20 @@ public class boardLogic : MonoBehaviour
 
 		while (currentNode.nextNode != null && currentNode != endNode)
 		{
-			//Find value of current node's parent's resistance. Add it to resistance running total
-			//resistance += currentNode.getParentComponent.componentResistance;
+			//If the node's parent component is a resistor...
+			if(currentNode.parentComponent.componentType == 3)
+			{
+				//Find value of current node's parent's resistance. Add it to resistance running total
+				resistance += currentNode.parentComponent.componentResistance;
+			}
 
+			//Move to next node
 			currentNode = currentNode.nextNode[0];
 		}
 		return resistance;
 	}
 
-	//For each node between startNode and endNode, find their Resistance values and return the sum of them all
+	//For each node between startNode and endNode, find their Voltage values and return the sum of them all
 	public double sumVoltage(componentNode startNode, componentNode endNode)
 	{
 		double voltage = 0.0;
@@ -109,7 +114,7 @@ public class boardLogic : MonoBehaviour
 		while (currentNode.nextNode != null && currentNode != endNode)
 		{
 			//Find value of current node's parent's voltage drop. Subtract it from the voltage running total
-			//voltage += currentNode.getParentComponent.componentVoltage;
+			voltage += currentNode.parentComponent.componentVoltage;
 			currentNode = currentNode.nextNode[0];
 		}
 
@@ -127,18 +132,31 @@ public class boardLogic : MonoBehaviour
 
 	public bool traceBack(componentNode referenceNode, int componentType)
 	{
+			//If this node's parent is a battery, return true
+			if (referenceNode.parentComponent.componentType == 99)
+			{
+				return true;
+			}
+			//If not, go back a node and check again
+			else if (referenceNode.previousNode != null)
+			{
+				return traceBack(referenceNode.previousNode[0], 99);
+			}
+			//If there's no battery, return false
+			else return false;
+	}
+
+	public bool traceForward(componentNode referenceNode, int componentType)
+	{
 		//If this node's parent is a battery, return true
 		if (referenceNode.parentComponent.componentType == 99)
 		{
 			return true;
 		}
-		//If not, go back a node and check again
-		else if (referenceNode.previousNode != null)
+		//If not, go forward a node and check again
+		else if (referenceNode.nextNode != null)
 		{
-			referenceNode = referenceNode.previousNode[0];
-
-			//Placeholder return value
-			return true;
+			return traceBack(referenceNode.nextNode[0], 99);
 		}
 		//If there's no battery, return false
 		else return false;
@@ -148,21 +166,17 @@ public class boardLogic : MonoBehaviour
 	{
 		//Make sure a battery is attached
 		if (traceBack(referenceNode, 99))
-		{
-			//If this node's parent is a battery, return its voltage
-			if (referenceNode.parentComponent.componentType == 99)
-			{
-				return referenceNode.parentComponent.componentVoltage;
-			}
-			//If not, go back a node and try again
-			else if (referenceNode.previousNode != null)
-			{
-				referenceNode = referenceNode.previousNode[0];
-
-
-			}
-			//Error fix return statement
-			return 0.0;
+		{	
+				//If this node's parent is a battery, return its voltage
+				if (referenceNode.parentComponent.componentType == 99) {
+					return referenceNode.parentComponent.componentVoltage;
+				}
+				//If not, go back a node and try again
+				else if (referenceNode.previousNode != null) {
+					return getOriginalVoltage(referenceNode.previousNode [0]);
+				}
+				//If there's no battery, return a negative value for voltage
+				else return -1.0;
 		}
 		//If there's no battery, return a negative value for voltage
 		else return -1.0;
