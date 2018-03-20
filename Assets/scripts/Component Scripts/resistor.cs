@@ -5,17 +5,20 @@ using UnityEngine;
 public class resistor : circuitComponent
 {
     public int ohms;
+   
 
     //Empty constructor
     public resistor()
     {
         ohms = 0;
+        componentType = 2;
     }
 
     //Full constructor
-    public resistor(int initOhms, int initComponentType, componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked) : base(initComponentType, initInputNode, initOutputNode, initIsLocked)
+    public resistor(int initOhms,  componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked) : base(initInputNode, initOutputNode, initIsLocked)
     {
         this.ohms = initOhms;
+        this.componentType = 2;
     }
 
     //Accessor methods
@@ -32,8 +35,8 @@ public class resistor : circuitComponent
     }
 
     //method to perform component function
-    public new bool doComponentLogic()
+    public new bool doComponentLogic(double circuitVoltage, double circuitCurrent)
     {
-        return false;
+        return true;
     }
 }

@@ -13,13 +13,15 @@ public class diode : circuitComponent
     {
         voltageDrop = 0;
         maxVoltage = 0;
+        componentType = 5;
     }
 
     //Full constructor
-    public diode(int initMinVoltage, int initMaxVoltage, int initComponentType, componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked) : base(initComponentType, initInputNode, initOutputNode, initIsLocked)
+    public diode(int initMinVoltage, int initMaxVoltage, componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked) : base(initInputNode, initOutputNode, initIsLocked)
     {
         this.voltageDrop = initMinVoltage;
         this.maxVoltage = initMaxVoltage;
+        this.componentType = 5;
     }
 
     //Accessor methods
@@ -48,8 +50,15 @@ public class diode : circuitComponent
     }
 
     //method to perform component function
-    public new bool doComponentLogic()
+    public new bool doComponentLogic(double circuitVoltage, double circuitCurrent)
     {
-        return false;
+        // Check acceptable inputs
+        //Examples to be used in other classes 
+        
+        if (this.componentVoltage > this.maxVoltage)
+        {
+            return false;
+        }
+        return true;
     }
 }

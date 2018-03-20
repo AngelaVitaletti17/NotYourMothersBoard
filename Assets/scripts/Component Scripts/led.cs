@@ -16,15 +16,17 @@ public class led : circuitComponent  // child of diode class?
         color = null;
         minVoltage = 0;
         maxVoltage = 0;
+        componentType = 3;
 
     }
 
     //Full constructor
-    public led(string initColor, int initMinVoltage, int initMaxVoltage, int initComponentType, componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked) : base(initComponentType, initInputNode, initOutputNode, initIsLocked)
+    public led(string initColor, int initMinVoltage, int initMaxVoltage, componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked) : base( initInputNode, initOutputNode, initIsLocked)
     {
         this.color = initColor;
         this.minVoltage = initMinVoltage;
         this.maxVoltage = initMaxVoltage;
+        this.componentType = 3;
     }
 
     //Accessor methods
@@ -61,8 +63,20 @@ public class led : circuitComponent  // child of diode class?
     }
 
     //method to perform component function
-    public new bool doComponentLogic()
+    public new bool doComponentLogic(double circuitVoltage, double circuitCurrent)
     {
-        return false;
+
+        // Check acceptable inputs
+        //Examples to be used in other classes 
+        if (this.componentCurrent < this.minVoltage)
+        {
+            return false;
+        }
+
+        if (this.componentVoltage > this.maxVoltage)
+        {
+            return false;
+        }
+        return true;
     }
 }
