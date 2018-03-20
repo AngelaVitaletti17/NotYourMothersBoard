@@ -9,7 +9,6 @@ public class cameraLook : MonoBehaviour {
 	public Vector3 initalPosition, newPosition, initialRotation, newRotation;
 
 	private Vector3 currentRotation;
-	private bool left, right = false;
 
 	void Start () {
 		currentRotation = Vector3.zero;

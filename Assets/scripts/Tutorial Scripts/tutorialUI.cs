@@ -24,7 +24,7 @@ public class tutorialUI : MonoBehaviour {
 
 	//For dragging
 	private GameObject newItem;
-	private bool isSpawned = false;
+	public bool isSpawned = false;
 	private Vector3 mousePosition, itemPosition;
 
 	void Awake(){
@@ -64,28 +64,29 @@ public class tutorialUI : MonoBehaviour {
 				} else if (hit.transform.gameObject.tag == "battery") {
 					isSpawned = true;
 					newItem = hit.transform.gameObject;
-					hit.transform.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
-				}else if (hit.transform.gameObject.tag == "component"){
+					//hit.transform.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
+				} else if (hit.transform.gameObject.tag == "component") {
 					isSpawned = true;
 					newItem = hit.transform.gameObject;
-					hit.transform.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
+					//hit.transform.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
 				}
 			}
 		} else if (isSpawned) {
 			closePartsCatalogue ();
 			itemPosition = Input.mousePosition;
 			itemPosition.z = 0.4f;
-			newItem.transform.position = Camera.main.ScreenToWorldPoint(itemPosition);
+			newItem.transform.position = Camera.main.ScreenToWorldPoint (itemPosition);
+			newItem.GetComponent<gridPlacement> ().enabled = true;
 			if (Input.GetMouseButton (1)) {
 				isSpawned = false;
-				newItem.GetComponent<Rigidbody> ().isKinematic = false;
 				if (newItem.tag == "component")
-					PlaceCubeNear (Camera.main.ScreenToWorldPoint(itemPosition), newItem);
+					PlaceCubeNear (Camera.main.ScreenToWorldPoint (itemPosition), newItem);
 			}
-			if (Input.GetKeyDown(KeyCode.R)) {
+			if (Input.GetKeyDown (KeyCode.R)) {
 				newItem.transform.eulerAngles = new Vector3 (newItem.transform.eulerAngles.x, newItem.transform.eulerAngles.y + 90f, newItem.transform.eulerAngles.z);
 			}
-		}
+		} else if (!isSpawned && newItem != null)
+			newItem.GetComponent<gridPlacement> ().enabled = false;
 	}
 
 	void openPartsCatalogue(){
@@ -104,7 +105,7 @@ public class tutorialUI : MonoBehaviour {
 		Vector3 position = Input.mousePosition;
 		position.z = 2.0f;
 		newItem = Instantiate (item, Camera.main.ScreenToWorldPoint(position), item.transform.rotation);
-		newItem.GetComponent<Rigidbody> ().isKinematic = true;
+		//newItem.GetComponent<Rigidbody> ().isKinematic = true;
 		isSpawned = true;
 		itemPosition = position;
 	}
