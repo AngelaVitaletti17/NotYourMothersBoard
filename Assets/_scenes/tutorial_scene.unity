@@ -6013,9 +6013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1134a95e2aec4d14a9300493c529d418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 1
-  rend: {fileID: 0}
-  holeCount: 16
+  columnCount: 16
   rowCount: 16
 --- !u!65 &1627632635
 BoxCollider:

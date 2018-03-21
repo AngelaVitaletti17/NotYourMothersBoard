@@ -80,7 +80,8 @@ public class tutorialUI : MonoBehaviour {
 			if (Input.GetMouseButton (1)) {
 				isSpawned = false;
 				if (newItem.tag == "component")
-					PlaceCubeNear (Camera.main.ScreenToWorldPoint (itemPosition), newItem);
+					PlaceItem (Camera.main.ScreenToWorldPoint (itemPosition), newItem);
+				grid.set_spots ();	
 			}
 			if (Input.GetKeyDown (KeyCode.R)) {
 				newItem.transform.eulerAngles = new Vector3 (newItem.transform.eulerAngles.x, newItem.transform.eulerAngles.y + 90f, newItem.transform.eulerAngles.z);
@@ -110,8 +111,8 @@ public class tutorialUI : MonoBehaviour {
 		itemPosition = position;
 	}
 
-	void PlaceCubeNear(Vector3 clickPoint, GameObject hit){
-		Vector3 final = grid.GetNearestPointOnGrid (clickPoint);
+	void PlaceItem(Vector3 clickPoint, GameObject hit){
+		Vector3 final = grid.GetGridPoint (clickPoint);
 		hit.transform.position = final;
 		//GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Cube);
 		//cube.transform.localScale = cube.transform.localScale * 0.05f;

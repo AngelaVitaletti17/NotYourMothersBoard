@@ -25,11 +25,11 @@ public class gridPlacement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (tUI.isSpawned) { //If the object is currently being dragged and is not yet placed
-			highlightedSpots = grid.GetNearestPoints (this.transform.position, 3, this.gameObject, highlights, originalRotation);
+			highlightedSpots = grid.GetNearestPoints (this.transform.position, 3, this.gameObject, highlights);
 			index = 0;
 			for (int i = 0; i < highlightedSpots.Length; i++) {
 				GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Plane);
-				if (highlightedSpots [i] == null) //red zone, cannot be placed here
+				if (grid.gridPositions.ContainsKey(highlightedSpots[i]) && grid.gridPositions[highlightedSpots[i]] == true) //red zone, cannot be placed here
 					cube.GetComponent<Renderer> ().material.color = Color.red;
 				else
 					cube.GetComponent<Renderer> ().material.color = Color.green;
