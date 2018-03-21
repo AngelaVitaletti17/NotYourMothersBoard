@@ -10,6 +10,7 @@ public class gridPlacement : MonoBehaviour {
 	public Vector3[] highlightedSpots;
 	public GameObject[] highlights;
 	public GameObject breadboard, sceneController;
+	private Vector3 originalRotation;
 	private int index;
 	void Start () {
 		highlightedSpots = new Vector3[3];
@@ -17,13 +18,14 @@ public class gridPlacement : MonoBehaviour {
 		index = 0;
 		tUI = sceneController.GetComponent<tutorialUI> ();
 		grid = breadboard.GetComponent<gridLayout> ();
+		originalRotation = transform.rotation.eulerAngles;
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (tUI.isSpawned) { //If the object is currently being dragged and is not yet placed
-			highlightedSpots = grid.GetNearestPoints (this.transform.position, 3, this.gameObject, highlights);
+			highlightedSpots = grid.GetNearestPoints (this.transform.position, 3, this.gameObject, highlights, originalRotation);
 			index = 0;
 			for (int i = 0; i < highlightedSpots.Length; i++) {
 				GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Plane);

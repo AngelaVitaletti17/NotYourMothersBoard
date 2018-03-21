@@ -8,15 +8,15 @@ public class gridLayout : MonoBehaviour
 	private float size = 1f;
 	public Renderer rend;
 	public int holeCount, rowCount = 0;
-	//private Vector3[] gridPositions;
 	private Dictionary<Vector3, bool> gridPositions;
 	private List<Vector3> keys;
 	private Vector3[] positionHolder, oldSpots;
-	private Vector3 nullValue;
+	private Vector3 nullValue, flip;
 
 	void Start(){
 		positionHolder = new Vector3[holeCount * rowCount];
 		nullValue = new Vector3 (-1f, -1f, -1f);
+		flip = new Vector3 (1f, 1/3f, 1f);
 	}
 	void OnTriggerEnter(Collider component){ //If we place something on the board
 		//TODO: add to a public list that can be accessed to test the logic
@@ -39,7 +39,7 @@ public class gridLayout : MonoBehaviour
 
 		return result;
 	}
-	public Vector3[] GetNearestPoints(Vector3 position, int size, GameObject component, GameObject[] oldHighlight){
+	public Vector3[] GetNearestPoints(Vector3 position, int size, GameObject component, GameObject[] oldHighlight, Vector3 origR){
 		BoxCollider b = component.GetComponent<BoxCollider> ();
 		Vector3[] spots = new Vector3[size];
 		Vector3 componentLocation = GetNearestPointOnGrid (position);
@@ -47,9 +47,9 @@ public class gridLayout : MonoBehaviour
 		if (oldHighlight.Length > 0) {
 			Destroy (oldHighlight[0]); Destroy (oldHighlight[1]); Destroy (oldHighlight[2]);
 		}
-		spots [0] = componentLocation; 
-		if (component.transform.rotation.y == 90f || component.transform.rotation.y == -90f) {
-			if (middleIdx < 0) {
+		Debug.Log (component.transform.rotation.eulerAngles);
+		spots [0] = componentLocation;
+		if (component.transform.rotation.eulerAngles.y == 270f || Mathf.Round(component.transform.rotation.eulerAngles.y) == 90f){			if (middleIdx < 0) {
 				spots [1] = nullValue;
 			} else
 				spots [1] = positionHolder [middleIdx - 1];
@@ -57,16 +57,18 @@ public class gridLayout : MonoBehaviour
 				spots [2] = nullValue;
 			} else
 				spots [2] = positionHolder [middleIdx + 1];
-		} else {
-			if (middleIdx - rowCount < 0) {
+		} else if (Mathf.Round(component.transform.rotation.eulerAngles.y) == 0f || component.transform.rotation.eulerAngles.y == 180f) {
+			if (middleIdx - rowCount - 1 < 0) {
 				spots [1] = nullValue;
 			} else
 				spots [1] = positionHolder [middleIdx - rowCount];
-			if (middleIdx + rowCount > positionHolder.Length) {
+			if (middleIdx + rowCount + 1 > positionHolder.Length) {
 				spots [2] = nullValue;
 			} else
 				spots [2] = positionHolder [middleIdx + rowCount];
 		}
+		if (component.transform.rotation.eulerAngles.y == 0)
+			print ("UES");
 		oldSpots = spots;
 		return spots;
 	}
