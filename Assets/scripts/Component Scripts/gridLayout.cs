@@ -6,12 +6,12 @@ public class gridLayout : MonoBehaviour
 {
 	[SerializeField] //Allows to be seen in editor
 	//For the grid layout physical representation
-	public int columnCount, rowCount = 0; //The column and the row size
+	public int columnCount, rowCount; //The column and the row size
 
 	//For the math behind placing components on the grid
 	public Dictionary<Vector3, bool> gridPositions; //Used to represent the grid positions, and whether or not they are filled
 	private List<Vector3> keys; //Used to represent a LIST of the positions from gridPositions. Needed to convert into the dictionary into an array for indices
-	private Vector3[] positionHolder, oldSpots; //An array of the positions, and the previous spots on the board that are highlighted (to show where a component will be placed)
+	public Vector3[] positionHolder, oldSpots; //An array of the positions, and the previous spots on the board that are highlighted (to show where a component will be placed)
 	private Vector3 nullValue; //Used to represent that a value is out of bounds
 	private bool alreadyInit = false;
 
@@ -64,8 +64,12 @@ public class gridLayout : MonoBehaviour
 		Vector3[] spots = new Vector3[size]; //New Vector3 array containing a certain amount of spots depending on component size
 		Vector3 componentLocation = GetGridPoint (position); //The current location of the component
 		int index = System.Array.IndexOf (positionHolder, componentLocation); //the index of the current location (the component position)
-		if (oldHighlight.Length > 0) { //If there are already highlighted spots, delete them
-			Destroy (oldHighlight[0]); Destroy (oldHighlight[1]); Destroy (oldHighlight[2]);
+		if (oldHighlight != null) {
+			if (oldHighlight.Length > 0) { //If there are already highlighted spots, delete them
+				Destroy (oldHighlight [0]);
+				Destroy (oldHighlight [1]);
+				Destroy (oldHighlight [2]);
+			}
 		}
 		spots [0] = componentLocation; //the first spot will be the location of the component, slightly underneath
 		//If the component is horizontal
@@ -119,8 +123,10 @@ public class gridLayout : MonoBehaviour
 				} else { //We've not yet reached a new row 
 					newPos = new Vector3 (newPos.x + 0.036f, newPos.y, newPos.z);
 				}
-				positionHolder[k] = newPos;
-				k++;
+				if (positionHolder.Length > 0) {
+					positionHolder [k] = newPos;
+					k++;
+				}
 				rowCountTemp++; //Incremement the temporary row count
 				Gizmos.DrawSphere(newPos, 0.01f); //Draw a sphere to represent a spot in the board
 			}

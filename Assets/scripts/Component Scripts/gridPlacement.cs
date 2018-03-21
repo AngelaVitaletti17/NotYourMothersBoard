@@ -7,7 +7,7 @@ public class gridPlacement : MonoBehaviour {
 	public int spaceCount; //Representation of how many slots a component will take up, assigned in the editor 
 	public gridLayout grid; //A link to a gridLayout script attached to a GameObject to reference variables and functions
 	public tutorialUI tUI; //A link to a tutorialUI script attached to a GameObject to reference varaibles and functions
-	public Vector3[] highlightedSpots;
+	public Vector3[] highlightedSpots, getRidOfSpots;
 	public GameObject[] highlights;
 	public GameObject breadboard, sceneController;
 	private Vector3 originalRotation;
@@ -39,10 +39,16 @@ public class gridPlacement : MonoBehaviour {
 				highlights [index] = cube;
 				index++;
 			}
+
+			if (getRidOfSpots != null && getRidOfSpots.Length > 0){
+				for (int i = 0; i < getRidOfSpots.Length; i++)
+					grid.gridPositions [getRidOfSpots [i]] = false;
+			}
 		} else if (!tUI.isSpawned && highlights.Length != 0) {
 			for (int i = 0; i < highlights.Length; i++) {
 				Destroy (highlights [i]);
 			}
+			getRidOfSpots = grid.GetNearestPoints (this.transform.position, 3, this.gameObject, null);
 			index = 0;
 		}
 	}

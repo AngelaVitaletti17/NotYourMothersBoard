@@ -27,6 +27,8 @@ public class tutorialUI : MonoBehaviour {
 	public bool isSpawned = false;
 	private Vector3 mousePosition, itemPosition;
 
+	private Vector3[] getRidOfSpots;
+
 	void Awake(){
 		cam = mainCam.GetComponent<cameraLook> ();
 		grid = FindObjectOfType<gridLayout> ();
@@ -64,11 +66,9 @@ public class tutorialUI : MonoBehaviour {
 				} else if (hit.transform.gameObject.tag == "battery") {
 					isSpawned = true;
 					newItem = hit.transform.gameObject;
-					//hit.transform.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
 				} else if (hit.transform.gameObject.tag == "component") {
 					isSpawned = true;
 					newItem = hit.transform.gameObject;
-					//hit.transform.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
 				}
 			}
 		} else if (isSpawned) {
@@ -77,15 +77,17 @@ public class tutorialUI : MonoBehaviour {
 			itemPosition.z = 0.4f;
 			newItem.transform.position = Camera.main.ScreenToWorldPoint (itemPosition);
 			newItem.GetComponent<gridPlacement> ().enabled = true;
-			if (Input.GetMouseButton (1)) {
+			if (Input.GetMouseButton (1)) { //The item is placed on the board
 				isSpawned = false;
 				if (newItem.tag == "component")
 					PlaceItem (Camera.main.ScreenToWorldPoint (itemPosition), newItem);
-				grid.set_spots ();	
-			}
+				grid.set_spots ();
+				getRidOfSpots = grid.GetNearestPoints (Camera.main.ScreenToWorldPoint(itemPosition), 3, newItem, null);
+			} 
 			if (Input.GetKeyDown (KeyCode.R)) {
 				newItem.transform.eulerAngles = new Vector3 (newItem.transform.eulerAngles.x, newItem.transform.eulerAngles.y + 90f, newItem.transform.eulerAngles.z);
 			}
+
 		} else if (!isSpawned && newItem != null)
 			newItem.GetComponent<gridPlacement> ().enabled = false;
 	}
@@ -106,7 +108,6 @@ public class tutorialUI : MonoBehaviour {
 		Vector3 position = Input.mousePosition;
 		position.z = 2.0f;
 		newItem = Instantiate (item, Camera.main.ScreenToWorldPoint(position), item.transform.rotation);
-		//newItem.GetComponent<Rigidbody> ().isKinematic = true;
 		isSpawned = true;
 		itemPosition = position;
 	}
@@ -114,8 +115,5 @@ public class tutorialUI : MonoBehaviour {
 	void PlaceItem(Vector3 clickPoint, GameObject hit){
 		Vector3 final = grid.GetGridPoint (clickPoint);
 		hit.transform.position = final;
-		//GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Cube);
-		//cube.transform.localScale = cube.transform.localScale * 0.05f;
-		//cube.transform.position = final;
 	}
 }
