@@ -12,7 +12,7 @@ public class gridLayout : MonoBehaviour
 	public Dictionary<Vector3, bool> gridPositions; //Used to represent the grid positions, and whether or not they are filled
 	private List<Vector3> keys; //Used to represent a LIST of the positions from gridPositions. Needed to convert into the dictionary into an array for indices
 	public Vector3[] positionHolder, oldSpots; //An array of the positions, and the previous spots on the board that are highlighted (to show where a component will be placed)
-	private Vector3 nullValue; //Used to represent that a value is out of bounds
+	public Vector3 nullValue; //Used to represent that a value is out of bounds
 	private bool alreadyInit = false;
 
 	//Run when the program starts
@@ -64,45 +64,51 @@ public class gridLayout : MonoBehaviour
 		Vector3[] spots = new Vector3[size]; //New Vector3 array containing a certain amount of spots depending on component size
 		Vector3 componentLocation = GetGridPoint (position); //The current location of the component
 		int index = System.Array.IndexOf (positionHolder, componentLocation); //the index of the current location (the component position)
+		int componentCol = index % columnCount; //Zero-based column index 
+		int componentRow = index / rowCount;
 		if (oldHighlight != null) {
-			if (oldHighlight.Length > 0) { //If there are already highlighted spots, delete them
-				Destroy (oldHighlight [0]);
-				Destroy (oldHighlight [1]);
-				Destroy (oldHighlight [2]);
+			for (int i = 0; i < oldHighlight.Length; i++) {
+				Destroy (oldHighlight [i]);
 			}
 		}
 		spots [0] = componentLocation; //the first spot will be the location of the component, slightly underneath
+		print((index - 1) / rowCount + " " + componentRow);
 		//If the component is horizontal
 		if (component.transform.rotation.eulerAngles.y == 270f || Mathf.Round(component.transform.rotation.eulerAngles.y) == 90f){
 			//Make sure it doesn't go out of bounds
-			if (index < 0) {
+			if (index < 0 || (index - 1) / rowCount != componentRow) {
 				spots [1] = nullValue;
-			} else
+			} else {
 				spots [1] = positionHolder [index - 1];
-			if (index + 2 > positionHolder.Length) {
+			}
+			if (index + 2 > positionHolder.Length || (index + 1) / rowCount != componentRow) {
 				spots [2] = nullValue;
-			} else
+			} else {
 				spots [2] = positionHolder [index + 1];
+			}
 		} else if (Mathf.Round(component.transform.rotation.eulerAngles.y) == 0f || component.transform.rotation.eulerAngles.y == 180f) { //if the component is vertical
 			//Make sure it doesn't go out of bounds
-			if (index - rowCount - 1 < 0) {
+			if (index - rowCount - 1 < 0 || (index - rowCount) % columnCount != componentCol) {
 				spots [1] = nullValue;
-			} else
+			} else {
 				spots [1] = positionHolder [index - rowCount];
-			if (index + rowCount + 1 > positionHolder.Length) {
+			}
+			if (index + rowCount + 1 > positionHolder.Length || (index + rowCount) % columnCount != componentCol) {
 				spots [2] = nullValue;
-			} else
+			} else {
 				spots [2] = positionHolder [index + rowCount];
+			}
 		}
 		oldSpots = spots; //Set old spots to the current spots in order to be destroyed later
-
 		return spots; //Return the spots to be highlighted
 	}
 	public void set_spots(){
 		for (int i = 0; i < oldSpots.Length; i++) {
-			gridPositions [oldSpots [i]] = true;
+			if (oldSpots[i] != nullValue)
+				gridPositions [oldSpots [i]] = true;
 		}
 	}
+
 	//Represent the grid in a physical space (in the scene editor)
 	private void OnDrawGizmos()
 	{

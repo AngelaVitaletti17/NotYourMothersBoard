@@ -23,11 +23,10 @@ public class tutorialUI : MonoBehaviour {
 	private gridLayout grid;
 
 	//For dragging
-	private GameObject newItem;
+	public bool canBePlaced = true;
 	public bool isSpawned = false;
 	private Vector3 mousePosition, itemPosition;
-
-	private Vector3[] getRidOfSpots;
+	private GameObject newItem;
 
 	void Awake(){
 		cam = mainCam.GetComponent<cameraLook> ();
@@ -49,40 +48,40 @@ public class tutorialUI : MonoBehaviour {
 			GameObject item = instantiateItem [i];
 			buttonArray [i].onClick.AddListener (() => {spawnItem(item);});
 		}
-
-		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetMouseButtonDown (0) && !isSpawned) {
-			RaycastHit hit;
+		if (Input.GetMouseButtonDown (0) && !isSpawned) { //If the left button is click and the item is not spawned
+			//Get the raycast data
+			RaycastHit hit; 
 			Ray ray = mainCam.GetComponent<Camera> ().ScreenPointToRay (Input.mousePosition);
-			if (Physics.Raycast (ray, out hit)) {
-				if (hit.transform.name == "BreadBoard") {
+			if (Physics.Raycast (ray, out hit)) { //If we hit something, let's see what we hit
+				if (hit.transform.name == "BreadBoard") { //If we hit the breadboard, zoom into it
 					hit.transform.gameObject.GetComponent<selectGlow> ().zoomedIn = true;
-					hit.transform.gameObject.GetComponent<Collider> ().enabled = false;
-					StartCoroutine (cam.zoomIn ());
-				} else if (hit.transform.gameObject.tag == "battery") {
+					hit.transform.gameObject.GetComponent<Collider> ().enabled = false; //Maybe don't do this
+					StartCoroutine (cam.zoomIn ()); //Start the coroutine to zoom in
+				} else if (hit.transform.gameObject.tag == "battery") { //If we selected the battery, let's drag in around
 					isSpawned = true;
 					newItem = hit.transform.gameObject;
-				} else if (hit.transform.gameObject.tag == "component") {
+				} else if (hit.transform.gameObject.tag == "component") { //If we selected a component, let's drag it around
 					isSpawned = true;
 					newItem = hit.transform.gameObject;
 				}
 			}
-		} else if (isSpawned) {
-			closePartsCatalogue ();
-			itemPosition = Input.mousePosition;
+		} else if (isSpawned) { //If we are currently dragging the item
+			closePartsCatalogue (); //Keep the parts catalogue closed to avoid spawning multiple items
+			//Have the component follow where the mouse moves
+			itemPosition = Input.mousePosition; 
 			itemPosition.z = 0.4f;
 			newItem.transform.position = Camera.main.ScreenToWorldPoint (itemPosition);
-			newItem.GetComponent<gridPlacement> ().enabled = true;
-			if (Input.GetMouseButton (1)) { //The item is placed on the board
+			newItem.GetComponent<gridPlacement> ().enabled = true; //Make sure this is enabled to get the highlights
+			canBePlaced = newItem.GetComponent<gridPlacement> ().getComponentPlacementStatus (); //check to see if the item can be placed (is the spot valid?)
+			if (canBePlaced && Input.GetMouseButton (1)) { //The item is placed on the board if it is in a valid spot
 				isSpawned = false;
-				if (newItem.tag == "component")
+				if (newItem.tag == "component") //If we are dragging the component, place it in the nearest spot on the grid
 					PlaceItem (Camera.main.ScreenToWorldPoint (itemPosition), newItem);
 				grid.set_spots ();
-				getRidOfSpots = grid.GetNearestPoints (Camera.main.ScreenToWorldPoint(itemPosition), 3, newItem, null);
 			} 
 			if (Input.GetKeyDown (KeyCode.R)) {
 				newItem.transform.eulerAngles = new Vector3 (newItem.transform.eulerAngles.x, newItem.transform.eulerAngles.y + 90f, newItem.transform.eulerAngles.z);

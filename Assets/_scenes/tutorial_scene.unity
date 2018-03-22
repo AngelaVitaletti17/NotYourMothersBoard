@@ -629,6 +629,7 @@ MonoBehaviour:
   - {fileID: 953075150}
   - {fileID: 1588001289}
   mainCam: {fileID: 1399447596}
+  canBePlaced: 1
   isSpawned: 0
 --- !u!224 &254529383
 RectTransform:
@@ -1166,15 +1167,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4224352793176796, guid: 02bc45afbd4a0ea48a81813815305c83, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -1628.4164
+      value: -1621.711
       objectReference: {fileID: 0}
     - target: {fileID: 4224352793176796, guid: 02bc45afbd4a0ea48a81813815305c83, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -857.95087
+      value: -857.74506
       objectReference: {fileID: 0}
     - target: {fileID: 4224352793176796, guid: 02bc45afbd4a0ea48a81813815305c83, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -9.446
+      value: -9.531
       objectReference: {fileID: 0}
     - target: {fileID: 4224352793176796, guid: 02bc45afbd4a0ea48a81813815305c83, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1198,15 +1199,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4224352793176796, guid: 02bc45afbd4a0ea48a81813815305c83, type: 2}
       propertyPath: m_LocalScale.x
-      value: -2.2924523
+      value: -1.5828588
       objectReference: {fileID: 0}
     - target: {fileID: 4224352793176796, guid: 02bc45afbd4a0ea48a81813815305c83, type: 2}
       propertyPath: m_LocalScale.y
-      value: -2.312878
+      value: -1.5969619
       objectReference: {fileID: 0}
     - target: {fileID: 4224352793176796, guid: 02bc45afbd4a0ea48a81813815305c83, type: 2}
       propertyPath: m_LocalScale.z
-      value: -1.9154552
+      value: -1.3225553
       objectReference: {fileID: 0}
     - target: {fileID: 1682232379947584, guid: 02bc45afbd4a0ea48a81813815305c83, type: 2}
       propertyPath: m_Name
@@ -1222,11 +1223,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4044595968657448, guid: 02bc45afbd4a0ea48a81813815305c83, type: 2}
       propertyPath: m_LocalScale.z
-      value: 0.5696516
+      value: 0.52692765
       objectReference: {fileID: 0}
     - target: {fileID: 1682232379947584, guid: 02bc45afbd4a0ea48a81813815305c83, type: 2}
       propertyPath: m_TagString
       value: component
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044595968657448, guid: 02bc45afbd4a0ea48a81813815305c83, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0.0017
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 02bc45afbd4a0ea48a81813815305c83, type: 2}
@@ -1268,6 +1273,7 @@ MonoBehaviour:
   grid: {fileID: 0}
   tUI: {fileID: 0}
   highlightedSpots: []
+  getRidOfSpots: []
   highlights: []
   breadboard: {fileID: 1627632630}
   sceneController: {fileID: 254529381}
@@ -2195,15 +2201,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: 762157deca9f5f7459426eb4063fc8c3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1628.7804
+      value: -1622.0751
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 762157deca9f5f7459426eb4063fc8c3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -857.75476
+      value: -857.54895
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 762157deca9f5f7459426eb4063fc8c3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.301
+      value: -9.386999
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 762157deca9f5f7459426eb4063fc8c3, type: 3}
       propertyPath: m_LocalRotation.x
@@ -2227,15 +2233,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 762157deca9f5f7459426eb4063fc8c3, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5239947
+      value: 1.8443081
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 762157deca9f5f7459426eb4063fc8c3, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.5239952
+      value: 1.8443058
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 762157deca9f5f7459426eb4063fc8c3, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.5239952
+      value: 1.8443058
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 762157deca9f5f7459426eb4063fc8c3, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2251,7 +2257,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 762157deca9f5f7459426eb4063fc8c3, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 762157deca9f5f7459426eb4063fc8c3, type: 3}
@@ -2291,6 +2297,7 @@ MonoBehaviour:
   grid: {fileID: 0}
   tUI: {fileID: 0}
   highlightedSpots: []
+  getRidOfSpots: []
   highlights: []
   breadboard: {fileID: 1627632630}
   sceneController: {fileID: 254529381}
@@ -2985,15 +2992,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: 535c447db0d2afd4a85b479ed613c647, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1628.9374
+      value: -1622.232
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 535c447db0d2afd4a85b479ed613c647, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -857.8918
+      value: -857.686
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 535c447db0d2afd4a85b479ed613c647, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.43
+      value: -9.516
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 535c447db0d2afd4a85b479ed613c647, type: 3}
       propertyPath: m_LocalRotation.x
@@ -3017,15 +3024,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 535c447db0d2afd4a85b479ed613c647, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.3844224
+      value: 0.9558956
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 535c447db0d2afd4a85b479ed613c647, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.3844205
+      value: 0.95589423
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 535c447db0d2afd4a85b479ed613c647, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.3844205
+      value: 0.95589423
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 535c447db0d2afd4a85b479ed613c647, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -3077,6 +3084,7 @@ MonoBehaviour:
   grid: {fileID: 0}
   tUI: {fileID: 0}
   highlightedSpots: []
+  getRidOfSpots: []
   highlights: []
   breadboard: {fileID: 1627632630}
   sceneController: {fileID: 254529381}
@@ -3690,7 +3698,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1528, y: 859.8948}
+  m_AnchoredPosition: {x: 1556, y: 859.8948}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1156969707
@@ -4704,15 +4712,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400002, guid: 2e85aeef5b1286f4ba147fab74cb40f2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1628.4873
+      value: -1621.782
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 2e85aeef5b1286f4ba147fab74cb40f2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -858.2248
+      value: -858.019
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 2e85aeef5b1286f4ba147fab74cb40f2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.191
+      value: -9.276999
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 2e85aeef5b1286f4ba147fab74cb40f2, type: 3}
       propertyPath: m_LocalRotation.x
@@ -4744,15 +4752,15 @@ Prefab:
       objectReference: {fileID: 2100000, guid: 57d57ecc96164e3499f76549f745b5e3, type: 2}
     - target: {fileID: 400002, guid: 2e85aeef5b1286f4ba147fab74cb40f2, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.8905017
+      value: 1.3053257
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 2e85aeef5b1286f4ba147fab74cb40f2, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.8904992
+      value: 1.3053241
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 2e85aeef5b1286f4ba147fab74cb40f2, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.8904992
+      value: 1.3053241
       objectReference: {fileID: 0}
     - target: {fileID: 100002, guid: 2e85aeef5b1286f4ba147fab74cb40f2, type: 3}
       propertyPath: m_Name
@@ -4800,6 +4808,7 @@ MonoBehaviour:
   grid: {fileID: 0}
   tUI: {fileID: 0}
   highlightedSpots: []
+  getRidOfSpots: []
   highlights: []
   breadboard: {fileID: 1627632630}
   sceneController: {fileID: 254529381}
@@ -5695,15 +5704,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: 957d7b62851f9c74fa412e378b660dcb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1627.7693
+      value: -1621.064
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 957d7b62851f9c74fa412e378b660dcb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -858.03577
+      value: -857.82996
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 957d7b62851f9c74fa412e378b660dcb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.156
+      value: -9.242
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 957d7b62851f9c74fa412e378b660dcb, type: 3}
       propertyPath: m_LocalRotation.x
@@ -5727,15 +5736,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 957d7b62851f9c74fa412e378b660dcb, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.585114
+      value: 1.0944662
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 957d7b62851f9c74fa412e378b660dcb, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.585114
+      value: 1.0944662
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 957d7b62851f9c74fa412e378b660dcb, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.585114
+      value: 1.0944662
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 957d7b62851f9c74fa412e378b660dcb, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -5787,6 +5796,7 @@ MonoBehaviour:
   grid: {fileID: 0}
   tUI: {fileID: 0}
   highlightedSpots: []
+  getRidOfSpots: []
   highlights: []
   breadboard: {fileID: 1627632630}
   sceneController: {fileID: 254529381}
@@ -6015,6 +6025,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   columnCount: 16
   rowCount: 16
+  positionHolder: []
+  oldSpots: []
+  nullValue: {x: 0, y: 0, z: 0}
 --- !u!65 &1627632635
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6458,8 +6471,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1802026869}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1629.3563, y: -857.9412, z: -9.736}
-  m_LocalScale: {x: 0.1317343, y: 0.1317343, z: 0.1317343}
+  m_LocalPosition: {x: -1622.651, y: -857.7354, z: -9.822}
+  m_LocalScale: {x: 0.09095796, y: 0.09095796, z: 0.09095796}
   m_Children:
   - {fileID: 1226086703}
   m_Father: {fileID: 1148136495}
@@ -6480,6 +6493,7 @@ MonoBehaviour:
   grid: {fileID: 0}
   tUI: {fileID: 0}
   highlightedSpots: []
+  getRidOfSpots: []
   highlights: []
   breadboard: {fileID: 1627632630}
   sceneController: {fileID: 254529381}
@@ -6614,15 +6628,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: 5e5a0f84e1b8a1b4ea88cad4e1ae9bd9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1628.7964
+      value: -1622.0911
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e5a0f84e1b8a1b4ea88cad4e1ae9bd9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -857.9048
+      value: -857.699
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e5a0f84e1b8a1b4ea88cad4e1ae9bd9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.527
+      value: -9.613
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e5a0f84e1b8a1b4ea88cad4e1ae9bd9, type: 3}
       propertyPath: m_LocalRotation.x
@@ -6646,15 +6660,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e5a0f84e1b8a1b4ea88cad4e1ae9bd9, type: 3}
       propertyPath: m_LocalScale.x
-      value: 4.1204796
+      value: 2.845048
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e5a0f84e1b8a1b4ea88cad4e1ae9bd9, type: 3}
       propertyPath: m_LocalScale.y
-      value: 4.12048
+      value: 2.8450484
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e5a0f84e1b8a1b4ea88cad4e1ae9bd9, type: 3}
       propertyPath: m_LocalScale.z
-      value: 4.1204796
+      value: 2.845048
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 5e5a0f84e1b8a1b4ea88cad4e1ae9bd9, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -6706,6 +6720,7 @@ MonoBehaviour:
   grid: {fileID: 0}
   tUI: {fileID: 0}
   highlightedSpots: []
+  getRidOfSpots: []
   highlights: []
   breadboard: {fileID: 1627632630}
   sceneController: {fileID: 254529381}
@@ -7031,15 +7046,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: 732fe3e1a333d614e8c09a8f1b04cebc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1629.6063
+      value: -1622.901
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 732fe3e1a333d614e8c09a8f1b04cebc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -857.9748
+      value: -857.769
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 732fe3e1a333d614e8c09a8f1b04cebc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.741
+      value: -9.827
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 732fe3e1a333d614e8c09a8f1b04cebc, type: 3}
       propertyPath: m_LocalRotation.x
@@ -7063,15 +7078,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 732fe3e1a333d614e8c09a8f1b04cebc, type: 3}
       propertyPath: m_LocalScale.x
-      value: 4.4160256
+      value: 3.0491123
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 732fe3e1a333d614e8c09a8f1b04cebc, type: 3}
       propertyPath: m_LocalScale.y
-      value: 4.4160213
+      value: 3.0491092
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 732fe3e1a333d614e8c09a8f1b04cebc, type: 3}
       propertyPath: m_LocalScale.z
-      value: 4.4160213
+      value: 3.0491092
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 732fe3e1a333d614e8c09a8f1b04cebc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -7123,6 +7138,7 @@ MonoBehaviour:
   grid: {fileID: 0}
   tUI: {fileID: 0}
   highlightedSpots: []
+  getRidOfSpots: []
   highlights: []
   breadboard: {fileID: 1627632630}
   sceneController: {fileID: 254529381}
