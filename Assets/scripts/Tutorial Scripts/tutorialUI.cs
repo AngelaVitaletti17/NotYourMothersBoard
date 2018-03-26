@@ -9,6 +9,7 @@ public class tutorialUI : MonoBehaviour {
 	//For inventory open-close buttons
 	public Button openInventory; //The button that opens the Parts Catalogue
 	public Button closeInventory; //The button the closes the Parts Catalogue
+	public Button zoomOut; //The button for zooming out once on the bread board
 	public GameObject inventory; //The gameobject in the scene that holds the Parts Catalogue (UI Panel)
 
 	//For items in inventory
@@ -19,13 +20,15 @@ public class tutorialUI : MonoBehaviour {
 	public Camera mainCam;
 	private cameraLook cam;
 
-	//For breadboard grid
+	//For breadboard and breadboard grid
+	public GameObject breadboard;
 	private gridLayout grid;
 
 	//For dragging
-	private GameObject newItem;
-	private bool isSpawned = false;
+	public bool canBePlaced = true;
+	public bool isSpawned = false;
 	private Vector3 mousePosition, itemPosition;
+	private GameObject newItem;
 
 	void Awake(){
 		cam = mainCam.GetComponent<cameraLook> ();
@@ -47,45 +50,51 @@ public class tutorialUI : MonoBehaviour {
 			GameObject item = instantiateItem [i];
 			buttonArray [i].onClick.AddListener (() => {spawnItem(item);});
 		}
-
-		
+	//Back button
+		zoomOut.onClick.AddListener(delegate {StartCoroutine(cam.zoomOut(breadboard));});
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetMouseButtonDown (0) && !isSpawned) {
-			RaycastHit hit;
+		if (Input.GetMouseButtonDown (0) && !isSpawned) { //If the left button is click and the item is not spawned
+			//Get the raycast data
+			RaycastHit hit; 
 			Ray ray = mainCam.GetComponent<Camera> ().ScreenPointToRay (Input.mousePosition);
-			if (Physics.Raycast (ray, out hit)) {
-				if (hit.transform.name == "BreadBoard") {
+			if (Physics.Raycast (ray, out hit)) { //If we hit something, let's see what we hit
+				if (hit.transform.name == "BreadBoard") { //If we hit the breadboard, zoom into it
 					hit.transform.gameObject.GetComponent<selectGlow> ().zoomedIn = true;
-					hit.transform.gameObject.GetComponent<Collider> ().enabled = false;
-					StartCoroutine (cam.zoomIn ());
-				} else if (hit.transform.gameObject.tag == "battery") {
+					hit.transform.gameObject.GetComponent<Collider> ().enabled = false; //Maybe don't do this
+					StartCoroutine (cam.zoomIn (hit.transform.gameObject)); //Start the coroutine to zoom in
+				} else if (hit.transform.gameObject.tag == "battery") { //If we selected the battery, let's drag in around
 					isSpawned = true;
 					newItem = hit.transform.gameObject;
-					hit.transform.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
-				}else if (hit.transform.gameObject.tag == "component"){
+				} else if (hit.transform.gameObject.tag == "component") { //If we selected a component, let's drag it around
 					isSpawned = true;
 					newItem = hit.transform.gameObject;
-					hit.transform.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
 				}
 			}
-		} else if (isSpawned) {
-			closePartsCatalogue ();
-			itemPosition = Input.mousePosition;
+		} else if (isSpawned) { //If we are currently dragging the item
+			closePartsCatalogue (); //Keep the parts catalogue closed to avoid spawning multiple items
+			//Have the component follow where the mouse moves
+			itemPosition = Input.mousePosition; 
 			itemPosition.z = 0.4f;
-			newItem.transform.position = Camera.main.ScreenToWorldPoint(itemPosition);
-			if (Input.GetMouseButton (1)) {
+			newItem.transform.position = Camera.main.ScreenToWorldPoint (itemPosition);
+			newItem.GetComponent<gridPlacement> ().enabled = true; //Make sure this is enabled to get the highlights
+			canBePlaced = newItem.GetComponent<gridPlacement> ().getComponentPlacementStatus (); //check to see if the item can be placed (is the spot valid?)
+			if (canBePlaced && Input.GetMouseButton (1)) { //The item is placed on the board if it is in a valid spot
 				isSpawned = false;
-				newItem.GetComponent<Rigidbody> ().isKinematic = false;
-				if (newItem.tag == "component")
-					PlaceCubeNear (Camera.main.ScreenToWorldPoint(itemPosition), newItem);
-			}
-			if (Input.GetKeyDown(KeyCode.R)) {
+				if (newItem.tag == "component") { //If we are dragging the component, place it in the nearest spot on the grid
+					PlaceItem (Camera.main.ScreenToWorldPoint (itemPosition), newItem);
+					grid.scale_component (newItem);
+				}
+				grid.set_spots ();
+			} 
+			if (Input.GetKeyDown (KeyCode.R)) {
 				newItem.transform.eulerAngles = new Vector3 (newItem.transform.eulerAngles.x, newItem.transform.eulerAngles.y + 90f, newItem.transform.eulerAngles.z);
 			}
-		}
+
+		} else if (!isSpawned && newItem != null)
+			newItem.GetComponent<gridPlacement> ().enabled = false;
 	}
 
 	void openPartsCatalogue(){
@@ -104,16 +113,13 @@ public class tutorialUI : MonoBehaviour {
 		Vector3 position = Input.mousePosition;
 		position.z = 2.0f;
 		newItem = Instantiate (item, Camera.main.ScreenToWorldPoint(position), item.transform.rotation);
-		newItem.GetComponent<Rigidbody> ().isKinematic = true;
 		isSpawned = true;
 		itemPosition = position;
 	}
 
-	void PlaceCubeNear(Vector3 clickPoint, GameObject hit){
-		Vector3 final = grid.GetNearestPointOnGrid (clickPoint);
+	void PlaceItem(Vector3 clickPoint, GameObject hit){ //For placing components WILL NOT WORK WITH BATTERY YET NOTE
+		Vector3 final;
+		final = grid.GetGridPoint (clickPoint, hit.gameObject.GetComponent<gridPlacement>().spaceCount); //For placing components
 		hit.transform.position = final;
-		//GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Cube);
-		//cube.transform.localScale = cube.transform.localScale * 0.05f;
-		//cube.transform.position = final;
 	}
 }

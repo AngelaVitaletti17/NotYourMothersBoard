@@ -6,19 +6,22 @@ public class potentiometer : circuitComponent
 {
     public int ohms;
     public int maxPower;
+    
 
     //Empty constructor
     public potentiometer()
     {
         ohms = 0;
         maxPower = 0;
+        componentType = 7;
     }
 
     //Full constructor
-    public potentiometer(int initOhms, int initMaxPower, int initComponentType, componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked) : base(initComponentType, initInputNode, initOutputNode, initIsLocked)
+    public potentiometer(int initOhms, int initMaxPower, componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked) : base(initInputNode, initOutputNode, initIsLocked)
     {
         this.ohms = initOhms;
         this.maxPower = initMaxPower;
+        this.componentType = 7;
     }
 
     //Accessor methods
@@ -45,8 +48,15 @@ public class potentiometer : circuitComponent
     }
 
     //method to perform component function
+    public new bool doComponentLogic(double circuitVoltage, double circuitCurrent)
+    {
+        //default part works fine
+        return true;
+    }
+
     public new bool doComponentLogic()
     {
-        return false;
+        //default part works fine
+        return true;
     }
 }

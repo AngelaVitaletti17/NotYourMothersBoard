@@ -6,41 +6,53 @@ public class circuitSwitch2 : circuitComponent
 {
     //circuitSwtich namesapce already taken. Change in future
    
-    public bool gateOpen;
+    public bool isOn;
+    
 
     //Empty constructor
     public circuitSwitch2()
     {
-        gateOpen = false;
+        isOn = true;
+        componentType = 6;
     }
 
     //Full constructor
-    public circuitSwitch2(bool initGateOpen, int initComponentType, componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked) : base(initComponentType, initInputNode, initOutputNode, initIsLocked)
+    public circuitSwitch2(bool initGateOpen, componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked) : base(initInputNode, initOutputNode, initIsLocked)
     {
-        this.gateOpen = initGateOpen;
+        this.isOn = initGateOpen;
+        this.componentType = 6;
     }
 
     //Accessor methods
     public bool getGateStatus()
     {
-        return gateOpen;
+        return isOn;
     }
-
 
     //Mutator methods
-    public void setGateOpen()
+    public void switchOn()
     {
-        this.gateOpen = true;
+        this.isOn = true;
     }
 
-    public void setGateClosed()
+    public void switchOff()
     {
-        this.gateOpen = false;
+        this.isOn = false;
     }
 
     //method to perform component function
+    public new bool doComponentLogic(double circuitVoltage, double circuitCurrent)
+    {
+        //check if switch on or off
+        if (this.getGateStatus())
+            return true;
+        else
+            return false;
+    }
+    
     public new bool doComponentLogic()
     {
-        return false;
+        //default part works fine
+        return true;
     }
 }

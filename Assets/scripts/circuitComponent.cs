@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class circuitComponent : MonoBehaviour
 {
-	public int componentType;
+	public int componentType; // 0-NULL 1-battery 2-resistor 3-led 4-capacitor 5-diode 6-circuitSwitch 7-potentiometer
 	public componentNode[] inputNode;
 	public componentNode[] outputNode;
 	public double componentCurrent;
@@ -24,9 +24,9 @@ public class circuitComponent : MonoBehaviour
 	}
 
 	//Full constructor
-	public circuitComponent(int initComponentType, componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked)
+	public circuitComponent(componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked)
 	{
-		componentType = initComponentType;
+		componentType = 0;
 		inputNode = initInputNode;
 		outputNode = initOutputNode;
 		isLocked = initIsLocked;
@@ -40,4 +40,8 @@ public class circuitComponent : MonoBehaviour
 	{
 		return false;
 	}
+    public bool doComponentLogic(double circuitVoltage, double circuitCurrent)
+    {
+        return false;
+    }
 }
