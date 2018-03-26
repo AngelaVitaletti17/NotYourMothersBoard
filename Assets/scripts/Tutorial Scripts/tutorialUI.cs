@@ -9,6 +9,7 @@ public class tutorialUI : MonoBehaviour {
 	//For inventory open-close buttons
 	public Button openInventory; //The button that opens the Parts Catalogue
 	public Button closeInventory; //The button the closes the Parts Catalogue
+	public Button zoomOut; //The button for zooming out once on the bread board
 	public GameObject inventory; //The gameobject in the scene that holds the Parts Catalogue (UI Panel)
 
 	//For items in inventory
@@ -19,7 +20,8 @@ public class tutorialUI : MonoBehaviour {
 	public Camera mainCam;
 	private cameraLook cam;
 
-	//For breadboard grid
+	//For breadboard and breadboard grid
+	public GameObject breadboard;
 	private gridLayout grid;
 
 	//For dragging
@@ -48,6 +50,8 @@ public class tutorialUI : MonoBehaviour {
 			GameObject item = instantiateItem [i];
 			buttonArray [i].onClick.AddListener (() => {spawnItem(item);});
 		}
+	//Back button
+		zoomOut.onClick.AddListener(delegate {StartCoroutine(cam.zoomOut(breadboard));});
 	}
 	
 	// Update is called once per frame
@@ -60,7 +64,7 @@ public class tutorialUI : MonoBehaviour {
 				if (hit.transform.name == "BreadBoard") { //If we hit the breadboard, zoom into it
 					hit.transform.gameObject.GetComponent<selectGlow> ().zoomedIn = true;
 					hit.transform.gameObject.GetComponent<Collider> ().enabled = false; //Maybe don't do this
-					StartCoroutine (cam.zoomIn ()); //Start the coroutine to zoom in
+					StartCoroutine (cam.zoomIn (hit.transform.gameObject)); //Start the coroutine to zoom in
 				} else if (hit.transform.gameObject.tag == "battery") { //If we selected the battery, let's drag in around
 					isSpawned = true;
 					newItem = hit.transform.gameObject;
@@ -79,8 +83,10 @@ public class tutorialUI : MonoBehaviour {
 			canBePlaced = newItem.GetComponent<gridPlacement> ().getComponentPlacementStatus (); //check to see if the item can be placed (is the spot valid?)
 			if (canBePlaced && Input.GetMouseButton (1)) { //The item is placed on the board if it is in a valid spot
 				isSpawned = false;
-				if (newItem.tag == "component") //If we are dragging the component, place it in the nearest spot on the grid
+				if (newItem.tag == "component") { //If we are dragging the component, place it in the nearest spot on the grid
 					PlaceItem (Camera.main.ScreenToWorldPoint (itemPosition), newItem);
+					grid.scale_component (newItem);
+				}
 				grid.set_spots ();
 			} 
 			if (Input.GetKeyDown (KeyCode.R)) {
@@ -111,8 +117,9 @@ public class tutorialUI : MonoBehaviour {
 		itemPosition = position;
 	}
 
-	void PlaceItem(Vector3 clickPoint, GameObject hit){
-		Vector3 final = grid.GetGridPoint (clickPoint);
+	void PlaceItem(Vector3 clickPoint, GameObject hit){ //For placing components WILL NOT WORK WITH BATTERY YET NOTE
+		Vector3 final;
+		final = grid.GetGridPoint (clickPoint, hit.gameObject.GetComponent<gridPlacement>().spaceCount); //For placing components
 		hit.transform.position = final;
 	}
 }

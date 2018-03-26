@@ -31,16 +31,30 @@ public class cameraLook : MonoBehaviour {
 		}
 	}
 
-	public IEnumerator zoomIn(){
-		while (transform.position != newPosition) {
-			transform.position = Vector3.MoveTowards (transform.position, newPosition, 10f * Time.deltaTime);
+	public IEnumerator zoomIn(GameObject bb){
+		Vector3 newPos = new Vector3 (bb.transform.position.x, bb.transform.position.y + 0.4f, bb.transform.position.z);
+		while (transform.position != newPos) {
+			transform.position = Vector3.MoveTowards (transform.position, newPos, 10f * Time.deltaTime);
 			if (transform.eulerAngles != newRotation) {
-				transform.eulerAngles = Vector3.RotateTowards (transform.eulerAngles, newRotation, 10f, 250f * Time.deltaTime);
+				transform.eulerAngles = Vector3.RotateTowards (transform.eulerAngles, newRotation, 100f, 250f * Time.deltaTime);
 				yield return null;
 			}
 			yield return null;
 		}
 		GetComponent<Camera> ().orthographic = true;
 		GetComponent<Camera> ().orthographicSize = 0.4f;
+	}
+
+	public IEnumerator zoomOut(GameObject bb){
+		GetComponent<Camera> ().orthographic = false;
+
+		while (transform.eulerAngles != initialRotation) {
+			transform.eulerAngles = Vector3.RotateTowards (transform.eulerAngles, initialRotation, 10f, 260 * Time.deltaTime);
+			transform.position = Vector3.MoveTowards (transform.position, initalPosition, 50 * Time.deltaTime);
+			yield return null;
+		}
+		//transform.eulerAngles = initialRotation;
+		bb.GetComponent<selectGlow> ().zoomedIn = false;
+		bb.GetComponent<BoxCollider> ().enabled = true;
 	}
 }

@@ -13,8 +13,8 @@ public class gridPlacement : MonoBehaviour {
 	private bool useRed, placeable = false; //Used to determine if a red color will be used as the highlight to represent incorrect board placement
 
 	void Start () {
-		highlightedSpots = new Vector3[3]; //Initialize the highlighted spots locations array (change to size of spaceCount in the future, AV)
-		highlights = new GameObject[3]; //Initialize the highlights game object array (change to size of spaceCount in the future, AV)
+		highlightedSpots = new Vector3[spaceCount]; //Initialize the highlighted spots locations array (change to size of spaceCount in the future, AV)
+		highlights = new GameObject[spaceCount]; //Initialize the highlights game object array (change to size of spaceCount in the future, AV)
 		tUI = sceneController.GetComponent<tutorialUI> (); //A link to the tutorial UI script on the scene controller
 		grid = breadboard.GetComponent<gridLayout> (); //A link to the grid layout script on the breadboard
 
@@ -23,7 +23,7 @@ public class gridPlacement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (tUI.isSpawned) { //If the object is currently being dragged and is not yet placed
-			highlightedSpots = grid.GetNearestPoints (this.transform.position, 3, this.gameObject, highlights); //Get the locations of the spots to be highlighted
+			highlightedSpots = grid.GetNearestPoints (this.transform.position, spaceCount, this.gameObject, highlights); //Get the locations of the spots to be highlighted
 			useRed = false; //Don't use red until we know placement is incorrect
 			//Determine if any of the spots are invalid, if so, we use a red color
 			for (int i = 0; i < highlightedSpots.Length; i++) {
@@ -43,7 +43,7 @@ public class gridPlacement : MonoBehaviour {
 						placeable = true;
 					}
 					cube.GetComponent<Collider> ().enabled = false;
-					cube.transform.localScale = cube.transform.localScale * 0.005f;
+					cube.transform.localScale = cube.transform.localScale * 0.002f;
 					cube.transform.position = highlightedSpots [i];
 					highlights [i] = cube;
 				}
@@ -58,7 +58,7 @@ public class gridPlacement : MonoBehaviour {
 				Destroy (highlights [i]);
 			}
 			useRed = false;
-			getRidOfSpots = grid.GetNearestPoints (this.transform.position, 3, this.gameObject, null);
+			getRidOfSpots = grid.GetNearestPoints (this.transform.position, spaceCount, this.gameObject, null);
 		}
 	}
 	public bool getComponentPlacementStatus(){
