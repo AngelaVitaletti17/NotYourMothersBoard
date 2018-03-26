@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class gridPlacement : MonoBehaviour {
 
-	public int spaceCount; //Representation of how many slots a component will take up, assigned in the editor 
+	public int spaceCount, rows; //Representation of how many slots a component will take up, assigned in the editor 
 	public gridLayout grid; //A link to a gridLayout script attached to a GameObject to reference variables and functions
 	public tutorialUI tUI; //A link to a tutorialUI script attached to a GameObject to reference varaibles and functions
 	public Vector3[] highlightedSpots, getRidOfSpots; //Vector3 arrays containing the spots to be highlighted, and the spots to free up when a component is picked up, respectively
@@ -13,8 +13,8 @@ public class gridPlacement : MonoBehaviour {
 	private bool useRed, placeable = false; //Used to determine if a red color will be used as the highlight to represent incorrect board placement
 
 	void Start () {
-		highlightedSpots = new Vector3[spaceCount]; //Initialize the highlighted spots locations array (change to size of spaceCount in the future, AV)
-		highlights = new GameObject[spaceCount]; //Initialize the highlights game object array (change to size of spaceCount in the future, AV)
+		highlightedSpots = new Vector3[rows * spaceCount]; //Initialize the highlighted spots locations array (change to size of spaceCount in the future, AV)
+		highlights = new GameObject[rows * spaceCount]; //Initialize the highlights game object array (change to size of spaceCount in the future, AV)
 		tUI = sceneController.GetComponent<tutorialUI> (); //A link to the tutorial UI script on the scene controller
 		grid = breadboard.GetComponent<gridLayout> (); //A link to the grid layout script on the breadboard
 

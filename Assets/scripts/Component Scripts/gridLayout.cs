@@ -66,7 +66,8 @@ public class gridLayout : MonoBehaviour
 	// Returns: A list of new spots to show as highlighted (vector 3 array)
 	//---------------------------------------------------------------------------------------
 	public Vector3[] GetNearestPoints(Vector3 position, int size, GameObject component, GameObject[] oldHighlight){
-		Vector3[] spots = new Vector3[size]; //New Vector3 array containing a certain amount of spots depending on component size
+		int width = component.GetComponent<gridPlacement> ().rows;
+		Vector3[] spots = new Vector3[width * size]; //New Vector3 array containing a certain amount of spots depending on component size
 		Vector3 componentLocation = GetGridPoint (position, size); //The current location of the component
 		int index = System.Array.IndexOf (positionHolder, componentLocation); //the index of the current location (the component position), the midpoint
 		int componentCol = index % columnCount; //Zero-based column index 
@@ -79,49 +80,66 @@ public class gridLayout : MonoBehaviour
 				Destroy (oldHighlight [i]);
 			}
 		}
-		if (size % 2 != 0)
+		int indexN = index;
+		int tracker = 0;
+		if (size % 2 != 0) {
 			spots [0] = componentLocation; //the first spot will be the location of where the grid spot is
-		//If the component is horizontal
-		if (component.transform.rotation.eulerAngles.y == 270f || Mathf.Round(component.transform.rotation.eulerAngles.y) == 90f){
-			//Generate the spots to be highlighted
-			for (int i = 0; i < halfSplitter; i++) {
-				if (index - i - 1 < 0 || (index - i - 1) / columnCount != componentRow) { //The left side, which should be the first half of the spots
-					spots [sIndex] = nullValue;
-					sIndex++;
-				} else {
-					spots [sIndex] = positionHolder [index - i - 1];
-					sIndex++;
+			//If the component is horizontal
+			for (int k = 0; k < width; k++) {
+				if (width != 1 && k != 0) {
+					if (k < halfSplitter) {
+						index = (index - ((tracker + 1) * columnCount));
+						tracker++;
+					}
+					else if (k == halfSplitter) {
+						index = indexN;
+						tracker = 0;
+					}
+					if (k >= newSize) {
+						index = (index + ((tracker + 1) * columnCount));
+						tracker++;
+					}
 				}
-			}
-			for (int i = 0; i < newSize; i++){
-				if ((index + i + 1) > positionHolder.Length - 1 || (index + i + 1) / columnCount != componentRow) {
-					spots [sIndex] = nullValue;
-					sIndex++;
-				}
-				else {
-					spots [sIndex] = positionHolder [index + i + 1];
-					sIndex++;
-				}
-			}
+				if (component.transform.rotation.eulerAngles.y == 270f || Mathf.Round (component.transform.rotation.eulerAngles.y) == 90f) {
+					//Generate the spots to be highlighted
+					for (int i = 0; i < halfSplitter; i++) {
+						if (index - i - 1 < 0 || (index - i - 1) / columnCount != componentRow) { //The left side, which should be the first half of the spots
+							spots [sIndex] = nullValue;
+							sIndex++;
+						} else {
+							spots [sIndex] = positionHolder [index - i - 1];
+							sIndex++;
+						}
+					}
+					for (int i = 0; i < newSize; i++) {
+						if ((index + i + 1) > positionHolder.Length - 1 || (index + i + 1) / columnCount != componentRow) {
+							spots [sIndex] = nullValue;
+							sIndex++;
+						} else {
+							spots [sIndex] = positionHolder [index + i + 1];
+							sIndex++;
+						}
+					}
 
-		} else if (Mathf.Round(component.transform.rotation.eulerAngles.y) == 0f || component.transform.rotation.eulerAngles.y == 180f) { //if the component is vertical
-			for (int i = 0; i < halfSplitter; i++) {
-				if ((index - ((i + 1) * columnCount) < 0) || (index - ((i + 1) * columnCount)) / columnCount != componentRow - (i + 1)) { //The left side, which should be the first half of the spots
-					spots [sIndex] = nullValue;
-					sIndex++;
-				} else {
-					spots [sIndex] = positionHolder [index - ((i + 1) * columnCount)];
-					sIndex++;
-				}
-			}
-			for (int i = 0; i < newSize; i++){
-				if ((index + ((i + 1) * columnCount) > positionHolder.Length - 1) || (index + ((i + 1) * columnCount)) / columnCount != componentRow + (i + 1)) {
-					spots [sIndex] = nullValue;
-					sIndex++;
-				}
-				else {
-					spots [sIndex] = positionHolder [index + ((i + 1) * columnCount)];
-					sIndex++;
+				} else if (Mathf.Round (component.transform.rotation.eulerAngles.y) == 0f || component.transform.rotation.eulerAngles.y == 180f) { //if the component is vertical
+					for (int i = 0; i < halfSplitter; i++) {
+						if ((index - ((i + 1) * columnCount) < 0) || (index - ((i + 1) * columnCount)) / columnCount != componentRow - (i + 1)) { //The left side, which should be the first half of the spots
+							spots [sIndex] = nullValue;
+							sIndex++;
+						} else {
+							spots [sIndex] = positionHolder [index - ((i + 1) * columnCount)];
+							sIndex++;
+						}
+					}
+					for (int i = 0; i < newSize; i++) {
+						if ((index + ((i + 1) * columnCount) > positionHolder.Length - 1) || (index + ((i + 1) * columnCount)) / columnCount != componentRow + (i + 1)) {
+							spots [sIndex] = nullValue;
+							sIndex++;
+						} else {
+							spots [sIndex] = positionHolder [index + ((i + 1) * columnCount)];
+							sIndex++;
+						}
+					}
 				}
 			}
 		}
