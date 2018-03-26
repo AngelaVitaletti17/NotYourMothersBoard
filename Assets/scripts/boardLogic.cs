@@ -59,7 +59,7 @@ public class boardLogic : MonoBehaviour
 			componentNode nexNode = currentNode.nextNode [0];
 			if (currentNode.parentComponent == nexNode.parentComponent)
 			{
-				currentNode.parentComponent.doComponentLogic();
+				currentNode.parentComponent.doComponentLogic(circuitVoltage,circuitCurrent);
 			}
 			currentNode = currentNode.nextNode [0];
 		}
