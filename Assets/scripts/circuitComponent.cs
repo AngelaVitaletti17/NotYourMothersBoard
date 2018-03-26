@@ -40,4 +40,8 @@ public class circuitComponent : MonoBehaviour
 	{
 		return false;
 	}
+    public bool doComponentLogic(double circuitVoltage, double circuitCurrent)
+    {
+        return false;
+    }
 }

@@ -12,7 +12,7 @@ public class circuitSwitch2 : circuitComponent
     //Empty constructor
     public circuitSwitch2()
     {
-        isOn = false;
+        isOn = true;
         componentType = 6;
     }
 
@@ -35,7 +35,7 @@ public class circuitSwitch2 : circuitComponent
         this.isOn = true;
     }
 
-    public void sswitchOff()
+    public void switchOff()
     {
         this.isOn = false;
     }
@@ -43,8 +43,16 @@ public class circuitSwitch2 : circuitComponent
     //method to perform component function
     public new bool doComponentLogic(double circuitVoltage, double circuitCurrent)
     {
-      // if is open return false;
-
+        //check if switch on or off
+        if (this.getGateStatus())
+            return true;
+        else
+            return false;
+    }
+    
+    public new bool doComponentLogic()
+    {
+        //default part works fine
         return true;
     }
 }

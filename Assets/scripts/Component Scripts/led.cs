@@ -67,7 +67,6 @@ public class led : circuitComponent  // child of diode class?
     {
 
         // Check acceptable inputs
-        //Examples to be used in other classes 
         if (this.componentCurrent < this.minVoltage)
         {
             return false;
@@ -78,5 +77,11 @@ public class led : circuitComponent  // child of diode class?
             return false;
         }
         return true;
+    }
+    
+    public new bool doComponentLogic()
+    {
+        //no circuitVoltage or cicuitCurrent to check
+        return false;
     }
 }
