@@ -41,7 +41,13 @@ public class battery : circuitComponent
     //method to perform component function
     public new bool doComponentLogic(double circuitVoltage, double circuitCurrent)
     {
-       
+        //default part works fine
+        return true;
+    }
+
+    public new bool doComponentLogic()
+    {
+        //default part works fine
         return true;
     }
 }

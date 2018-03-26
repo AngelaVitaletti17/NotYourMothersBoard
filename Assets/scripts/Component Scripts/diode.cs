@@ -52,13 +52,17 @@ public class diode : circuitComponent
     //method to perform component function
     public new bool doComponentLogic(double circuitVoltage, double circuitCurrent)
     {
-        // Check acceptable inputs
-        //Examples to be used in other classes 
-        
+        // Check acceptable inputs                
         if (this.componentVoltage > this.maxVoltage)
         {
             return false;
         }
+        return true;
+    }
+    
+    public new bool doComponentLogic()
+    {
+        //default part works fine
         return true;
     }
 }
