@@ -10,14 +10,21 @@ public class gridPlacement : MonoBehaviour {
 	public Vector3[] highlightedSpots, getRidOfSpots; //Vector3 arrays containing the spots to be highlighted, and the spots to free up when a component is picked up, respectively
 	public GameObject[] highlights; //An array of the actual highlight GameObject that appear on screen
 	public GameObject breadboard, sceneController; //A GameObject representing the breadboard and scene controller, respectively
+	public Vector3 oScale;
 	private bool useRed, placeable = false; //Used to determine if a red color will be used as the highlight to represent incorrect board placement
+	private Color notValid;
 
 	void Start () {
 		highlightedSpots = new Vector3[rows * spaceCount]; //Initialize the highlighted spots locations array (change to size of spaceCount in the future, AV)
 		highlights = new GameObject[rows * spaceCount]; //Initialize the highlights game object array (change to size of spaceCount in the future, AV)
 		tUI = sceneController.GetComponent<tutorialUI> (); //A link to the tutorial UI script on the scene controller
 		grid = breadboard.GetComponent<gridLayout> (); //A link to the grid layout script on the breadboard
-
+		notValid = new Color();
+		ColorUtility.TryParseHtmlString ("#490000", out notValid);
+		if (this.transform.childCount > 0) //Check to see if we have children. If we do, those are typically leads. Only the leads need to be scaled.
+			oScale = this.transform.GetChild(0).localScale;
+		else
+			oScale = this.transform.localScale;
 	}
 	
 	// Update is called once per frame
@@ -35,17 +42,18 @@ public class gridPlacement : MonoBehaviour {
 			//Check some other conditions
 			for (int i = 0; i < highlightedSpots.Length; i++) {
 				if (highlightedSpots [i] != grid.nullValue) { //As long as we have a valid spot on the board
-					GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Plane); //Create a plane to represent the highlight
-					if (useRed)
-						cube.GetComponent<Renderer> ().material.color = Color.red;
-					else if (!useRed && (grid.gridPositions.ContainsKey (highlightedSpots [i]) && grid.gridPositions [highlightedSpots [i]] == false)) {
+					if (useRed) {
+						this.GetComponent<Renderer> ().material.SetColor ("_EmissionColor", notValid);
+					} else if (!useRed && (grid.gridPositions.ContainsKey (highlightedSpots [i]) && grid.gridPositions [highlightedSpots [i]] == false)) {
+						GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Plane); //Create a plane to represent the highlight
 						cube.GetComponent<Renderer> ().material.color = Color.green;
 						placeable = true;
+						cube.GetComponent<Collider> ().enabled = false;
+						cube.transform.localScale = cube.transform.localScale * 0.002f;
+						cube.transform.position = highlightedSpots [i];
+						highlights [i] = cube;
+						this.GetComponent<Renderer> ().material.SetColor ("_EmissionColor", Color.black);
 					}
-					cube.GetComponent<Collider> ().enabled = false;
-					cube.transform.localScale = cube.transform.localScale * 0.002f;
-					cube.transform.position = highlightedSpots [i];
-					highlights [i] = cube;
 				}
 			}
 

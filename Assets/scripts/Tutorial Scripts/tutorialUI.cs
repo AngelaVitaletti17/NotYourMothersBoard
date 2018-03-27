@@ -65,12 +65,16 @@ public class tutorialUI : MonoBehaviour {
 					hit.transform.gameObject.GetComponent<selectGlow> ().zoomedIn = true;
 					hit.transform.gameObject.GetComponent<Collider> ().enabled = false; //Maybe don't do this
 					StartCoroutine (cam.zoomIn (hit.transform.gameObject)); //Start the coroutine to zoom in
-				} else if (hit.transform.gameObject.tag == "battery") { //If we selected the battery, let's drag in around
+				} else if (hit.transform.gameObject.tag == "battery" && !breadboard.GetComponent<selectGlow>().zoomedIn) { //If we selected the battery, let's drag in around
 					isSpawned = true;
 					newItem = hit.transform.gameObject;
-				} else if (hit.transform.gameObject.tag == "component") { //If we selected a component, let's drag it around
+				} else if (hit.transform.gameObject.tag == "component" && breadboard.GetComponent<selectGlow>().zoomedIn) { //If we selected a component, let's drag it around
 					isSpawned = true;
 					newItem = hit.transform.gameObject;
+					if (newItem.transform.childCount > 0) //There are most likely leads on this object
+						newItem.transform.GetChild(0).localScale = newItem.GetComponent<gridPlacement>().oScale;
+					else
+						newItem.transform.localScale = newItem.GetComponent<gridPlacement> ().oScale;
 				}
 			}
 		} else if (isSpawned) { //If we are currently dragging the item
@@ -86,6 +90,9 @@ public class tutorialUI : MonoBehaviour {
 				if (newItem.tag == "component") { //If we are dragging the component, place it in the nearest spot on the grid
 					PlaceItem (Camera.main.ScreenToWorldPoint (itemPosition), newItem);
 					grid.scale_component (newItem);
+				} else if (newItem.tag == "battery") {
+					//Put item in preset spot
+
 				}
 				grid.set_spots ();
 			} 

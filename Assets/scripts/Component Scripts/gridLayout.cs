@@ -11,13 +11,14 @@ public class gridLayout : MonoBehaviour
 	//For the math behind placing components on the grid
 	public Dictionary<Vector3, bool> gridPositions; //Used to represent the grid positions, and whether or not they are filled
 	private List<Vector3> keys; //Used to represent a LIST of the positions from gridPositions. Needed to convert into the dictionary into an array for indices
-	private Vector3[] positionHolder, oldSpots; //An array of the positions, and the previous spots on the board that are highlighted (to show where a component will be placed)
+	public Vector3[] positionHolder, oldSpots; //An array of the positions, and the previous spots on the board that are highlighted (to show where a component will be placed)
 	public Vector3 nullValue; //Used to represent that a value is out of bounds
 	private bool alreadyInit = false;
 
 	//Run when the program starts
 	void Start(){
 		positionHolder = new Vector3[columnCount * rowCount]; //Initialize the position array to be a size of the total holes in the board
+		SetGridSpots();
 		nullValue = new Vector3 (-1f, -1f, -1f); //Initialize the null value vector
 	}
 
@@ -81,6 +82,8 @@ public class gridLayout : MonoBehaviour
 			}
 		}
 		int indexN = index;
+		int colN = componentCol;
+		int rowN = componentRow;
 		int tracker = 0;
 		if (size % 2 != 0) {
 			spots [0] = componentLocation; //the first spot will be the location of where the grid spot is
@@ -88,22 +91,52 @@ public class gridLayout : MonoBehaviour
 			for (int k = 0; k < width; k++) {
 				if (width != 1 && k != 0) {
 					if (k < halfSplitter) {
-						index = (index - ((tracker + 1) * columnCount));
-						tracker++;
+						if (component.transform.rotation.eulerAngles.y == 270f || Mathf.Round (component.transform.rotation.eulerAngles.y) == 90f)
+							index = (index - ((tracker + 1) * columnCount));
+						else if (Mathf.Round (component.transform.rotation.eulerAngles.y) == 0f || component.transform.rotation.eulerAngles.y == 180f)
+							index = index - tracker - 1;
+						componentRow = index / columnCount;
+						componentCol = index % columnCount;
 					}
 					else if (k == halfSplitter) {
 						index = indexN;
 						tracker = 0;
+						componentRow = rowN;
+						componentCol = colN;
 					}
 					if (k >= newSize) {
-						index = (index + ((tracker + 1) * columnCount));
+						if (component.transform.rotation.eulerAngles.y == 270f || Mathf.Round (component.transform.rotation.eulerAngles.y) == 90f)
+							index = (index + ((tracker + 1) * columnCount));
+						else if (Mathf.Round (component.transform.rotation.eulerAngles.y) == 0f || component.transform.rotation.eulerAngles.y == 180f)
+							index = index + tracker + 1;
+						componentRow = index / columnCount;
+						componentCol = index % columnCount;
+					}
+					if (index != indexN){
+						if (index > 0 && index < positionHolder.Length - 1) { // Check if in bounds
+							if (Mathf.Round (component.transform.rotation.eulerAngles.y) == 0f || component.transform.rotation.eulerAngles.y == 180f) {
+								if (componentCol == (indexN % columnCount) - (tracker + 1) || componentCol == (indexN % columnCount) + (tracker + 1))
+									spots [sIndex] = positionHolder [index];
+								else
+									spots [sIndex] = nullValue;
+							} else {
+								if (componentCol == (indexN % columnCount)) {
+									spots [sIndex] = positionHolder [index];
+								} else
+									spots [sIndex] = nullValue;
+							}
+						}
+						else {
+							spots [sIndex] = nullValue;
+						}
+						sIndex++;
 						tracker++;
 					}
 				}
 				if (component.transform.rotation.eulerAngles.y == 270f || Mathf.Round (component.transform.rotation.eulerAngles.y) == 90f) {
 					//Generate the spots to be highlighted
 					for (int i = 0; i < halfSplitter; i++) {
-						if (index - i - 1 < 0 || (index - i - 1) / columnCount != componentRow) { //The left side, which should be the first half of the spots
+						if (index - i - 1 < 0 || index < 0 || index > positionHolder.Length - 1 || (index - i - 1) / columnCount != componentRow) { //The left side, which should be the first half of the spots
 							spots [sIndex] = nullValue;
 							sIndex++;
 						} else {
@@ -112,7 +145,7 @@ public class gridLayout : MonoBehaviour
 						}
 					}
 					for (int i = 0; i < newSize; i++) {
-						if ((index + i + 1) > positionHolder.Length - 1 || (index + i + 1) / columnCount != componentRow) {
+						if ((index + i + 1) > positionHolder.Length - 1 || index < 0 || index > positionHolder.Length - 1 || (index + i + 1) / columnCount != componentRow) {
 							spots [sIndex] = nullValue;
 							sIndex++;
 						} else {
@@ -123,7 +156,7 @@ public class gridLayout : MonoBehaviour
 
 				} else if (Mathf.Round (component.transform.rotation.eulerAngles.y) == 0f || component.transform.rotation.eulerAngles.y == 180f) { //if the component is vertical
 					for (int i = 0; i < halfSplitter; i++) {
-						if ((index - ((i + 1) * columnCount) < 0) || (index - ((i + 1) * columnCount)) / columnCount != componentRow - (i + 1)) { //The left side, which should be the first half of the spots
+						if ((index - ((i + 1) * columnCount) < 0) || index > positionHolder.Length - 1 || index < 0 || (index - ((i + 1) * columnCount)) / columnCount != componentRow - (i + 1)) { //The left side, which should be the first half of the spots
 							spots [sIndex] = nullValue;
 							sIndex++;
 						} else {
@@ -132,7 +165,7 @@ public class gridLayout : MonoBehaviour
 						}
 					}
 					for (int i = 0; i < newSize; i++) {
-						if ((index + ((i + 1) * columnCount) > positionHolder.Length - 1) || (index + ((i + 1) * columnCount)) / columnCount != componentRow + (i + 1)) {
+						if ((index + ((i + 1) * columnCount) > positionHolder.Length - 1) || index < 0 || index > positionHolder.Length - 1 || (index + ((i + 1) * columnCount)) / columnCount != componentRow + (i + 1)) {
 							spots [sIndex] = nullValue;
 							sIndex++;
 						} else {
@@ -200,12 +233,11 @@ public class gridLayout : MonoBehaviour
 			}
 		}
 	}
-
-	//Represent the grid in a physical space (in the scene editor)
-	private void OnDrawGizmos()
+		
+	private void SetGridSpots()
 	{
 		BoxCollider b = GetComponent<BoxCollider> (); //represents the collider of the breadboard
-		Gizmos.color = Color.cyan; //the color of the spheres that will represent the grid spot
+		//Gizmos.color = Color.cyan; //the color of the spheres that will represent the grid spot
 		Vector3 start = transform.TransformPoint (b.center - new Vector3 (b.size.x - 0.019f, -b.size.y - 0.006f, -b.size.z - 0.005f) * 0.5f); //Get the bottom left corner location of the breadboard
 		Vector3 newPos = start; //newPos will represent each consecutive position on the grid
 		float colCountTemp = columnCount; //the temporary count of how many items are in each row. When a new row is reached, it will be set to 0.
@@ -231,9 +263,9 @@ public class gridLayout : MonoBehaviour
 					positionHolder [k] = newPos;
 					k++;
 				}
-				Gizmos.color = Color.green;
+				//Gizmos.color = Color.green;
 				colCountTemp++; //Incremement the temporary row count
-				Gizmos.DrawSphere(newPos, 0.007f); //Draw a sphere to represent a spot in the board
+				//Gizmos.DrawSphere(newPos, 0.007f); //Draw a sphere to represent a spot in the board
 			}
 		}
 		set_dict ();

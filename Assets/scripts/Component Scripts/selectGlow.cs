@@ -5,16 +5,14 @@ using UnityEngine;
 public class selectGlow : MonoBehaviour {
 
 	public bool zoomedIn;
-	private Color renderColor;
 
 	void Start(){
-		renderColor = transform.GetComponent<MeshRenderer> ().material.color;
 	}
 	void OnMouseEnter(){
 		if (!zoomedIn)
-			transform.GetComponent<MeshRenderer> ().material.color = Color.gray;
+			transform.GetComponent<Renderer> ().material.SetColor ("_EmissionColor", Color.white);
 	}
 	void OnMouseExit(){
-		transform.GetComponent<MeshRenderer> ().material.color = renderColor;
+		transform.GetComponent<Renderer> ().material.SetColor ("_EmissionColor", Color.black);
 	}
 }
