@@ -81,97 +81,107 @@ public class gridLayout : MonoBehaviour
 				Destroy (oldHighlight [i]);
 			}
 		}
+
+		if (size % 2 != 0) {
+			spots [0] = componentLocation; //the first spot will be the location of where the grid spot is
+		} else {
+			componentLocation = GetGridPoint (position, 1);
+			index = System.Array.IndexOf (positionHolder, componentLocation);
+			componentCol = index % columnCount; //Zero-based column index 
+			componentRow = index / columnCount;
+			newSize = size - halfSplitter;
+			halfSplitter = halfSplitter - 1;
+			spots [0] = positionHolder [index];
+		}
 		int indexN = index;
 		int colN = componentCol;
 		int rowN = componentRow;
 		int tracker = 0;
-		if (size % 2 != 0) {
-			spots [0] = componentLocation; //the first spot will be the location of where the grid spot is
-			//If the component is horizontal
-			for (int k = 0; k < width; k++) {
-				if (width != 1 && k != 0) {
-					if (k < halfSplitter) {
-						if (component.transform.rotation.eulerAngles.y == 270f || Mathf.Round (component.transform.rotation.eulerAngles.y) == 90f)
-							index = (index - ((tracker + 1) * columnCount));
-						else if (Mathf.Round (component.transform.rotation.eulerAngles.y) == 0f || component.transform.rotation.eulerAngles.y == 180f)
-							index = index - tracker - 1;
-						componentRow = index / columnCount;
-						componentCol = index % columnCount;
-					}
-					else if (k == halfSplitter) {
-						index = indexN;
-						tracker = 0;
-						componentRow = rowN;
-						componentCol = colN;
-					}
-					if (k >= newSize) {
-						if (component.transform.rotation.eulerAngles.y == 270f || Mathf.Round (component.transform.rotation.eulerAngles.y) == 90f)
-							index = (index + ((tracker + 1) * columnCount));
-						else if (Mathf.Round (component.transform.rotation.eulerAngles.y) == 0f || component.transform.rotation.eulerAngles.y == 180f)
-							index = index + tracker + 1;
-						componentRow = index / columnCount;
-						componentCol = index % columnCount;
-					}
-					if (index != indexN){
-						if (index > 0 && index < positionHolder.Length - 1) { // Check if in bounds
-							if (Mathf.Round (component.transform.rotation.eulerAngles.y) == 0f || component.transform.rotation.eulerAngles.y == 180f) {
-								if (componentCol == (indexN % columnCount) - (tracker + 1) || componentCol == (indexN % columnCount) + (tracker + 1))
-									spots [sIndex] = positionHolder [index];
-								else
-									spots [sIndex] = nullValue;
-							} else {
-								if (componentCol == (indexN % columnCount)) {
-									spots [sIndex] = positionHolder [index];
-								} else
-									spots [sIndex] = nullValue;
-							}
+		for (int k = 0; k < width; k++) {
+			if (width != 1 && k != 0) {
+				if (k < halfSplitter) {
+					if (component.transform.rotation.eulerAngles.y == 270f || Mathf.Round (component.transform.rotation.eulerAngles.y) == 90f)
+						index = (index - ((tracker + 1) * columnCount));
+					else if (Mathf.Round (component.transform.rotation.eulerAngles.y) == 0f || component.transform.rotation.eulerAngles.y == 180f)
+						index = index - tracker - 1;
+					componentRow = index / columnCount;
+					componentCol = index % columnCount;
+				}
+				else if (k == halfSplitter && halfSplitter != 0) {
+					index = indexN;
+					tracker = 0;
+					componentRow = rowN;
+					componentCol = colN;
+				}
+				if (k >= newSize) {
+					if (component.transform.rotation.eulerAngles.y == 270f || Mathf.Round (component.transform.rotation.eulerAngles.y) == 90f)
+						index = (index + ((tracker + 1) * columnCount));
+					else if (Mathf.Round (component.transform.rotation.eulerAngles.y) == 0f || component.transform.rotation.eulerAngles.y == 180f)
+						index = index + tracker + 1;
+					componentRow = index / columnCount;
+					componentCol = index % columnCount;
+				}
+				if (index != indexN){
+					if (index > 0 && index < positionHolder.Length - 1) { // Check if in bounds
+						if (Mathf.Round (component.transform.rotation.eulerAngles.y) == 0f || component.transform.rotation.eulerAngles.y == 180f) {
+							if (componentCol == (indexN % columnCount) - (tracker + 1) || componentCol == (indexN % columnCount) + (tracker + 1))
+								spots [sIndex] = positionHolder [index];
+							else
+								spots [sIndex] = nullValue;
+						} else {
+							if (componentCol == (indexN % columnCount)) {
+								spots [sIndex] = positionHolder [index];
+							} else
+								spots [sIndex] = nullValue;
 						}
-						else {
-							spots [sIndex] = nullValue;
-						}
+					}
+					else {
+						spots [sIndex] = nullValue;
+					}
+					sIndex++;
+					tracker++;
+				}
+			}
+			if (component.transform.rotation.eulerAngles.y == 270f || Mathf.Round (component.transform.rotation.eulerAngles.y) == 90f) {
+				//Generate the spots to be highlighted
+				for (int i = 0; i < halfSplitter; i++) {
+					if (index - i - 1 < 0 || index < 0 || index > positionHolder.Length - 1 || (index - i - 1) / columnCount != componentRow) { //The left side, which should be the first half of the spots
+						spots [sIndex] = nullValue;
 						sIndex++;
-						tracker++;
+					} else {
+						spots [sIndex] = positionHolder [index - i - 1];
+						sIndex++;
 					}
 				}
-				if (component.transform.rotation.eulerAngles.y == 270f || Mathf.Round (component.transform.rotation.eulerAngles.y) == 90f) {
-					//Generate the spots to be highlighted
-					for (int i = 0; i < halfSplitter; i++) {
-						if (index - i - 1 < 0 || index < 0 || index > positionHolder.Length - 1 || (index - i - 1) / columnCount != componentRow) { //The left side, which should be the first half of the spots
-							spots [sIndex] = nullValue;
-							sIndex++;
-						} else {
-							spots [sIndex] = positionHolder [index - i - 1];
-							sIndex++;
-						}
+				if (size % 2 != 0) {
+				}
+				for (int i = 0; i < newSize; i++) {
+					if ((index + i + 1) > positionHolder.Length - 1 || index < 0 || index > positionHolder.Length - 1 || (index + i + 1) / columnCount != componentRow) {
+						spots [sIndex] = nullValue;
+						sIndex++;
+					} else {
+						spots [sIndex] = positionHolder [index + i + 1];
+						sIndex++;
 					}
-					for (int i = 0; i < newSize; i++) {
-						if ((index + i + 1) > positionHolder.Length - 1 || index < 0 || index > positionHolder.Length - 1 || (index + i + 1) / columnCount != componentRow) {
-							spots [sIndex] = nullValue;
-							sIndex++;
-						} else {
-							spots [sIndex] = positionHolder [index + i + 1];
-							sIndex++;
-						}
-					}
+				}
 
-				} else if (Mathf.Round (component.transform.rotation.eulerAngles.y) == 0f || component.transform.rotation.eulerAngles.y == 180f) { //if the component is vertical
-					for (int i = 0; i < halfSplitter; i++) {
-						if ((index - ((i + 1) * columnCount) < 0) || index > positionHolder.Length - 1 || index < 0 || (index - ((i + 1) * columnCount)) / columnCount != componentRow - (i + 1)) { //The left side, which should be the first half of the spots
-							spots [sIndex] = nullValue;
-							sIndex++;
-						} else {
-							spots [sIndex] = positionHolder [index - ((i + 1) * columnCount)];
-							sIndex++;
-						}
+			} else if (Mathf.Round (component.transform.rotation.eulerAngles.y) == 0f || component.transform.rotation.eulerAngles.y == 180f) { //if the component is vertical
+				for (int i = 0; i < halfSplitter; i++) {
+					if ((index - ((i + 1) * columnCount) < 0) || index > positionHolder.Length - 1 || index < 0 || (index - ((i + 1) * columnCount)) / columnCount != componentRow - (i + 1)) { //The left side, which should be the first half of the spots
+						spots [sIndex] = nullValue;
+						sIndex++;
+					} else {
+						spots [sIndex] = positionHolder [index - ((i + 1) * columnCount)];
+						sIndex++;
 					}
-					for (int i = 0; i < newSize; i++) {
-						if ((index + ((i + 1) * columnCount) > positionHolder.Length - 1) || index < 0 || index > positionHolder.Length - 1 || (index + ((i + 1) * columnCount)) / columnCount != componentRow + (i + 1)) {
-							spots [sIndex] = nullValue;
-							sIndex++;
-						} else {
-							spots [sIndex] = positionHolder [index + ((i + 1) * columnCount)];
-							sIndex++;
-						}
+				}
+				for (int i = 0; i < newSize; i++) {
+					if ((index + ((i + 1) * columnCount) > positionHolder.Length - 1) || index < 0 || index > positionHolder.Length - 1 || (index + ((i + 1) * columnCount)) / columnCount != componentRow + (i + 1)) {
+						spots [sIndex] = nullValue;
+						sIndex++;
+					} else {
+						spots [sIndex] = positionHolder [index + ((i + 1) * columnCount)];
+						sIndex++;
 					}
 				}
 			}

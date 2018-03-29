@@ -24,11 +24,15 @@ public class tutorialUI : MonoBehaviour {
 	public GameObject breadboard;
 	private gridLayout grid;
 
-	//For dragging
+	//For dragging/placing
 	public bool canBePlaced = true;
 	public bool isSpawned = false;
+	public Vector3 batteryLocation;
 	private Vector3 mousePosition, itemPosition;
 	private GameObject newItem;
+
+	//For Text Information
+	public Text info; //Text element for displaying information
 
 	void Awake(){
 		cam = mainCam.GetComponent<cameraLook> ();
@@ -52,6 +56,9 @@ public class tutorialUI : MonoBehaviour {
 		}
 	//Back button
 		zoomOut.onClick.AddListener(delegate {StartCoroutine(cam.zoomOut(breadboard));});
+	
+	//Placing the battery
+		batteryLocation = new Vector3(-2.221f, 2.017f, -9.197f);
 	}
 	
 	// Update is called once per frame
@@ -83,8 +90,10 @@ public class tutorialUI : MonoBehaviour {
 			itemPosition = Input.mousePosition; 
 			itemPosition.z = 0.4f;
 			newItem.transform.position = Camera.main.ScreenToWorldPoint (itemPosition);
-			newItem.GetComponent<gridPlacement> ().enabled = true; //Make sure this is enabled to get the highlights
-			canBePlaced = newItem.GetComponent<gridPlacement> ().getComponentPlacementStatus (); //check to see if the item can be placed (is the spot valid?)
+			if (newItem.tag != "battery"){
+				newItem.GetComponent<gridPlacement> ().enabled = true; //Make sure this is enabled to get the highlights
+				canBePlaced = newItem.GetComponent<gridPlacement> ().getComponentPlacementStatus (); //check to see if the item can be placed (is the spot valid?)
+			}
 			if (canBePlaced && Input.GetMouseButton (1)) { //The item is placed on the board if it is in a valid spot
 				isSpawned = false;
 				if (newItem.tag == "component") { //If we are dragging the component, place it in the nearest spot on the grid
@@ -92,7 +101,7 @@ public class tutorialUI : MonoBehaviour {
 					grid.scale_component (newItem);
 				} else if (newItem.tag == "battery") {
 					//Put item in preset spot
-
+					newItem.transform.position = batteryLocation;
 				}
 				grid.set_spots ();
 			} 
@@ -100,8 +109,10 @@ public class tutorialUI : MonoBehaviour {
 				newItem.transform.eulerAngles = new Vector3 (newItem.transform.eulerAngles.x, newItem.transform.eulerAngles.y + 90f, newItem.transform.eulerAngles.z);
 			}
 
-		} else if (!isSpawned && newItem != null)
-			newItem.GetComponent<gridPlacement> ().enabled = false;
+		} else if (!isSpawned && newItem != null){
+			if (newItem.tag != "battery")
+				newItem.GetComponent<gridPlacement> ().enabled = false;
+		}
 	}
 
 	void openPartsCatalogue(){
