@@ -34,6 +34,9 @@ public class tutorialUI : MonoBehaviour {
 	//For Text Information
 	public Text info; //Text element for displaying information
 
+	//For nodes
+	public componentNode cn;
+
 	void Awake(){
 		cam = mainCam.GetComponent<cameraLook> ();
 		grid = FindObjectOfType<gridLayout> ();
@@ -102,8 +105,36 @@ public class tutorialUI : MonoBehaviour {
 				} else if (newItem.tag == "battery") {
 					//Put item in preset spot
 					newItem.transform.position = batteryLocation;
+					//Make these positions unable to be taken, set the dictionary 
 				}
 				grid.set_spots ();
+
+				//Henry and Kevin
+				componentNode inputNode = newItem.AddComponent (typeof(componentNode)) as componentNode;
+				componentNode outputNode = newItem.AddComponent (typeof(componentNode)) as componentNode;
+				if (newItem.name == "battery_spawner") {
+					inputNode = new componentNode (newItem.GetComponent<battery> (), 0, 0, null, null); //oldSpots for vector
+					outputNode = new componentNode (newItem.GetComponent<battery> (), 0, 0, null, null);
+					linkedList l = newItem.AddComponent (typeof(linkedList)) as linkedList;
+					l = new linkedList (inputNode, outputNode);
+					//test logic boardlogic.
+				} else if (newItem.name == "chip_spawner") {
+
+				} else if (newItem.name == "diode_spawner") {
+
+				} else if (newItem.name == "elec_cap_spawner") {
+
+				} else if (newItem.name == "resistor_spawning") {
+
+				} else if (newItem.name == "LED_spawner") {
+
+				} else if (newItem.name == "switch_spawner") {
+
+				} else if (newItem.name == "wire_spawner") {
+
+				} else if (newItem.name == "transistor_spawner") {
+
+				}
 			} 
 			if (Input.GetKeyDown (KeyCode.R)) {
 				newItem.transform.eulerAngles = new Vector3 (newItem.transform.eulerAngles.x, newItem.transform.eulerAngles.y + 90f, newItem.transform.eulerAngles.z);

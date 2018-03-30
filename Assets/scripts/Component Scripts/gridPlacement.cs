@@ -13,6 +13,8 @@ public class gridPlacement : MonoBehaviour {
 	public Vector3 oScale;
 	private bool useRed, placeable = false; //Used to determine if a red color will be used as the highlight to represent incorrect board placement
 	private Color notValid;
+	[SerializeField]
+	public circuitComponent componentScript;
 
 	void Start () {
 		highlightedSpots = new Vector3[rows * spaceCount]; //Initialize the highlighted spots locations array (change to size of spaceCount in the future, AV)
