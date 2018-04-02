@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
-public class tutorialUI : MonoBehaviour {
+public class tutorialUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 
 	//For inventory open-close buttons
 	public Button openInventory; //The button that opens the Parts Catalogue
@@ -26,8 +27,11 @@ public class tutorialUI : MonoBehaviour {
 	private GameObject newItem;
 	private bool isSpawned = false;
 	private Vector3 mousePosition, itemPosition;
+    private bool _mouseOver = false; //mouse over check variable
+    public GameObject TextArea;
+    
 
-	void Awake(){
+    void Awake(){
 		cam = mainCam.GetComponent<cameraLook> ();
 		grid = FindObjectOfType<gridLayout> ();
 	}
@@ -46,10 +50,17 @@ public class tutorialUI : MonoBehaviour {
 		for (int i = 0; i < buttonArray.Length; i++) {
 			GameObject item = instantiateItem [i];
 			buttonArray [i].onClick.AddListener (() => {spawnItem(item);});
-		}
+        }
 
-		
-	}
+        Text text = GetComponentInChildren<Text>();
+        if (text != null)
+        {
+            TextArea = text.gameObject;
+            TextArea.SetActive(false);
+        }
+
+
+}
 	
 	// Update is called once per frame
 	void Update () {
@@ -86,6 +97,8 @@ public class tutorialUI : MonoBehaviour {
 				newItem.transform.eulerAngles = new Vector3 (newItem.transform.eulerAngles.x, newItem.transform.eulerAngles.y + 90f, newItem.transform.eulerAngles.z);
 			}
 		}
+        
+
 	}
 
 	void openPartsCatalogue(){
@@ -116,4 +129,58 @@ public class tutorialUI : MonoBehaviour {
 		//cube.transform.localScale = cube.transform.localScale * 0.05f;
 		//cube.transform.position = final;
 	}
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Debug.Log("hello");
+        if(gameObject.tag == "battery")
+        {
+            TextArea.GetComponentInChildren<Text>().text= "a battery stores and supplies charge to the circuit";
+            TextArea.SetActive(true);
+        }
+        if (buttonArray[1])
+        {
+            TextArea.GetComponentInChildren<Text>().text = "capacitors help regulate and store charge";
+            TextArea.SetActive(true);
+        }
+        if (buttonArray[2])
+        {
+            TextArea.GetComponentInChildren<Text>().text = "resistors help regulate charge in a ciruit";
+            TextArea.SetActive(true);
+        }
+        if (buttonArray[3])
+        {
+            TextArea.GetComponentInChildren<Text>().text = "diodes help limit current to flow into only one direction";
+            TextArea.SetActive(true);
+        }
+        if (buttonArray[4])
+        {
+            TextArea.GetComponentInChildren<Text>().text = "switches allow the current to be restricted or free based on it being on or off";
+            TextArea.SetActive(true);
+        }
+        if (buttonArray[5])
+        {
+            TextArea.GetComponentInChildren<Text>().text = "chips run specific actions for the circuit";
+            TextArea.SetActive(true);
+        }
+        if (buttonArray[6])
+        {
+            TextArea.GetComponentInChildren<Text>().text = "LEDs light up when current runs through them";
+            TextArea.SetActive(true);
+        }
+        if (buttonArray[7])
+        {
+            TextArea.GetComponentInChildren<Text>().text = "transistors help regulate flow and provide mroe directions for current to follow";
+            TextArea.SetActive(true);
+        }
+        if (buttonArray[8])
+        {
+            TextArea.GetComponentInChildren<Text>().text = "wires simply connect two components";
+            TextArea.SetActive(true);
+        }
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        TextArea.SetActive(false);
+    }
 }

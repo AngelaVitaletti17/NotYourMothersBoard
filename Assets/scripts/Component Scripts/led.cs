@@ -65,4 +65,6 @@ public class led : circuitComponent  // child of diode class?
     {
         return false;
     }
+
+
 }

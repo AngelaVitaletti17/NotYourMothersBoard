@@ -52,4 +52,6 @@ public class diode : circuitComponent
     {
         return false;
     }
+
+
 }

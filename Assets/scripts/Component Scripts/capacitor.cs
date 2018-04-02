@@ -35,4 +35,6 @@ public class capacitor : circuitComponent
     {
         return false;
     }
+
+ 
 }

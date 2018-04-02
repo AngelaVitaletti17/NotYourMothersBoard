@@ -43,4 +43,6 @@ public class circuitSwitch2 : circuitComponent
     {
         return false;
     }
+
+ 
 }

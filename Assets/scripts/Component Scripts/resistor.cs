@@ -36,4 +36,5 @@ public class resistor : circuitComponent
     {
         return false;
     }
+
 }

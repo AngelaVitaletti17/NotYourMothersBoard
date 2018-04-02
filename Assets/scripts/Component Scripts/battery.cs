@@ -42,4 +42,5 @@ public class battery : circuitComponent
     {
         return false;
     }
+
 }
