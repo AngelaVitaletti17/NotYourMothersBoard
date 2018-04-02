@@ -52,7 +52,8 @@ public class gridPlacement : MonoBehaviour {
 						placeable = true;
 						cube.GetComponent<Collider> ().enabled = false;
 						cube.transform.localScale = cube.transform.localScale * 0.002f;
-						cube.transform.position = highlightedSpots [i];
+						cube.transform.position = new Vector3(highlightedSpots [i].x, highlightedSpots[i].y - 0.01f, highlightedSpots[i].z);
+						cube.tag = "highlight";
 						highlights [i] = cube;
 						this.GetComponent<Renderer> ().material.SetColor ("_EmissionColor", Color.black);
 					}

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - battery
   - component
+  - highlight
   layers:
   - Default
   - TransparentFX

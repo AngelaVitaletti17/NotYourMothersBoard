@@ -38,20 +38,14 @@ public class gridLayout : MonoBehaviour
 	public Vector3 GetGridPoint(Vector3 position, int size)
 	{
 		Vector3 result = Vector3.zero; //Initialize the resulting point to zero
-		Vector3 result2 = Vector3.zero; //Iniialize a second vector 
 		//Compare
 		for (int i = 0; i < positionHolder.Length; i++) {
 			if (i == 0) { //If we're on the first index, we have nothing to compare to. The result will be that position
 				result = positionHolder [i];
 			}
 			else if (Vector3.Distance (position, positionHolder[i]) < Vector3.Distance (position, result)) { //Compare the distance between the position to the current grid spot to the distance between the position and the current result
-				result2 = result;
 				result = positionHolder[i];
 			}
-		}
-
-		if (size % 2 == 0) {
-			return (result + result2) / 2f;
 		}
 		return result; //return the closest point
 	}
@@ -85,8 +79,6 @@ public class gridLayout : MonoBehaviour
 		if (size % 2 != 0) {
 			spots [0] = componentLocation; //the first spot will be the location of where the grid spot is
 		} else {
-			componentLocation = GetGridPoint (position, 1);
-			index = System.Array.IndexOf (positionHolder, componentLocation);
 			componentCol = index % columnCount; //Zero-based column index 
 			componentRow = index / columnCount;
 			newSize = size - halfSplitter;
@@ -199,13 +191,19 @@ public class gridLayout : MonoBehaviour
 	public void scale_component(GameObject c){
 		int half = c.GetComponent<gridPlacement> ().spaceCount / 2;
 		GameObject ch;
-		Vector3 distance, currentScale;
+		Vector3 distance, currentScale, max, min;
 		float scaleTo, current;
+		max = min = oldSpots [0];
 		if (c.transform.rotation.eulerAngles.y == 270f || Mathf.Round (c.transform.rotation.eulerAngles.y) == 90f) {
-			if (oldSpots [oldSpots.Length - 1].x > oldSpots [half].x)
-				distance = oldSpots [oldSpots.Length - 1] - oldSpots [half];
-			else
-				distance = oldSpots [half] - oldSpots [oldSpots.Length - 1];
+			//Find the max and min x values in oldSpots
+			for (int i = 0; i < oldSpots.Length; i++) {
+				if (oldSpots [i].x > max.x)
+					max = oldSpots[i];
+				else if (oldSpots [i].x < min.x)
+					min = oldSpots[i];
+			}
+
+			distance = max - min;
 
 			scaleTo = distance.x;
 			if (c.transform.childCount > 0) {
@@ -222,10 +220,14 @@ public class gridLayout : MonoBehaviour
 				c.transform.localScale = currentScale;
 			}
 		} else if (Mathf.Round (c.transform.rotation.eulerAngles.y) == 0f || c.transform.rotation.eulerAngles.y == 180f) {
-			if (oldSpots [oldSpots.Length - 1].z > oldSpots [half].z)
-				distance = oldSpots [oldSpots.Length - 1] - oldSpots [half];
-			else
-				distance = oldSpots [half] - oldSpots [oldSpots.Length - 1];
+			for (int i = 0; i < oldSpots.Length; i++) {
+				if (oldSpots [i].z > max.z)
+					max = oldSpots[i];
+				else if (oldSpots [i].z < min.z)
+					min = oldSpots[i];
+			}
+
+			distance = max - min;
 
 			scaleTo = distance.z;
 			if (c.transform.childCount > 0) {
