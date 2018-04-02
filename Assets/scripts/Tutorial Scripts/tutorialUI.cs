@@ -23,6 +23,7 @@ public class tutorialUI : MonoBehaviour {
 	//For breadboard and breadboard grid
 	public GameObject breadboard;
 	private gridLayout grid;
+	linkedList l;
 
 	//For dragging/placing
 	public bool canBePlaced = true;
@@ -43,6 +44,8 @@ public class tutorialUI : MonoBehaviour {
 	}
 
 	void Start () {
+
+
 	//*OPEN-CLOSE INVENTORY*
 		//Inventory is closed by default
 		openInventory.gameObject.SetActive (true);
@@ -113,28 +116,62 @@ public class tutorialUI : MonoBehaviour {
 
 				componentNode inputNode = newItem.AddComponent (typeof(componentNode)) as componentNode;
 				componentNode outputNode = newItem.AddComponent (typeof(componentNode)) as componentNode;
-				if (newItem.name == "battery_spawner") {
-					inputNode = new componentNode (newItem.GetComponent<battery> (), 0, 0, null, null); //oldSpots for vector
-					outputNode = new componentNode (newItem.GetComponent<battery> (), 0, 0, null, null);
-					linkedList l = newItem.AddComponent (typeof(linkedList)) as linkedList;
+				Vector3 leftN; 
+				Vector3 rightN;
+
+
+				if (newItem.name.Contains("battery_spawner")) {
+					l = newItem.AddComponent (typeof(linkedList)) as linkedList;
+
+					inputNode = new componentNode (newItem.GetComponent<battery> (), breadboard.GetComponent<gridLayout>().positionHolder[414].x,breadboard.GetComponent<gridLayout>().positionHolder[414].y , null , null ); //oldSpots for vector
+					outputNode = new componentNode (newItem.GetComponent<battery> (), breadboard.GetComponent<gridLayout>().positionHolder[415].x, breadboard.GetComponent<gridLayout>().positionHolder[415].y, null, null);
+
+					breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[414]] = true;
+					breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[415]] = true;
+
+					inputNode.nextNode = null;
+					outputNode.previousNode = null; 
 					l = new linkedList (inputNode, outputNode);
+
+				
 					//test logic boardlogic.
-				} else if (newItem.name == "chip_spawner") {
-
-				} else if (newItem.name == "diode_spawner") {
-
-				} else if (newItem.name == "elec_cap_spawner") {
-
-				} else if (newItem.name == "resistor_spawning") {
+				} else if (newItem.name.Contains( "chip_spawner")) {
 					
+				} else if (newItem.name.Contains( "diode_spawner")) {
 
-				} else if (newItem.name == "LED_spawner") {
+				} else if (newItem.name.Contains("elec_cap_spawner")) {
 
-				} else if (newItem.name == "switch_spawner") {
+				} else if (newItem.name.Contains("resistor_spawning")) {
 
-				} else if (newItem.name == "wire_spawner") {
+					int sc = newItem.GetComponent<gridPlacement> ().spaceCount; 
+					Vector3[] os = breadboard.GetComponent<gridLayout> ().oldSpots;
+					if (sc % 2 == 0) {
+						leftN = os[(sc/2)-1];
+						rightN = os[sc-1];
+					} else {
+						leftN = os[(sc/2)];
+						rightN = os[sc-1];
+					}
 
-				} else if (newItem.name == "transistor_spawner") {
+					inputNode = new componentNode (newItem.GetComponent<battery> (), leftN.x,leftN.z , null , null ); //oldSpots for vector
+					outputNode = new componentNode (newItem.GetComponent<battery> (), rightN.x, rightN.z, null, null);
+
+
+					// set next and previous nodes
+
+
+					//breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[leftN]] = true;
+					//breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[rightN]] = true;
+
+
+
+				} else if (newItem.name.Contains( "LED_spawner")) {
+
+				} else if (newItem.name.Contains( "switch_spawner")) {
+
+				} else if (newItem.name.Contains( "wire_spawner")) {
+
+				} else if (newItem.name.Contains( "transistor_spawner")) {
 
 				}
 			} 
