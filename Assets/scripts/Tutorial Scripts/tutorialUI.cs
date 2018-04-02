@@ -110,6 +110,7 @@ public class tutorialUI : MonoBehaviour {
 				grid.set_spots ();
 
 				//Henry and Kevin
+
 				componentNode inputNode = newItem.AddComponent (typeof(componentNode)) as componentNode;
 				componentNode outputNode = newItem.AddComponent (typeof(componentNode)) as componentNode;
 				if (newItem.name == "battery_spawner") {
@@ -125,6 +126,7 @@ public class tutorialUI : MonoBehaviour {
 				} else if (newItem.name == "elec_cap_spawner") {
 
 				} else if (newItem.name == "resistor_spawning") {
+					
 
 				} else if (newItem.name == "LED_spawner") {
 

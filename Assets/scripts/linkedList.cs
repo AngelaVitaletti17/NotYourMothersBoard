@@ -70,7 +70,7 @@ public class linkedList : MonoBehaviour
 		if (prevNode == null && nexNode == null)
 		{
 			//Remove the linkedList
-			//this = null;
+			Destroy(this);
 		}
 		else
 		{

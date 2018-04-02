@@ -181,4 +181,30 @@ public class boardLogic : MonoBehaviour
 		//If there's no battery, return a negative value for voltage
 		else return -1.0;
 	}
+
+	public void checkForPreviousNode(componentNode referenceNode)
+	{
+		componentNode curNode = new componentNode();
+		//Search for potential previous nodes
+		//for each componentNode inlist of componentNodes 
+		//If xPos are same, or whatever...
+		
+		
+		//If thepotential previous node traces back to the battery
+		if(traceBack(referenceNode, 99))
+		{
+			//Set found node as previous node
+			referenceNode.previousNode[0] = curNode;
+		}
+		//If more to right...
+			else if (curNode.xPos < referenceNode.xPos){
+		//Set node as next node to found node
+			curNode.nextNode[0] = referenceNode;
+		}
+		//If further left...
+			else if (curNode.xPos > referenceNode.xPos){
+		//Set found node as next node to node
+			referenceNode.nextNode[0] = curNode;
+		}
+	}
 }
