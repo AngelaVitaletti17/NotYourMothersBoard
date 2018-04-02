@@ -171,6 +171,9 @@ public class tutorialUI : MonoBehaviour {
 	void PlaceItem(Vector3 clickPoint, GameObject hit){ //For placing components WILL NOT WORK WITH BATTERY YET NOTE
 		Vector3 final;
 		final = grid.GetGridPoint (clickPoint, hit.gameObject.GetComponent<gridPlacement>().spaceCount); //For placing components
-		hit.transform.position = final;
+		if (hit.gameObject.GetComponent<gridPlacement> ().spaceCount % 2 != 0)
+			hit.transform.position = final;
+		else
+			hit.transform.position = (breadboard.GetComponent<gridLayout> ().oldSpots [0] + breadboard.GetComponent<gridLayout> ().oldSpots [1]) / 2f;
 	}
 }

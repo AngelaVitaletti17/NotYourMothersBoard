@@ -33,12 +33,9 @@ public class cameraLook : MonoBehaviour {
 
 	public IEnumerator zoomIn(GameObject bb){
 		Vector3 newPos = new Vector3 (bb.transform.position.x, bb.transform.position.y + 0.4f, bb.transform.position.z);
-		while (transform.position != newPos) {
+		while (transform.eulerAngles != newRotation) {
 			transform.position = Vector3.MoveTowards (transform.position, newPos, 10f * Time.deltaTime);
-			if (transform.eulerAngles != newRotation) {
-				transform.eulerAngles = Vector3.RotateTowards (transform.eulerAngles, newRotation, 100f, 250f * Time.deltaTime);
-				yield return null;
-			}
+			transform.eulerAngles = Vector3.RotateTowards (transform.eulerAngles, newRotation, 10f, 260f * Time.deltaTime);
 			yield return null;
 		}
 		GetComponent<Camera> ().orthographic = true;
