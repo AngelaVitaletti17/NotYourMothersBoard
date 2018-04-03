@@ -18,5 +18,6 @@ public class mainMenu : MonoBehaviour {
 
 		//Initalize the tutorial level button
 		tut.onClick.AddListener(delegate {SceneManager.LoadScene(1);});
+
 	}
 }
