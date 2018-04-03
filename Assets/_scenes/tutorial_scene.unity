@@ -154,6 +154,7 @@ GameObject:
   - component: {fileID: 35726388}
   - component: {fileID: 35726387}
   - component: {fileID: 35726389}
+  - component: {fileID: 35726390}
   m_Layer: 0
   m_Name: transistor
   m_TagString: Untagged
@@ -253,6 +254,29 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &35726390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 35726385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd692d1e92808994ea44d8fc4e255e5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TextArea: {fileID: 353777382}
+  S: {fileID: 254529381}
+  menuitems:
+  - {fileID: 1838967504}
+  - {fileID: 388770612}
+  - {fileID: 1433382658}
+  - {fileID: 1091415137}
+  - {fileID: 1250298260}
+  - {fileID: 1966532337}
+  - {fileID: 940940402}
+  - {fileID: 35726389}
+  - {fileID: 1237243433}
 --- !u!1001 &69683043
 Prefab:
   m_ObjectHideFlags: 0
@@ -1165,6 +1189,125 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &353777382
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 353777383}
+  - component: {fileID: 353777386}
+  - component: {fileID: 353777385}
+  - component: {fileID: 353777384}
+  m_Layer: 0
+  m_Name: TextArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &353777383
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 353777382}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 2.049821, y: 3.0162725, z: 1}
+  m_Children:
+  - {fileID: 542816513}
+  m_Father: {fileID: 1736032055}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 1134, y: -239}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &353777384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 353777382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 1
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 0
+    m_AlignByGeometry: 1
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 'Hover over items for a description
+
+'
+--- !u!114 &353777385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 353777382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 353777384}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!222 &353777386
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 353777382}
 --- !u!1001 &359553376
 Prefab:
   m_ObjectHideFlags: 0
@@ -1242,6 +1385,7 @@ GameObject:
   - component: {fileID: 388770611}
   - component: {fileID: 388770610}
   - component: {fileID: 388770612}
+  - component: {fileID: 388770613}
   m_Layer: 0
   m_Name: capacitor
   m_TagString: Untagged
@@ -1341,6 +1485,29 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &388770613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 388770608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd692d1e92808994ea44d8fc4e255e5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TextArea: {fileID: 353777382}
+  S: {fileID: 254529381}
+  menuitems:
+  - {fileID: 1838967504}
+  - {fileID: 388770612}
+  - {fileID: 1433382658}
+  - {fileID: 1091415137}
+  - {fileID: 1250298260}
+  - {fileID: 1966532337}
+  - {fileID: 940940402}
+  - {fileID: 35726389}
+  - {fileID: 1237243433}
 --- !u!1001 &391553304
 Prefab:
   m_ObjectHideFlags: 0
@@ -1863,6 +2030,80 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 676c1c3ce2585f642b6182f3104122d2, type: 3}
   m_PrefabInternal: {fileID: 534815288}
+--- !u!1 &542816512
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 542816513}
+  - component: {fileID: 542816515}
+  - component: {fileID: 542816514}
+  m_Layer: 0
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &542816513
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 542816512}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 353777383}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &542816514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 542816512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Button
+--- !u!222 &542816515
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 542816512}
 --- !u!1 &562019054
 GameObject:
   m_ObjectHideFlags: 0
@@ -3227,6 +3468,7 @@ GameObject:
   - component: {fileID: 940940401}
   - component: {fileID: 940940400}
   - component: {fileID: 940940402}
+  - component: {fileID: 940940403}
   m_Layer: 0
   m_Name: led
   m_TagString: Untagged
@@ -3326,6 +3568,29 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &940940403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 940940398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd692d1e92808994ea44d8fc4e255e5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TextArea: {fileID: 353777382}
+  S: {fileID: 254529381}
+  menuitems:
+  - {fileID: 1838967504}
+  - {fileID: 388770612}
+  - {fileID: 1433382658}
+  - {fileID: 1091415137}
+  - {fileID: 1250298260}
+  - {fileID: 1966532337}
+  - {fileID: 940940402}
+  - {fileID: 35726389}
+  - {fileID: 1237243433}
 --- !u!1001 &953075148
 Prefab:
   m_ObjectHideFlags: 0
@@ -3747,6 +4012,7 @@ GameObject:
   - component: {fileID: 1091415136}
   - component: {fileID: 1091415135}
   - component: {fileID: 1091415137}
+  - component: {fileID: 1091415138}
   m_Layer: 0
   m_Name: diode
   m_TagString: Untagged
@@ -3846,6 +4112,29 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1091415138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1091415133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd692d1e92808994ea44d8fc4e255e5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TextArea: {fileID: 353777382}
+  S: {fileID: 254529381}
+  menuitems:
+  - {fileID: 1838967504}
+  - {fileID: 388770612}
+  - {fileID: 1433382658}
+  - {fileID: 1091415137}
+  - {fileID: 1250298260}
+  - {fileID: 1966532337}
+  - {fileID: 940940402}
+  - {fileID: 35726389}
+  - {fileID: 1237243433}
 --- !u!1 &1096764518
 GameObject:
   m_ObjectHideFlags: 0
@@ -4425,6 +4714,7 @@ GameObject:
   - component: {fileID: 1237243432}
   - component: {fileID: 1237243431}
   - component: {fileID: 1237243433}
+  - component: {fileID: 1237243434}
   m_Layer: 0
   m_Name: wire
   m_TagString: Untagged
@@ -4524,6 +4814,29 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1237243434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1237243429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd692d1e92808994ea44d8fc4e255e5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TextArea: {fileID: 353777382}
+  S: {fileID: 254529381}
+  menuitems:
+  - {fileID: 1838967504}
+  - {fileID: 388770612}
+  - {fileID: 1433382658}
+  - {fileID: 1091415137}
+  - {fileID: 1250298260}
+  - {fileID: 1966532337}
+  - {fileID: 940940402}
+  - {fileID: 35726389}
+  - {fileID: 1237243433}
 --- !u!1001 &1237875656
 Prefab:
   m_ObjectHideFlags: 0
@@ -4745,6 +5058,7 @@ GameObject:
   - component: {fileID: 1250298259}
   - component: {fileID: 1250298258}
   - component: {fileID: 1250298260}
+  - component: {fileID: 1250298261}
   m_Layer: 0
   m_Name: switch
   m_TagString: Untagged
@@ -4844,6 +5158,29 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1250298261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1250298256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd692d1e92808994ea44d8fc4e255e5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TextArea: {fileID: 353777382}
+  S: {fileID: 254529381}
+  menuitems:
+  - {fileID: 1838967504}
+  - {fileID: 388770612}
+  - {fileID: 1433382658}
+  - {fileID: 1091415137}
+  - {fileID: 1250298260}
+  - {fileID: 1966532337}
+  - {fileID: 940940402}
+  - {fileID: 35726389}
+  - {fileID: 1237243433}
 --- !u!1 &1270174772
 GameObject:
   m_ObjectHideFlags: 0
@@ -5583,6 +5920,7 @@ GameObject:
   - component: {fileID: 1433382657}
   - component: {fileID: 1433382656}
   - component: {fileID: 1433382658}
+  - component: {fileID: 1433382659}
   m_Layer: 0
   m_Name: resistor
   m_TagString: Untagged
@@ -5682,6 +6020,29 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1433382659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1433382654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd692d1e92808994ea44d8fc4e255e5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TextArea: {fileID: 353777382}
+  S: {fileID: 254529381}
+  menuitems:
+  - {fileID: 1838967504}
+  - {fileID: 388770612}
+  - {fileID: 1433382658}
+  - {fileID: 1091415137}
+  - {fileID: 1250298260}
+  - {fileID: 1966532337}
+  - {fileID: 940940402}
+  - {fileID: 35726389}
+  - {fileID: 1237243433}
 --- !u!1001 &1458985721
 Prefab:
   m_ObjectHideFlags: 0
@@ -6981,6 +7342,7 @@ RectTransform:
   - {fileID: 1895002429}
   - {fileID: 1701172160}
   - {fileID: 1053454879}
+  - {fileID: 353777383}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7245,6 +7607,7 @@ GameObject:
   - component: {fileID: 1838967503}
   - component: {fileID: 1838967502}
   - component: {fileID: 1838967504}
+  - component: {fileID: 1838967505}
   m_Layer: 0
   m_Name: battery
   m_TagString: Untagged
@@ -7344,6 +7707,29 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1838967505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1838967500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd692d1e92808994ea44d8fc4e255e5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TextArea: {fileID: 353777382}
+  S: {fileID: 254529381}
+  menuitems:
+  - {fileID: 1838967504}
+  - {fileID: 388770612}
+  - {fileID: 1433382658}
+  - {fileID: 1091415137}
+  - {fileID: 1250298260}
+  - {fileID: 1966532337}
+  - {fileID: 940940402}
+  - {fileID: 35726389}
+  - {fileID: 1237243433}
 --- !u!1001 &1848404822
 Prefab:
   m_ObjectHideFlags: 0
@@ -7969,6 +8355,7 @@ GameObject:
   - component: {fileID: 1966532336}
   - component: {fileID: 1966532335}
   - component: {fileID: 1966532337}
+  - component: {fileID: 1966532338}
   m_Layer: 0
   m_Name: chip
   m_TagString: Untagged
@@ -8068,6 +8455,29 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1966532338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1966532333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd692d1e92808994ea44d8fc4e255e5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TextArea: {fileID: 353777382}
+  S: {fileID: 254529381}
+  menuitems:
+  - {fileID: 1838967504}
+  - {fileID: 388770612}
+  - {fileID: 1433382658}
+  - {fileID: 1091415137}
+  - {fileID: 1250298260}
+  - {fileID: 1966532337}
+  - {fileID: 940940402}
+  - {fileID: 35726389}
+  - {fileID: 1237243433}
 --- !u!4 &1973339843 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 9a00cdaf81ce94c498710f9304dd04f0, type: 3}
