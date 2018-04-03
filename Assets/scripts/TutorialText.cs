@@ -19,13 +19,17 @@ public class TutorialText : MonoBehaviour {
 	}
 	
 	void Update(){
-		if (Input.GetKeyDown ("space")) {
+		if (Input.GetKeyDown ("space") && index < tutText.Length) {
 			tutText [index - 1].SetActive (false);
 			tutText [index].SetActive (true);
 			if (index == 2) {
+				StartCoroutine (sc.GetComponent<tutorialUI> ().mainCam.GetComponent<cameraLook> ().zoomIn(sc.GetComponent<tutorialUI>().breadboard));
+				sc.GetComponent<tutorialUI> ().breadboard.GetComponent<selectGlow> ().zoomedIn = true;
+			}
+			if (index == 5) {
 				sc.GetComponent<tutorialUI> ().openPartsCatalogue ();
 			}
-			if (index == 3) {
+			if (index == 6) {
 				sc.GetComponent<tutorialUI> ().closePartsCatalogue ();
 			}
 			index++;
