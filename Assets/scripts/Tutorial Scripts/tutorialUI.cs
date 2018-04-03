@@ -26,7 +26,7 @@ public class tutorialUI : MonoBehaviour {
 
 	//For dragging/placing
 	public bool canBePlaced = true;
-	public bool isSpawned = false;
+	public bool isSpawned, batterySpawned = false;
 	public Vector3 batteryLocation;
 	private Vector3 mousePosition, itemPosition;
 	private GameObject newItem;
@@ -105,7 +105,9 @@ public class tutorialUI : MonoBehaviour {
 				} else if (newItem.tag == "battery") {
 					//Put item in preset spot
 					newItem.transform.position = batteryLocation;
-					//Make these positions unable to be taken, set the dictionary 
+					//Make these positions unable to be taken, set the dictionary -> done in creating nodes
+					buttonArray [0].interactable = false;
+					batterySpawned = true;
 				}
 				grid.set_spots ();
 

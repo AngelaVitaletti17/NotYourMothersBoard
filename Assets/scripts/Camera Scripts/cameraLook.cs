@@ -7,15 +7,13 @@ public class cameraLook : MonoBehaviour {
 	public float clampViewX;
 	public float clampViewY;
 	public Vector3 initalPosition, newPosition, initialRotation, newRotation;
+	public GameObject UI;
 
 	private Vector3 currentRotation;
 
 	void Start () {
 		currentRotation = Vector3.zero;
-	}
-
-	void Update(){
-		
+		UI.GetComponent<tutorialUI> ().zoomOut.gameObject.SetActive (false);
 	}
 
 	void FixedUpdate () {
@@ -33,6 +31,7 @@ public class cameraLook : MonoBehaviour {
 
 	public IEnumerator zoomIn(GameObject bb){
 		Vector3 newPos = new Vector3 (bb.transform.position.x, bb.transform.position.y + 0.4f, bb.transform.position.z);
+		UI.GetComponent<tutorialUI> ().zoomOut.gameObject.SetActive (true);
 		while (transform.eulerAngles != newRotation) {
 			transform.position = Vector3.MoveTowards (transform.position, newPos, 10f * Time.deltaTime);
 			transform.eulerAngles = Vector3.RotateTowards (transform.eulerAngles, newRotation, 10f, 260f * Time.deltaTime);
@@ -44,7 +43,7 @@ public class cameraLook : MonoBehaviour {
 
 	public IEnumerator zoomOut(GameObject bb){
 		GetComponent<Camera> ().orthographic = false;
-
+		UI.GetComponent<tutorialUI> ().zoomOut.gameObject.SetActive (false);
 		while (transform.eulerAngles != initialRotation) {
 			transform.eulerAngles = Vector3.RotateTowards (transform.eulerAngles, initialRotation, 10f, 260 * Time.deltaTime);
 			transform.position = Vector3.MoveTowards (transform.position, initalPosition, 50 * Time.deltaTime);
