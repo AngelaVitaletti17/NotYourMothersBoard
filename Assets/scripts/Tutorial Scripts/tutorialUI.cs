@@ -153,15 +153,17 @@ public class tutorialUI : MonoBehaviour {
 						rightN = os[sc-1];
 					}
 
-					inputNode = new componentNode (newItem.GetComponent<battery> (), leftN.x,leftN.z , null , null ); //oldSpots for vector
+                    // If another componentNode is located in the same row as these componentNodes(input,output) using cordinates from above.
+                    // if true, set nextNode and/or PreviousNode in componoent constructor below, else keep null
+
+                    inputNode = new componentNode (newItem.GetComponent<battery> (), leftN.x,leftN.z , null , null ); 
 					outputNode = new componentNode (newItem.GetComponent<battery> (), rightN.x, rightN.z, null, null);
 
+                     
+				
+                    
 
-					// set next and previous nodes
-
-
-					//breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[leftN]] = true;
-					//breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[rightN]] = true;
+					
 
 
 
