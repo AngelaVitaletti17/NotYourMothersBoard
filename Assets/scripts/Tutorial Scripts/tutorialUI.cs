@@ -118,13 +118,17 @@ public class tutorialUI : MonoBehaviour {
 				componentNode outputNode = newItem.AddComponent (typeof(componentNode)) as componentNode;
 				Vector3 leftN; 
 				Vector3 rightN;
+                float leftNx;
+                float leftNz;
+                float rightNx;
+                float rightNz;
 
 
-				if (newItem.name.Contains("battery_spawner")) {
+                if (newItem.name.Contains("battery_spawner")) {
 					l = newItem.AddComponent (typeof(linkedList)) as linkedList;
 
-					inputNode = new componentNode (newItem.GetComponent<battery> (), breadboard.GetComponent<gridLayout>().positionHolder[414].x,breadboard.GetComponent<gridLayout>().positionHolder[414].y , null , null ); //oldSpots for vector
-					outputNode = new componentNode (newItem.GetComponent<battery> (), breadboard.GetComponent<gridLayout>().positionHolder[415].x, breadboard.GetComponent<gridLayout>().positionHolder[415].y, null, null);
+					inputNode = new componentNode (newItem.GetComponent<battery> (), breadboard.GetComponent<gridLayout>().positionHolder[414].x,breadboard.GetComponent<gridLayout>().positionHolder[414].z , null , null ); 
+					outputNode = new componentNode (newItem.GetComponent<battery> (), breadboard.GetComponent<gridLayout>().positionHolder[415].x, breadboard.GetComponent<gridLayout>().positionHolder[415].z, null, null);
 
 					breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[414]] = true;
 					breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[415]] = true;
@@ -143,6 +147,7 @@ public class tutorialUI : MonoBehaviour {
 
 				} else if (newItem.name.Contains("resistor_spawning")) {
 
+                    // gets cordinates for left and right componentNodes of newItem
 					int sc = newItem.GetComponent<gridPlacement> ().spaceCount; 
 					Vector3[] os = breadboard.GetComponent<gridLayout> ().oldSpots;
 					if (sc % 2 == 0) {
@@ -153,19 +158,46 @@ public class tutorialUI : MonoBehaviour {
 						rightN = os[sc-1];
 					}
 
-                    // If another componentNode is located in the same row as these componentNodes(input,output) using cordinates from above.
-                    // if true, set nextNode and/or PreviousNode in componoent constructor below, else keep null
+                    leftNx = leftN.x;
+                    leftNz = leftN.z;
+                    rightNx = rightN.x;
+                    rightNz = rightN.z;
+                    float Y_constant = 1.957507f; // hight constant from in game
 
-                    inputNode = new componentNode (newItem.GetComponent<battery> (), leftN.x,leftN.z , null , null ); 
-					outputNode = new componentNode (newItem.GetComponent<battery> (), rightN.x, rightN.z, null, null);
+                    //create vector3 of input and output cordinates
+                    Vector3 leftNVector = new Vector3(leftNx, Y_constant, leftNz);
+                    Vector3 rightNVector = new Vector3(rightNx, Y_constant, rightNz);
+
+
+                    //**parallel logic**//
+                    //iterate through global_LL
+                    //   for each componentNode C in global_LL
+                    //      if inSameRow(vector3, C.vector3)
+                    //         add newItem to global_LL after C 
+
+                    //**series logic**//   **LOGIC FOR MIDTERM PRESENTATION**                    
+                    //componentNode c = pseudoTail of global_LL    //pseudoTail is last component placed into linkedList. Tail = other battery input
+                    //if c = gloabl_LL.head   //means empty LL only battery
+                    //  if inSameCol(leftNVector, C.vector3) || inSameCol(rightNVector,c.vector3)
+                    //    create componentNodes and add after battery        
+                    //if inSameRow(leftNVector, C.vector3) || inSameRow(rightNVector,c.vector3)
+                    //    create componentNodes and add after pseudoTail 
+
+
+
+                    var pseudoTail = new componentNode();//pseudoTail is last component placed into linkedList. Tail = other battery input
+
+                    // sets componentNodes of newItem
+                    var nextNode_Array = new componentNode[] { outputNode }; 
+                    var previousNode_Array = new componentNode[] { pseudoTail }; // componentNode linked to the battery
+                    
+                    inputNode = new componentNode(newItem.GetComponent<resistor>(), leftNx, leftNz, previousNode_Array, nextNode_Array ); 
+
+                    previousNode_Array = new componentNode[] {inputNode};
+                    nextNode_Array = new componentNode[] {}; // 
+                    outputNode = new componentNode (newItem.GetComponent<resistor> (), rightNx, rightNz, previousNode_Array, nextNode_Array);
 
                      
-				
-                    
-
-					
-
-
 
 				} else if (newItem.name.Contains( "LED_spawner")) {
 
