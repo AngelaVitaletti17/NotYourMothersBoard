@@ -26,10 +26,10 @@ public class TutorialText : MonoBehaviour {
 				StartCoroutine (sc.GetComponent<tutorialUI> ().mainCam.GetComponent<cameraLook> ().zoomIn (sc.GetComponent<tutorialUI> ().breadboard));
 				sc.GetComponent<tutorialUI> ().breadboard.GetComponent<selectGlow> ().zoomedIn = true;
 			}
-			if (index == 5) {
+			if (index == 7) {
 				sc.GetComponent<tutorialUI> ().openPartsCatalogue ();
 			}
-			if (index == 6) {
+			if (index == 8) {
 				sc.GetComponent<tutorialUI> ().closePartsCatalogue ();
 			}
 			index++;
