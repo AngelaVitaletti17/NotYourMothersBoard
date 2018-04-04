@@ -44,8 +44,8 @@ public class tutorialUI : MonoBehaviour {
 	}
 
 	void Start () {
+        global_LL = breadboard.AddComponent(typeof(linkedList)) as linkedList;
 
-        
         //*OPEN-CLOSE INVENTORY*
         //Inventory is closed by default
         openInventory.gameObject.SetActive (true);
@@ -140,12 +140,15 @@ public class tutorialUI : MonoBehaviour {
                     //linkedList global_LL = new linkedList(inputNode, outputNode);
                     global_LL.head = inputNode;
                     global_LL.tail = outputNode;
+                    //global_LL.setHead(inputNode);
+
 
                     
                     //test logic boardlogic.
                 }
                 else
                 {
+                    print(global_LL.head.getXPos());
                     // gets cordinates for left and right componentNodes of newItem
                     int sc = newItem.GetComponent<gridPlacement>().spaceCount;
                     Vector3[] os = breadboard.GetComponent<gridLayout>().oldSpots;
