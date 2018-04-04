@@ -23,7 +23,7 @@ public class TutorialText : MonoBehaviour {
 			tutText [index - 1].SetActive (false);
 			tutText [index].SetActive (true);
 			if (index == 2) {
-				StartCoroutine (sc.GetComponent<tutorialUI> ().mainCam.GetComponent<cameraLook> ().zoomIn(sc.GetComponent<tutorialUI>().breadboard));
+				StartCoroutine (sc.GetComponent<tutorialUI> ().mainCam.GetComponent<cameraLook> ().zoomIn (sc.GetComponent<tutorialUI> ().breadboard));
 				sc.GetComponent<tutorialUI> ().breadboard.GetComponent<selectGlow> ().zoomedIn = true;
 			}
 			if (index == 5) {
@@ -33,6 +33,17 @@ public class TutorialText : MonoBehaviour {
 				sc.GetComponent<tutorialUI> ().closePartsCatalogue ();
 			}
 			index++;
+		} else if (Input.GetKeyDown (KeyCode.Y) && index == tutText.Length) { //Reset the tutorial
+			StartCoroutine (sc.GetComponent<tutorialUI> ().mainCam.GetComponent<cameraLook> ().zoomOut (sc.GetComponent<tutorialUI> ().breadboard));
+			sc.GetComponent<tutorialUI> ().breadboard.GetComponent<selectGlow> ().zoomedIn = false;
+			tutText [tutText.Length - 1].SetActive (false);
+			tutText [0].SetActive (true);
+			index = 1;
+		}
+		else if (Input.GetKeyDown(KeyCode.N) && index == tutText.Length){ //Let them play!
+			StartCoroutine (sc.GetComponent<tutorialUI> ().mainCam.GetComponent<cameraLook> ().zoomOut (sc.GetComponent<tutorialUI> ().breadboard));
+			sc.GetComponent<tutorialUI> ().breadboard.GetComponent<selectGlow> ().zoomedIn = false;
+			tutText [tutText.Length - 1].SetActive (false);
 		}
 	}
 
