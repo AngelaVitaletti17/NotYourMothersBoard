@@ -196,13 +196,13 @@ public class tutorialUI : MonoBehaviour {
                             //check if newItem's Nodes in same column as battery nodes
 
                             componentNode head = global_LL.head;
-                            float headz = head.getYPos(); // really z axis in unity not y
+                            float headx = head.getXPos(); // really z axis in unity not y
 
-                            if (headz == leftNz)//check if left node in the power rail
+                            if (headx == leftNx)//check if left node in the power rail
                             {
                                 print("LEFT NODE IN ");
                             }
-                            if (headz == rightNz)//check if right node in the power rail
+                            if (headx == rightNx)//check if right node in the power rail
                             {
                                 print("RIGHT NODE IN ");
                             }

@@ -106,7 +106,7 @@ public class linkedList : MonoBehaviour
         if (pseudoTail == null)
         {
             print("Calling empty list");
-            return null;
+            
         }
         while(pseudoTail.nextNode[0] != null)
         {
