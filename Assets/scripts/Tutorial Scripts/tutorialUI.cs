@@ -176,6 +176,6 @@ public class tutorialUI : MonoBehaviour {
 		if (hit.gameObject.GetComponent<gridPlacement> ().spaceCount % 2 != 0)
 			hit.transform.position = final;
 		else
-			hit.transform.position = (breadboard.GetComponent<gridLayout> ().oldSpots [0] + breadboard.GetComponent<gridLayout> ().oldSpots [1]) / 2f;
+			hit.transform.position = (breadboard.GetComponent<gridLayout> ().oldSpots [0] + breadboard.GetComponent<gridLayout> ().oldSpots [hit.gameObject.GetComponent<gridPlacement>().spaceCount/2]) / 2f;
 	}
 }
