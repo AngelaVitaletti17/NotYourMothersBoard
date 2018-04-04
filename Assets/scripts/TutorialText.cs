@@ -52,19 +52,4 @@ public class TutorialText : MonoBehaviour {
 		tutText [idx].SetActive (true);
 		index++;
 	}
-
-    void endtutorial(int idx)
-    {
-        if (tutText[idx])
-        {
-            if(Input.GetKey("Y")|| Input.GetKey("y"))
-            {
-
-            }
-            if (Input.GetKey("N")|| Input.GetKey("n"))
-            {
-
-            }
-        }
-    }
 }
