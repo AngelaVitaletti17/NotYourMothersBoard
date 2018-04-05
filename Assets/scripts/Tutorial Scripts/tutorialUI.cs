@@ -122,10 +122,10 @@ public class tutorialUI : MonoBehaviour {
                 float leftNz;
                 float rightNx;
                 float rightNz;
-                float inX = -2f;
-                float inZ = -2f;
-                float outX = -2f;
-                float outZ = -2f;
+                float inX = -3f;
+                float inZ = -3f;
+                float outX = -3f;
+                float outZ = -3f;
                 bool leftNodeIsConnected = false;
                 bool rightNodeIsConnected = false;
                 var boardlogic = newItem.AddComponent(typeof(boardLogic)) as boardLogic;
@@ -223,9 +223,9 @@ public class tutorialUI : MonoBehaviour {
                         {
                             
                             // check if newItem's Nodes in same row as pseudoTail's nodes
-                            componentNode lastNode = pseudoTail;
+                            componentNode lastNode = global_LL.getPseudoTail();
                             float lastNodez = lastNode.getYPos(); // really z in unity terms 
-                            float lastNodex = lastNode.getXPos();
+                            float lastNodex = lastNode.getXPos();                            
                             Vector3 lastNodeVector = new Vector3(lastNodex,Y_constant,lastNodez);
 
                             int lastNodeIndex = System.Array.IndexOf(breadboard.GetComponent<gridLayout>().positionHolder, lastNodeVector);
@@ -241,7 +241,6 @@ public class tutorialUI : MonoBehaviour {
                             print(lastNodez);
                             print(leftNz);
                             print(rightNz);
-                            
                             if (lastNodez == leftNz)
                             {
                                 print("cccccccccc");
