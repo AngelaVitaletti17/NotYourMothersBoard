@@ -14,14 +14,14 @@ public class battery : circuitComponent
     public battery()
     {
         voltage = 0;
-        componentType = 1;
+        componentType = 99;
     }
 
     //Full constructor    
     public battery( int initVoltage,  componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked) : base(initInputNode, initOutputNode, initIsLocked)
     {
         this.voltage = initVoltage;
-        componentType = 1;
+        componentType = 99;
     }
 
 

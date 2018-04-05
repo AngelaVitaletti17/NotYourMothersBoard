@@ -102,22 +102,52 @@ public class linkedList : MonoBehaviour
     public componentNode getPseudoTail() //returns the last node if tail is not connected (circuit not complete)
     {
         componentNode pseudoTail = this.head;
-       
-        if (pseudoTail == null)
+        
+    
+        if (pseudoTail.getXPos() == -1.0f)
         {
-            print("Calling empty list");
-            
+            print("Calling empty node");
         }
-        while(pseudoTail.nextNode[0] != null)
+        
+        if(pseudoTail.nextNode.Length == 0 )
         {
+            //print("empty array");
+        }
+                
+        while(pseudoTail.nextNode.Length != 0)
+        {
+            print("length = " + pseudoTail.nextNode.Length);
+            print("NEXT COMPONENT");
             pseudoTail = pseudoTail.nextNode[0];
+            print(" next = length = " + pseudoTail.nextNode.Length);
         }
-        if (pseudoTail == this.tail)// circuit is complete, from head to tail
+
+        if (pseudoTail.getXZ() == head.getXZ())
         {
-            return null;
+            
+            print("THIS IS A HEAD (BATTERY)");
         }
+
+        if (pseudoTail.getXZ() == tail.getXZ())// circuit is complete, from head to tail
+        {
+            
+            print("THIS IS THE TAIL");
+        }
+
         return pseudoTail;
     }
+    public void addNodeAfterPseudoTail(componentNode node)
+    {
+        componentNode refrence = this.head;
+        while (refrence.nextNode.Length != 0)
+        {
+            
+            refrence = refrence.nextNode[0];
+        }
+        refrence.nextNode = new componentNode[] { node };
+
+    }
+
 	public bool combineLists()
 	{
 		return true;
