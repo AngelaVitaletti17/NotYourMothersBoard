@@ -134,33 +134,27 @@ public class tutorialUI : MonoBehaviour {
                 var nullNode_Array = new componentNode[] { };
 
 
-
-                if (newItem.name.Contains("battery_spawner"))
+				//start: a component is placed on the bread board
+                if (newItem.name.Contains("battery_spawner")) //if a battery was placed
                 {
 
                     //GARBAGE BELOW
                     //global_LL = newItem.AddComponent(typeof(linkedList)) as linkedList;
                     //linkedList global_LL = new linkedList(inputNode, outputNode);
                     //GARBAGE ABOVE
-                    
-                    
 
+					//creates input and output nodes of battery
                     inputNode = new componentNode(newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[414].x, breadboard.GetComponent<gridLayout>().positionHolder[414].z, nullNode_Array, nullNode_Array);
                     outputNode = new componentNode(newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[415].x, breadboard.GetComponent<gridLayout>().positionHolder[415].z, nullNode_Array, nullNode_Array);
-
+					//sets positions as taken
                     breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[414]] = true;
                     breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[415]] = true;
-
-                    
-                    
+					//sets head and tail of linked list
                     global_LL.head = inputNode;
                     global_LL.tail = outputNode;
 
-
-                    
-                    //test logic boardlogic.
                 }
-                else
+                else//if another component was placed
                 {
                     
                     // gets cordinates for left and right componentNodes of newItem
@@ -176,50 +170,65 @@ public class tutorialUI : MonoBehaviour {
                         leftN = os[(sc / 2)];
                         rightN = os[sc - 1];
                     }
-
+					//saves x and z component of left and right side of component
                     leftNx = leftN.x;
                     leftNz = leftN.z;
                     rightNx = rightN.x;
                     rightNz = rightN.z;
-                    
 
                     //create vector3 of input and output cordinates
                     Vector3 leftNVector = new Vector3(leftNx, Y_constant, leftNz);
                     Vector3 rightNVector = new Vector3(rightNx, Y_constant, rightNz);
 
-                    componentNode pseudoTail = global_LL.getPseudoTail(); //pseudoTail is last component placed into linkedList. Tail = other battery input
+					//pseudoTail is last component placed into linkedList. Tail =  battery input
+                    componentNode pseudoTail = global_LL.getPseudoTail(); 
 
                  
                     //if (boardlogic.isCompleteCircuitSeries(global_LL.head))
                     // FIX. Does not account for empty next/previousNODE array.Check length of the array before getting value.
-                    //errors out at boardLogix.traceback line 143, called by iscomplecircuitseries line 49
-                    if (false)// circuit is complete
+                    //errors out at boardLogic.traceback line 143, called by iscomplecircuitseries line 49
+                    
+					if (false)// circuit is complete ^^ see above
                     {
                         print("User has placed component after circuit was completed.");
                     }
                     else
                     {
-                        if (pseudoTail.getXZ() == global_LL.head.getXZ()) // Linked list only head and tail, (only battery) // checking power rails(columns) for matches
-                        {
+						
+						 if (pseudoTail.getXZ() == global_LL.head.getXZ())                        
+						{
+							// Linked list only head and tail, (only battery in list) 
+							// checking power rails(columns) for matches
+
                             print("pseduoTail is head");
                             //check if newItem's Nodes in same column as battery nodes
 
                             componentNode head = global_LL.head;
-                            float headx = head.getXPos(); // 
+                            float headx = head.getXPos(); //gets column cordinate
 
                             if (headx == leftNx)//check if left node in the power rail
                             {
                                 print("LEFT NODE CONNECTED ");
                                 leftNodeIsConnected = true;
+								//set cordinates of inputNode and outputNode
+								inX = leftNx;
+								inZ = leftNz;
+								outX = rightNx;
+								outZ = rightNz;
                             }
                             if (headx == rightNx)//check if right node in the power rail
                             {
                                 print("RIGHT NODE CONNECTED ");
                                 rightNodeIsConnected = true;
+								//set cordinates of inputNode and outputNode
+								inX = rightNx;
+								inZ = rightNz;
+								outX = leftNx;
+								outZ = leftNz;
                             }
 
                         }
-                        else //not a battery, checking if newItem's nodes in same row as pseudoTail
+                        else //List is not empty, checking if newItem's nodes in same row as pseudoTail outputNode
                         {
                             
                             // check if newItem's Nodes in same row as pseudoTail's nodes
@@ -228,36 +237,47 @@ public class tutorialUI : MonoBehaviour {
                             float lastNodex = lastNode.getXPos();                            
                             Vector3 lastNodeVector = new Vector3(lastNodex,Y_constant,lastNodez);
 
+							//get breadboard index for left/right node of newItem and outputNode of pseudoTail
                             int lastNodeIndex = System.Array.IndexOf(breadboard.GetComponent<gridLayout>().positionHolder, lastNodeVector);
                             int leftNodeIndex = System.Array.IndexOf(breadboard.GetComponent<gridLayout>().positionHolder, leftNVector);
                             int rigthNodeIndex = System.Array.IndexOf(breadboard.GetComponent<gridLayout>().positionHolder, rightNVector);
 
-
+							//get remainder so see what column index is in. 
+							//index = (1-18)
+							//(1-2) (17-18) = battery terminals
+							//(3-9) = left grid
+							//(10-16) = right grid
                             int lastNodeIndexCol = (lastNodeIndex % 18) + 1;
                             int leftNodeIndexCol = (leftNodeIndex % 18) + 1;
                             int rigthNodeIndexCol = (rigthNodeIndex % 18) + 1;
 
-                            print("vvvvvvvvvvvvvv");
-                            print(lastNodez);
-                            print(leftNz);
-                            print(rightNz);
+                            print("HERE IS WHERE PROBLEM IS");
+                            print("Z position of pseudoTail: "+ lastNodez);
+							print("Z position of leftNode: "+leftNz);
+							print("Z position of rigthNode: "+rightNz);
+
+							//if leftNode is in the same row as pseudoTail Node
                             if (lastNodez == leftNz)
                             {
-                                print("cccccccccc");
+                                print("LEFT NODE IN SAME ROW AS NODE");
+								//checks if Both nodes are in left grid
                                 if (((lastNodeIndexCol <=9)&&(lastNodeIndexCol >= 3))&& ((leftNodeIndexCol <= 9) && (leftNodeIndexCol >= 3))) // both in same row and col range
                                 {
                                     
                                     print("LEFT NODE CONNECTED ");
                                     leftNodeIsConnected = true;
+									//set cordinates of inputNode and outputNode
                                      inX = leftNx;
                                      inZ = leftNz;
                                      outX = rightNx;
                                      outZ = rightNz;
                                 }
+								//checks if Both nodes are in right grid
                                 if (((lastNodeIndexCol <= 16) && (lastNodeIndexCol >= 10)) && ((leftNodeIndexCol <= 16) && (leftNodeIndexCol >= 10)))// both in same row and col range 
                                 {
                                     print("LEFT NODE CONNECTED ");
                                     leftNodeIsConnected = true;
+									//set cordinates of inputNode and outputNode
                                      inX = leftNx;
                                      inZ = leftNz;
                                      outX = rightNx;
@@ -266,10 +286,11 @@ public class tutorialUI : MonoBehaviour {
 
 
                             }
-
-                            if (lastNodez == rightNz)
+							//if rightNode is in the same row as pseudoTail Node
+                            else if (lastNodez == rightNz)
                             {
-                                print("xxxxxxxx");
+								print("RIGHT NODE IN SAME ROW AS NODE");
+								//checks if Both nodes are in left grid
                                 if (((lastNodeIndexCol <= 9) && (lastNodeIndexCol >= 3)) && ((rigthNodeIndexCol <= 9) && (rigthNodeIndexCol >= 3))) // both in same row and col range
                                 {
                                     print("RIGHT NODE CONNECTED ");
@@ -279,6 +300,7 @@ public class tutorialUI : MonoBehaviour {
                                      outX = leftNx;
                                      outZ = leftNz;
                                 }
+								//checks if Both nodes are in right grid
                                 if (((lastNodeIndexCol <= 16) && (lastNodeIndexCol >= 10)) && ((rigthNodeIndexCol <= 16) && (rigthNodeIndexCol >= 10)))// both in same row and col range 
                                 {
                                     print("RIGHT NODE CONNECTED ");
@@ -316,28 +338,26 @@ public class tutorialUI : MonoBehaviour {
                     else if (newItem.name.Contains("resistor_spawner"))
                     {
                         print("spawning resistor ");
+
                         // sets componentNodes of newItem
-                        
                         inputNode = new componentNode(newItem.GetComponent<resistor>(), inX, inZ, nullNode_Array, nullNode_Array);
                         outputNode = new componentNode(newItem.GetComponent<resistor>(), outX, outZ, nullNode_Array, nullNode_Array);
 
-
+						//sets next/previous nodes for inputNode
                         var nextNode_Array = new componentNode[] { outputNode };
                         var previousNode_Array = new componentNode[] { pseudoTail };
-
-
                         inputNode.setNextNode(nextNode_Array);
                         inputNode.setPreviousNode(previousNode_Array);
 
+						//sets next/previous nodes for outputNode
                         nextNode_Array = new componentNode[] { };
                         previousNode_Array = new componentNode[] { inputNode };
-                        
-
                         outputNode.setNextNode(nextNode_Array);
                         outputNode.setPreviousNode(previousNode_Array);
+
+						//sets nextNode to newly added nodes of newItem
                         global_LL.addNodeAfterPseudoTail(inputNode);
 
-                        
                     }
                     else if (newItem.name.Contains("LED_spawner"))
                     {
