@@ -102,6 +102,7 @@ public class linkedList : MonoBehaviour
     public componentNode getPseudoTail() //returns the last node if tail is not connected (circuit not complete)
     {
         componentNode pseudoTail = this.head;
+		int x = 0;
         
     
         if (pseudoTail.getXPos() == -1.0f)
@@ -116,10 +117,10 @@ public class linkedList : MonoBehaviour
                 
         while(pseudoTail.nextNode.Length != 0)
         {
-            print("length = " + pseudoTail.nextNode.Length);
-            print("NEXT COMPONENT");
+			x++;
+            
             pseudoTail = pseudoTail.nextNode[0];
-            print(" next = length = " + pseudoTail.nextNode.Length);
+			print("Iterating through Linked List! at component#: "+ x);
         }
 
         if (pseudoTail.getXZ() == head.getXZ())
