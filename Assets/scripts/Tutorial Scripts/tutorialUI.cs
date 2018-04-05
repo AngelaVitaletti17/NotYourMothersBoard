@@ -23,6 +23,7 @@ public class tutorialUI : MonoBehaviour {
 	//For breadboard and breadboard grid
 	public GameObject breadboard;
 	private gridLayout grid;
+	public linkedList global_LL = new linkedList();
 
 	//For dragging/placing
 	public bool canBePlaced = true;
@@ -43,9 +44,11 @@ public class tutorialUI : MonoBehaviour {
 	}
 
 	void Start () {
-	//*OPEN-CLOSE INVENTORY*
-		//Inventory is closed by default
-		openInventory.gameObject.SetActive (true);
+
+        
+        //*OPEN-CLOSE INVENTORY*
+        //Inventory is closed by default
+        openInventory.gameObject.SetActive (true);
 		closeInventory.gameObject.SetActive (false);
 		inventory.SetActive (false);
 
@@ -115,30 +118,147 @@ public class tutorialUI : MonoBehaviour {
 
 				componentNode inputNode = newItem.AddComponent (typeof(componentNode)) as componentNode;
 				componentNode outputNode = newItem.AddComponent (typeof(componentNode)) as componentNode;
-				if (newItem.name == "battery_spawner") {
-					inputNode = new componentNode (newItem.GetComponent<battery> (), 0, 0, null, null); //oldSpots for vector
-					outputNode = new componentNode (newItem.GetComponent<battery> (), 0, 0, null, null);
-					linkedList l = newItem.AddComponent (typeof(linkedList)) as linkedList;
-					l = new linkedList (inputNode, outputNode);
-					//test logic boardlogic.
-				} else if (newItem.name == "chip_spawner") {
+				Vector3 leftN; 
+				Vector3 rightN;
+                float leftNx;
+                float leftNz;
+                float rightNx;
+                float rightNz;
+                             
+               
+                if (newItem.name.Contains("battery_spawner"))
+                {
 
-				} else if (newItem.name == "diode_spawner") {
+                    //global_LL = newItem.AddComponent(typeof(linkedList)) as linkedList;
 
-				} else if (newItem.name == "elec_cap_spawner") {
+                    inputNode = new componentNode(newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[414].x, breadboard.GetComponent<gridLayout>().positionHolder[414].z, null, null);
+                    outputNode = new componentNode(newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[415].x, breadboard.GetComponent<gridLayout>().positionHolder[415].z, null, null);
 
-				} else if (newItem.name == "resistor_spawning") {
-					
+                    breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[414]] = true;
+                    breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[415]] = true;
 
-				} else if (newItem.name == "LED_spawner") {
+                    inputNode.nextNode = null;
+                    outputNode.previousNode = null;
+                    //linkedList global_LL = new linkedList(inputNode, outputNode);
+                    global_LL.head = inputNode;
+                    global_LL.tail = outputNode;
 
-				} else if (newItem.name == "switch_spawner") {
+                    
+                    //test logic boardlogic.
+                }
+                else
+                {
+                    // gets cordinates for left and right componentNodes of newItem
+                    int sc = newItem.GetComponent<gridPlacement>().spaceCount;
+                    Vector3[] os = breadboard.GetComponent<gridLayout>().oldSpots;
+                    if (sc % 2 == 0)
+                    {
+                        leftN = os[(sc / 2) - 1];
+                        rightN = os[sc - 1];
+                    }
+                    else
+                    {
+                        leftN = os[(sc / 2)];
+                        rightN = os[sc - 1];
+                    }
 
-				} else if (newItem.name == "wire_spawner") {
+                    leftNx = leftN.x;
+                    leftNz = leftN.z;
+                    rightNx = rightN.x;
+                    rightNz = rightN.z;
+                    float Y_constant = 1.957507f; // height constant from in game
 
-				} else if (newItem.name == "transistor_spawner") {
+                    //create vector3 of input and output cordinates
+                    Vector3 leftNVector = new Vector3(leftNx, Y_constant, leftNz);
+                    Vector3 rightNVector = new Vector3(rightNx, Y_constant, rightNz);
 
-				}
+
+                    //**series logic**//   **LOGIC FOR MIDTERM PRESENTATION**                    
+                    //componentNode c = pseudoTail of global_LL    //pseudoTail is last component placed into linkedList. Tail = other battery input
+                    //if c = null   // comepleted circuit
+                    //  if inSameCol(leftNVector, C.vector3) || inSameCol(rightNVector,c.vector3)
+                    //    create componentNodes and add after battery        
+                    //if inSameRow(leftNVector, C.vector3) || inSameRow(rightNVector,c.vector3)
+                    //    create componentNodes and add after pseudoTail 
+
+                    componentNode pseudoTail = global_LL.getPseudoTail(); //pseudoTail is last component placed into linkedList. Tail = other battery input
+
+                    if (pseudoTail == null)// circuit is complete
+                    {
+                        print("User has placed component after circuit was completed.");
+
+                    }
+                    else
+                    {
+                        if (pseudoTail == global_LL.head) // Linked list only head and tail, (only battery) // checking power rails(columns) for matches
+                        {
+                            //check if newItem's Nodes in same column as battery nodes
+
+                            componentNode head = global_LL.head;
+                            float headz = head.getYPos(); // really z axis in unity not y
+
+                            if (headz == leftNz)//check if left node in the power rail
+                            {
+                                print("LEFT NODE IN ");
+                            }
+                            if (headz == rightNz)//check if right node in the power rail
+                            {
+                                print("RIGHT NODE IN ");
+                            }
+
+                        }
+                        else //not a battery, checking if newItem's nodes in same row as pseudoTail
+                        {
+                            // check if newItem's Nodes in same row as pseudoTail's nodes
+                            //TODO
+
+                        }
+
+                    }
+
+                    if (newItem.name.Contains("chip_spawner"))
+                    {
+
+                    }
+                    else if (newItem.name.Contains("diode_spawner"))
+                    {
+
+                    }
+                    else if (newItem.name.Contains("elec_cap_spawner"))
+                    {
+
+                    }
+                    else if (newItem.name.Contains("resistor_spawning"))
+                    {
+
+                        // sets componentNodes of newItem
+                        var nextNode_Array = new componentNode[] { outputNode };
+                        var previousNode_Array = new componentNode[] { pseudoTail };
+
+                        inputNode = new componentNode(newItem.GetComponent<resistor>(), leftNx, leftNz, previousNode_Array, nextNode_Array);
+
+                        previousNode_Array = new componentNode[] { inputNode };
+                        nextNode_Array = new componentNode[] { };
+                        outputNode = new componentNode(newItem.GetComponent<resistor>(), rightNx, rightNz, previousNode_Array, nextNode_Array);
+
+                    }
+                    else if (newItem.name.Contains("LED_spawner"))
+                    {
+
+                    }
+                    else if (newItem.name.Contains("switch_spawner"))
+                    {
+
+                    }
+                    else if (newItem.name.Contains("wire_spawner"))
+                    {
+
+                    }
+                    else if (newItem.name.Contains("transistor_spawner"))
+                    {
+
+                    }
+                }
 			} 
 			if (Input.GetKeyDown (KeyCode.R)) {
 				newItem.transform.eulerAngles = new Vector3 (newItem.transform.eulerAngles.x, newItem.transform.eulerAngles.y + 90f, newItem.transform.eulerAngles.z);

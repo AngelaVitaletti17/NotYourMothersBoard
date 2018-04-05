@@ -6,6 +6,7 @@ public class linkedList : MonoBehaviour
 {
 	public componentNode head;
 	public componentNode tail;
+    
 
 	public linkedList()
 	{
@@ -98,6 +99,25 @@ public class linkedList : MonoBehaviour
 		return true;
 	}
 
+    public componentNode getPseudoTail() //returns the last node if tail is not connected (circuit not complete)
+    {
+        componentNode pseudoTail = this.head;
+       
+        if (pseudoTail == null)
+        {
+            print("Calling empty list");
+            return null;
+        }
+        while(pseudoTail.nextNode[0] != null)
+        {
+            pseudoTail = pseudoTail.nextNode[0];
+        }
+        if (pseudoTail == this.tail)// circuit is complete, from head to tail
+        {
+            return null;
+        }
+        return pseudoTail;
+    }
 	public bool combineLists()
 	{
 		return true;
