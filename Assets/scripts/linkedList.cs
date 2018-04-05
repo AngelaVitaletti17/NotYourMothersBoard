@@ -6,7 +6,7 @@ public class linkedList : MonoBehaviour
 {
 	public componentNode head;
 	public componentNode tail;
-    
+
 
 	public linkedList()
 	{
@@ -99,25 +99,56 @@ public class linkedList : MonoBehaviour
 		return true;
 	}
 
-    public componentNode getPseudoTail() //returns the last node if tail is not connected (circuit not complete)
-    {
-        componentNode pseudoTail = this.head;
-       
-        if (pseudoTail == null)
-        {
-            print("Calling empty list");
-            return null;
-        }
-        while(pseudoTail.nextNode[0] != null)
-        {
-            pseudoTail = pseudoTail.nextNode[0];
-        }
-        if (pseudoTail == this.tail)// circuit is complete, from head to tail
-        {
-            return null;
-        }
-        return pseudoTail;
-    }
+	public componentNode getPseudoTail() //returns the last node if tail is not connected (circuit not complete)
+	{
+		componentNode pseudoTail = this.head;
+		int x = 0;
+
+
+		if (pseudoTail.getXPos() == -1.0f)
+		{
+			print("Calling empty node");
+		}
+
+		if(pseudoTail.nextNode.Length == 0 )
+		{
+			//print("empty array");
+		}
+
+		while(pseudoTail.nextNode.Length != 0)
+		{
+			x++;
+
+			pseudoTail = pseudoTail.nextNode[0];
+			print("Iterating through Linked List! at component#: "+ x);
+		}
+
+		if (pseudoTail.getXZ() == head.getXZ())
+		{
+
+			print("THIS IS A HEAD (BATTERY)");
+		}
+
+		if (pseudoTail.getXZ() == tail.getXZ())// circuit is complete, from head to tail
+		{
+
+			print("THIS IS THE TAIL");
+		}
+
+		return pseudoTail;
+	}
+	public void addNodeAfterPseudoTail(componentNode node)
+	{
+		componentNode refrence = this.head;
+		while (refrence.nextNode.Length != 0)
+		{
+
+			refrence = refrence.nextNode[0];
+		}
+		refrence.nextNode = new componentNode[] { node };
+
+	}
+
 	public bool combineLists()
 	{
 		return true;

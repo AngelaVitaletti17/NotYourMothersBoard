@@ -387,13 +387,13 @@ public class tutorialUI : MonoBehaviour {
 		}
 	}
 
-	void openPartsCatalogue(){
+	public void openPartsCatalogue(){
 		closeInventory.gameObject.SetActive (true);
 		openInventory.gameObject.SetActive (false);
 		inventory.SetActive (true);
 	}
 
-	void closePartsCatalogue(){
+	public void closePartsCatalogue(){
 		closeInventory.gameObject.SetActive (false);
 		openInventory.gameObject.SetActive (true);
 		inventory.SetActive (false);
