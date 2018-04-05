@@ -261,7 +261,7 @@ public class tutorialUI : MonoBehaviour {
                             {
                                 print("LEFT NODE IN SAME ROW AS NODE");
 								//checks if Both nodes are in left grid
-                                if (((lastNodeIndexCol <=9)&&(lastNodeIndexCol >= 3))&& ((leftNodeIndexCol <= 9) && (leftNodeIndexCol >= 3))) // both in same row and col range
+                                if (((lastNodeIndexCol <=9)&&(lastNodeIndexCol >= 2))&& ((leftNodeIndexCol <= 9) && (leftNodeIndexCol >= 2))) // both in same row and col range
                                 {
                                     
                                     print("LEFT NODE CONNECTED ");
@@ -287,11 +287,11 @@ public class tutorialUI : MonoBehaviour {
 
                             }
 							//if rightNode is in the same row as pseudoTail Node
-                            else if (lastNodez == rightNz)
+                            if (lastNodez == rightNz)
                             {
 								print("RIGHT NODE IN SAME ROW AS NODE");
 								//checks if Both nodes are in left grid
-                                if (((lastNodeIndexCol <= 9) && (lastNodeIndexCol >= 3)) && ((rigthNodeIndexCol <= 9) && (rigthNodeIndexCol >= 3))) // both in same row and col range
+                                if (((lastNodeIndexCol <= 9) && (lastNodeIndexCol >= 2)) && ((rigthNodeIndexCol <= 9) && (rigthNodeIndexCol >= 2))) // both in same row and col range
                                 {
                                     print("RIGHT NODE CONNECTED ");
                                     rightNodeIsConnected = true;
