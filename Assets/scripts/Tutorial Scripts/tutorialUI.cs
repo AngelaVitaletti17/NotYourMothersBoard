@@ -27,7 +27,7 @@ public class tutorialUI : MonoBehaviour {
 
 	//For dragging/placing
 	public bool canBePlaced = true;
-	public bool isSpawned, batterySpawned = false;
+	public bool isSpawned = false;
 	public Vector3 batteryLocation;
 	private Vector3 mousePosition, itemPosition;
 	private GameObject newItem;
@@ -44,29 +44,29 @@ public class tutorialUI : MonoBehaviour {
 	}
 
 	void Start () {
+		global_LL = breadboard.AddComponent(typeof(linkedList)) as linkedList;
 
-        
-        //*OPEN-CLOSE INVENTORY*
-        //Inventory is closed by default
-        openInventory.gameObject.SetActive (true);
+		//*OPEN-CLOSE INVENTORY*
+		//Inventory is closed by default
+		openInventory.gameObject.SetActive (true);
 		closeInventory.gameObject.SetActive (false);
 		inventory.SetActive (false);
 
 		//When we click the buttons, do something
 		openInventory.onClick.AddListener (openPartsCatalogue);
 		closeInventory.onClick.AddListener (closePartsCatalogue);
-	//*INVENTORY ITEMS*
+		//*INVENTORY ITEMS*
 		for (int i = 0; i < buttonArray.Length; i++) {
 			GameObject item = instantiateItem [i];
 			buttonArray [i].onClick.AddListener (() => {spawnItem(item);});
 		}
-	//Back button
+		//Back button
 		zoomOut.onClick.AddListener(delegate {StartCoroutine(cam.zoomOut(breadboard));});
-	
-	//Placing the battery
+
+		//Placing the battery
 		batteryLocation = new Vector3(-2.221f, 2.017f, -9.197f);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetMouseButtonDown (0) && !isSpawned) { //If the left button is click and the item is not spawned
@@ -108,9 +108,7 @@ public class tutorialUI : MonoBehaviour {
 				} else if (newItem.tag == "battery") {
 					//Put item in preset spot
 					newItem.transform.position = batteryLocation;
-					//Make these positions unable to be taken, set the dictionary -> done in creating nodes
-					buttonArray [0].interactable = false;
-					batterySpawned = true;
+					//Make these positions unable to be taken, set the dictionary 
 				}
 				grid.set_spots ();
 
@@ -120,145 +118,264 @@ public class tutorialUI : MonoBehaviour {
 				componentNode outputNode = newItem.AddComponent (typeof(componentNode)) as componentNode;
 				Vector3 leftN; 
 				Vector3 rightN;
-                float leftNx;
-                float leftNz;
-                float rightNx;
-                float rightNz;
-                             
-               
-                if (newItem.name.Contains("battery_spawner"))
-                {
-
-                    //global_LL = newItem.AddComponent(typeof(linkedList)) as linkedList;
-
-                    inputNode = new componentNode(newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[414].x, breadboard.GetComponent<gridLayout>().positionHolder[414].z, null, null);
-                    outputNode = new componentNode(newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[415].x, breadboard.GetComponent<gridLayout>().positionHolder[415].z, null, null);
-
-                    breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[414]] = true;
-                    breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[415]] = true;
-
-                    inputNode.nextNode = null;
-                    outputNode.previousNode = null;
-                    //linkedList global_LL = new linkedList(inputNode, outputNode);
-                    global_LL.head = inputNode;
-                    global_LL.tail = outputNode;
-
-                    
-                    //test logic boardlogic.
-                }
-                else
-                {
-                    // gets cordinates for left and right componentNodes of newItem
-                    int sc = newItem.GetComponent<gridPlacement>().spaceCount;
-                    Vector3[] os = breadboard.GetComponent<gridLayout>().oldSpots;
-                    if (sc % 2 == 0)
-                    {
-                        leftN = os[(sc / 2) - 1];
-                        rightN = os[sc - 1];
-                    }
-                    else
-                    {
-                        leftN = os[(sc / 2)];
-                        rightN = os[sc - 1];
-                    }
-
-                    leftNx = leftN.x;
-                    leftNz = leftN.z;
-                    rightNx = rightN.x;
-                    rightNz = rightN.z;
-                    float Y_constant = 1.957507f; // height constant from in game
-
-                    //create vector3 of input and output cordinates
-                    Vector3 leftNVector = new Vector3(leftNx, Y_constant, leftNz);
-                    Vector3 rightNVector = new Vector3(rightNx, Y_constant, rightNz);
+				float leftNx;
+				float leftNz;
+				float rightNx;
+				float rightNz;
+				float inX = -3f;
+				float inZ = -3f;
+				float outX = -3f;
+				float outZ = -3f;
+				bool leftNodeIsConnected = false;
+				bool rightNodeIsConnected = false;
+				var boardlogic = newItem.AddComponent(typeof(boardLogic)) as boardLogic;
+				//float Y_constant = 1.957507f; // height constant from in game
+				float Y_constant = newItem.transform.position.y;
+				var nullNode_Array = new componentNode[] { };
 
 
-                    //**series logic**//   **LOGIC FOR MIDTERM PRESENTATION**                    
-                    //componentNode c = pseudoTail of global_LL    //pseudoTail is last component placed into linkedList. Tail = other battery input
-                    //if c = null   // comepleted circuit
-                    //  if inSameCol(leftNVector, C.vector3) || inSameCol(rightNVector,c.vector3)
-                    //    create componentNodes and add after battery        
-                    //if inSameRow(leftNVector, C.vector3) || inSameRow(rightNVector,c.vector3)
-                    //    create componentNodes and add after pseudoTail 
+				//start: a component is placed on the bread board
+				if (newItem.name.Contains("battery_spawner")) //if a battery was placed
+				{
 
-                    componentNode pseudoTail = global_LL.getPseudoTail(); //pseudoTail is last component placed into linkedList. Tail = other battery input
+					//GARBAGE BELOW
+					//global_LL = newItem.AddComponent(typeof(linkedList)) as linkedList;
+					//linkedList global_LL = new linkedList(inputNode, outputNode);
+					//GARBAGE ABOVE
 
-                    if (pseudoTail == null)// circuit is complete
-                    {
-                        print("User has placed component after circuit was completed.");
+					//creates input and output nodes of battery
+					inputNode = new componentNode(newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[414].x, breadboard.GetComponent<gridLayout>().positionHolder[414].z, nullNode_Array, nullNode_Array);
+					outputNode = new componentNode(newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[415].x, breadboard.GetComponent<gridLayout>().positionHolder[415].z, nullNode_Array, nullNode_Array);
+					//sets positions as taken
+					breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[414]] = true;
+					breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[415]] = true;
+					//sets head and tail of linked list
+					global_LL.head = inputNode;
+					global_LL.tail = outputNode;
 
-                    }
-                    else
-                    {
-                        if (pseudoTail == global_LL.head) // Linked list only head and tail, (only battery) // checking power rails(columns) for matches
-                        {
-                            //check if newItem's Nodes in same column as battery nodes
+				}
+				else//if another component was placed
+				{
 
-                            componentNode head = global_LL.head;
-                            float headz = head.getYPos(); // really z axis in unity not y
+					// gets cordinates for left and right componentNodes of newItem
+					int sc = newItem.GetComponent<gridPlacement>().spaceCount;
+					Vector3[] os = breadboard.GetComponent<gridLayout>().oldSpots;
+					if (sc % 2 == 0)
+					{
+						leftN = os[(sc / 2) - 1];
+						rightN = os[sc - 1];
+					}
+					else
+					{
+						leftN = os[(sc / 2)];
+						rightN = os[sc - 1];
+					}
+					//saves x and z component of left and right side of component
+					leftNx = leftN.x;
+					leftNz = leftN.z;
+					rightNx = rightN.x;
+					rightNz = rightN.z;
 
-                            if (headz == leftNz)//check if left node in the power rail
-                            {
-                                print("LEFT NODE IN ");
-                            }
-                            if (headz == rightNz)//check if right node in the power rail
-                            {
-                                print("RIGHT NODE IN ");
-                            }
+					//create vector3 of input and output cordinates
+					Vector3 leftNVector = new Vector3(leftNx, Y_constant, leftNz);
+					Vector3 rightNVector = new Vector3(rightNx, Y_constant, rightNz);
 
-                        }
-                        else //not a battery, checking if newItem's nodes in same row as pseudoTail
-                        {
-                            // check if newItem's Nodes in same row as pseudoTail's nodes
-                            //TODO
+					//pseudoTail is last component placed into linkedList. Tail =  battery input
+					componentNode pseudoTail = global_LL.getPseudoTail(); 
 
-                        }
 
-                    }
+					//if (boardlogic.isCompleteCircuitSeries(global_LL.head))
+					// FIX. Does not account for empty next/previousNODE array.Check length of the array before getting value.
+					//errors out at boardLogic.traceback line 143, called by iscomplecircuitseries line 49
 
-                    if (newItem.name.Contains("chip_spawner"))
-                    {
+					if (false)// circuit is complete ^^ see above
+					{
+						print("User has placed component after circuit was completed.");
+					}
+					else
+					{
 
-                    }
-                    else if (newItem.name.Contains("diode_spawner"))
-                    {
+						if (pseudoTail.getXZ() == global_LL.head.getXZ())                        
+						{
+							// Linked list only head and tail, (only battery in list) 
+							// checking power rails(columns) for matches
 
-                    }
-                    else if (newItem.name.Contains("elec_cap_spawner"))
-                    {
+							print("pseduoTail is head");
+							//check if newItem's Nodes in same column as battery nodes
 
-                    }
-                    else if (newItem.name.Contains("resistor_spawning"))
-                    {
+							componentNode head = global_LL.head;
+							float headx = head.getXPos(); //gets column cordinate
 
-                        // sets componentNodes of newItem
-                        var nextNode_Array = new componentNode[] { outputNode };
-                        var previousNode_Array = new componentNode[] { pseudoTail };
+							if (headx == leftNx)//check if left node in the power rail
+							{
+								print("LEFT NODE CONNECTED ");
+								leftNodeIsConnected = true;
+								//set cordinates of inputNode and outputNode
+								inX = leftNx;
+								inZ = leftNz;
+								outX = rightNx;
+								outZ = rightNz;
+							}
+							if (headx == rightNx)//check if right node in the power rail
+							{
+								print("RIGHT NODE CONNECTED ");
+								rightNodeIsConnected = true;
+								//set cordinates of inputNode and outputNode
+								inX = rightNx;
+								inZ = rightNz;
+								outX = leftNx;
+								outZ = leftNz;
+							}
 
-                        inputNode = new componentNode(newItem.GetComponent<resistor>(), leftNx, leftNz, previousNode_Array, nextNode_Array);
+						}
+						else //List is not empty, checking if newItem's nodes in same row as pseudoTail outputNode
+						{
 
-                        previousNode_Array = new componentNode[] { inputNode };
-                        nextNode_Array = new componentNode[] { };
-                        outputNode = new componentNode(newItem.GetComponent<resistor>(), rightNx, rightNz, previousNode_Array, nextNode_Array);
+							// check if newItem's Nodes in same row as pseudoTail's nodes
+							componentNode lastNode = global_LL.getPseudoTail();
+							float lastNodez = lastNode.getYPos(); // really z in unity terms 
+							float lastNodex = lastNode.getXPos();                            
+							Vector3 lastNodeVector = new Vector3(lastNodex,Y_constant,lastNodez);
 
-                    }
-                    else if (newItem.name.Contains("LED_spawner"))
-                    {
+							//get breadboard index for left/right node of newItem and outputNode of pseudoTail
+							int lastNodeIndex = System.Array.IndexOf(breadboard.GetComponent<gridLayout>().positionHolder, lastNodeVector);
+							int leftNodeIndex = System.Array.IndexOf(breadboard.GetComponent<gridLayout>().positionHolder, leftNVector);
+							int rigthNodeIndex = System.Array.IndexOf(breadboard.GetComponent<gridLayout>().positionHolder, rightNVector);
 
-                    }
-                    else if (newItem.name.Contains("switch_spawner"))
-                    {
+							//get remainder so see what column index is in. 
+							//index = (1-18)
+							//(1-2) (17-18) = battery terminals
+							//(3-9) = left grid
+							//(10-16) = right grid
+							int lastNodeIndexCol = (lastNodeIndex % 18) + 1;
+							int leftNodeIndexCol = (leftNodeIndex % 18) + 1;
+							int rigthNodeIndexCol = (rigthNodeIndex % 18) + 1;
 
-                    }
-                    else if (newItem.name.Contains("wire_spawner"))
-                    {
+							print("HERE IS WHERE PROBLEM IS");
+							print("Z position of pseudoTail: "+ lastNodez);
+							print("Z position of leftNode: "+leftNz);
+							print("Z position of rigthNode: "+rightNz);
 
-                    }
-                    else if (newItem.name.Contains("transistor_spawner"))
-                    {
+							//if leftNode is in the same row as pseudoTail Node
+							if (lastNodez == leftNz)
+							{
+								print("LEFT NODE IN SAME ROW AS NODE");
+								//checks if Both nodes are in left grid
+								if (((lastNodeIndexCol <=9)&&(lastNodeIndexCol >= 2))&& ((leftNodeIndexCol <= 9) && (leftNodeIndexCol >= 2))) // both in same row and col range
+								{
 
-                    }
-                }
+									print("LEFT NODE CONNECTED ");
+									leftNodeIsConnected = true;
+									//set cordinates of inputNode and outputNode
+									inX = leftNx;
+									inZ = leftNz;
+									outX = rightNx;
+									outZ = rightNz;
+								}
+								//checks if Both nodes are in right grid
+								if (((lastNodeIndexCol <= 16) && (lastNodeIndexCol >= 10)) && ((leftNodeIndexCol <= 16) && (leftNodeIndexCol >= 10)))// both in same row and col range 
+								{
+									print("LEFT NODE CONNECTED ");
+									leftNodeIsConnected = true;
+									//set cordinates of inputNode and outputNode
+									inX = leftNx;
+									inZ = leftNz;
+									outX = rightNx;
+									outZ = rightNz;
+								}
+
+
+							}
+							//if rightNode is in the same row as pseudoTail Node
+							if (lastNodez == rightNz)
+							{
+								print("RIGHT NODE IN SAME ROW AS NODE");
+								//checks if Both nodes are in left grid
+								if (((lastNodeIndexCol <= 9) && (lastNodeIndexCol >= 2)) && ((rigthNodeIndexCol <= 9) && (rigthNodeIndexCol >= 2))) // both in same row and col range
+								{
+									print("RIGHT NODE CONNECTED ");
+									rightNodeIsConnected = true;
+									inX = rightNx;
+									inZ = rightNz;
+									outX = leftNx;
+									outZ = leftNz;
+								}
+								//checks if Both nodes are in right grid
+								if (((lastNodeIndexCol <= 16) && (lastNodeIndexCol >= 10)) && ((rigthNodeIndexCol <= 16) && (rigthNodeIndexCol >= 10)))// both in same row and col range 
+								{
+									print("RIGHT NODE CONNECTED ");
+									rightNodeIsConnected = true;
+									inX = rightNx;
+									inZ = rightNz;
+									outX = leftNx;
+									outZ = leftNz;
+								}
+							}
+
+
+
+							//print("lastNodeIndex: "+lastNodeIndex);
+							//print("leftNodeIndex: "+leftNodeIndex);
+							//print("rigthNodeInde: "+rigthNodeIndex);
+
+
+						}
+
+					}
+
+					if (newItem.name.Contains("chip_spawner"))
+					{
+
+					}
+					else if (newItem.name.Contains("diode_spawner"))
+					{
+
+					}
+					else if (newItem.name.Contains("elec_cap_spawner"))
+					{
+
+					}
+					else if (newItem.name.Contains("resistor_spawner"))
+					{
+						print("spawning resistor ");
+
+						// sets componentNodes of newItem
+						inputNode = new componentNode(newItem.GetComponent<resistor>(), inX, inZ, nullNode_Array, nullNode_Array);
+						outputNode = new componentNode(newItem.GetComponent<resistor>(), outX, outZ, nullNode_Array, nullNode_Array);
+
+						//sets next/previous nodes for inputNode
+						var nextNode_Array = new componentNode[] { outputNode };
+						var previousNode_Array = new componentNode[] { pseudoTail };
+						inputNode.setNextNode(nextNode_Array);
+						inputNode.setPreviousNode(previousNode_Array);
+
+						//sets next/previous nodes for outputNode
+						nextNode_Array = new componentNode[] { };
+						previousNode_Array = new componentNode[] { inputNode };
+						outputNode.setNextNode(nextNode_Array);
+						outputNode.setPreviousNode(previousNode_Array);
+
+						//sets nextNode to newly added nodes of newItem
+						global_LL.addNodeAfterPseudoTail(inputNode);
+
+					}
+					else if (newItem.name.Contains("LED_spawner"))
+					{
+
+					}
+					else if (newItem.name.Contains("switch_spawner"))
+					{
+
+					}
+					else if (newItem.name.Contains("wire_spawner"))
+					{
+
+					}
+					else if (newItem.name.Contains("transistor_spawner"))
+					{
+
+					}
+				}
 			} 
 			if (Input.GetKeyDown (KeyCode.R)) {
 				newItem.transform.eulerAngles = new Vector3 (newItem.transform.eulerAngles.x, newItem.transform.eulerAngles.y + 90f, newItem.transform.eulerAngles.z);
@@ -270,13 +387,13 @@ public class tutorialUI : MonoBehaviour {
 		}
 	}
 
-	public void openPartsCatalogue(){
+	void openPartsCatalogue(){
 		closeInventory.gameObject.SetActive (true);
 		openInventory.gameObject.SetActive (false);
 		inventory.SetActive (true);
 	}
 
-	public void closePartsCatalogue(){
+	void closePartsCatalogue(){
 		closeInventory.gameObject.SetActive (false);
 		openInventory.gameObject.SetActive (true);
 		inventory.SetActive (false);
@@ -296,6 +413,6 @@ public class tutorialUI : MonoBehaviour {
 		if (hit.gameObject.GetComponent<gridPlacement> ().spaceCount % 2 != 0)
 			hit.transform.position = final;
 		else
-			hit.transform.position = (breadboard.GetComponent<gridLayout> ().oldSpots [0] + breadboard.GetComponent<gridLayout> ().oldSpots [hit.gameObject.GetComponent<gridPlacement>().spaceCount/2]) / 2f;
+			hit.transform.position = (breadboard.GetComponent<gridLayout> ().oldSpots [0] + breadboard.GetComponent<gridLayout> ().oldSpots [1]) / 2f;
 	}
 }
