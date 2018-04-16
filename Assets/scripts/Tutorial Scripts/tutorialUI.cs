@@ -144,15 +144,14 @@ public class tutorialUI : MonoBehaviour {
 					//GARBAGE ABOVE
 
 					//creates input and output nodes of battery
-					inputNode = new componentNode(newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[414].x, breadboard.GetComponent<gridLayout>().positionHolder[414].z, nullNode_Array, nullNode_Array);
-					outputNode = new componentNode(newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[415].x, breadboard.GetComponent<gridLayout>().positionHolder[415].z, nullNode_Array, nullNode_Array);
+					inputNode = new componentNode(newItem.GetInstanceID (), newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[414].x, breadboard.GetComponent<gridLayout>().positionHolder[414].z, nullNode_Array, nullNode_Array);
+					outputNode = new componentNode(newItem.GetInstanceID (), newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[415].x, breadboard.GetComponent<gridLayout>().positionHolder[415].z, nullNode_Array, nullNode_Array);
 					//sets positions as taken
 					breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[414]] = true;
 					breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[415]] = true;
 					//sets head and tail of linked list
 					global_LL.head = inputNode;
 					global_LL.tail = outputNode;
-
 				}
 				else//if another component was placed
 				{
@@ -208,7 +207,7 @@ public class tutorialUI : MonoBehaviour {
 
 							if (headx == leftNx)//check if left node in the power rail
 							{
-								print("LEFT NODE CONNECTED ");
+								print("(POWER) LEFT NODE CONNECTED ");
 								leftNodeIsConnected = true;
 								//set cordinates of inputNode and outputNode
 								inX = leftNx;
@@ -218,7 +217,41 @@ public class tutorialUI : MonoBehaviour {
 							}
 							if (headx == rightNx)//check if right node in the power rail
 							{
-								print("RIGHT NODE CONNECTED ");
+								print("(POWER) RIGHT NODE CONNECTED ");
+								rightNodeIsConnected = true;
+								//set cordinates of inputNode and outputNode
+								inX = rightNx;
+								inZ = rightNz;
+								outX = leftNx;
+								outZ = leftNz;
+							}
+
+						}
+
+						if (pseudoTail.getXZ() == global_LL.tail.getXZ())                        
+						{
+							// Linked list looping back to tail?
+							// checking power rails(columns) for matches
+
+							print("pseduoTail is head");
+							//check if newItem's Nodes in same column as battery nodes
+
+							componentNode tail = global_LL.tail;
+							float tailx = tail.getXPos(); //gets column cordinate
+
+							if (tailx == leftNx)//check if left node in the power rail
+							{
+								print("(POWER) LEFT NODE CONNECTED ");
+								leftNodeIsConnected = true;
+								//set cordinates of inputNode and outputNode
+								inX = leftNx;
+								inZ = leftNz;
+								outX = rightNx;
+								outZ = rightNz;
+							}
+							if (tailx == rightNx)//check if right node in the power rail
+							{
+								print("(POWER) RIGHT NODE CONNECTED ");
 								rightNodeIsConnected = true;
 								//set cordinates of inputNode and outputNode
 								inX = rightNx;
@@ -251,10 +284,10 @@ public class tutorialUI : MonoBehaviour {
 							int leftNodeIndexCol = (leftNodeIndex % 18) + 1;
 							int rigthNodeIndexCol = (rigthNodeIndex % 18) + 1;
 
-							print("HERE IS WHERE PROBLEM IS");
-							print("Z position of pseudoTail: "+ lastNodez);
-							print("Z position of leftNode: "+leftNz);
-							print("Z position of rigthNode: "+rightNz);
+							//print("HERE IS WHERE PROBLEM IS");
+							//print("Z position of pseudoTail: "+ lastNodez);
+							//print("Z position of leftNode: "+leftNz);
+							//print("Z position of rigthNode: "+rightNz);
 
 							//if leftNode is in the same row as pseudoTail Node
 							if (lastNodez == leftNz)
@@ -264,7 +297,7 @@ public class tutorialUI : MonoBehaviour {
 								if (((lastNodeIndexCol <=9)&&(lastNodeIndexCol >= 2))&& ((leftNodeIndexCol <= 9) && (leftNodeIndexCol >= 2))) // both in same row and col range
 								{
 
-									print("LEFT NODE CONNECTED ");
+									print("H LEFT NODE CONNECTED ");
 									leftNodeIsConnected = true;
 									//set cordinates of inputNode and outputNode
 									inX = leftNx;
@@ -275,7 +308,7 @@ public class tutorialUI : MonoBehaviour {
 								//checks if Both nodes are in right grid
 								if (((lastNodeIndexCol <= 16) && (lastNodeIndexCol >= 10)) && ((leftNodeIndexCol <= 16) && (leftNodeIndexCol >= 10)))// both in same row and col range 
 								{
-									print("LEFT NODE CONNECTED ");
+									print("H LEFT NODE CONNECTED ");
 									leftNodeIsConnected = true;
 									//set cordinates of inputNode and outputNode
 									inX = leftNx;
@@ -293,7 +326,7 @@ public class tutorialUI : MonoBehaviour {
 								//checks if Both nodes are in left grid
 								if (((lastNodeIndexCol <= 9) && (lastNodeIndexCol >= 2)) && ((rigthNodeIndexCol <= 9) && (rigthNodeIndexCol >= 2))) // both in same row and col range
 								{
-									print("RIGHT NODE CONNECTED ");
+									print("H RIGHT NODE CONNECTED ");
 									rightNodeIsConnected = true;
 									inX = rightNx;
 									inZ = rightNz;
@@ -303,7 +336,7 @@ public class tutorialUI : MonoBehaviour {
 								//checks if Both nodes are in right grid
 								if (((lastNodeIndexCol <= 16) && (lastNodeIndexCol >= 10)) && ((rigthNodeIndexCol <= 16) && (rigthNodeIndexCol >= 10)))// both in same row and col range 
 								{
-									print("RIGHT NODE CONNECTED ");
+									print("H RIGHT NODE CONNECTED ");
 									rightNodeIsConnected = true;
 									inX = rightNx;
 									inZ = rightNz;
@@ -338,25 +371,36 @@ public class tutorialUI : MonoBehaviour {
 					else if (newItem.name.Contains("resistor_spawner"))
 					{
 						print("spawning resistor ");
-
 						// sets componentNodes of newItem
-						inputNode = new componentNode(newItem.GetComponent<resistor>(), inX, inZ, nullNode_Array, nullNode_Array);
-						outputNode = new componentNode(newItem.GetComponent<resistor>(), outX, outZ, nullNode_Array, nullNode_Array);
+						inputNode = new componentNode(newItem.GetInstanceID(), newItem.GetComponent<resistor>(), inX, inZ, nullNode_Array, nullNode_Array);
+						outputNode = new componentNode(newItem.GetInstanceID(),  newItem.GetComponent<resistor>(), outX, outZ, nullNode_Array, nullNode_Array);
 
-						//sets next/previous nodes for inputNode
-						var nextNode_Array = new componentNode[] { outputNode };
-						var previousNode_Array = new componentNode[] { pseudoTail };
-						inputNode.setNextNode(nextNode_Array);
-						inputNode.setPreviousNode(previousNode_Array);
+						var nextNode_Array = new componentNode[] { };
+						var previousNode_Array = new componentNode[] { };
 
-						//sets next/previous nodes for outputNode
-						nextNode_Array = new componentNode[] { };
-						previousNode_Array = new componentNode[] { inputNode };
-						outputNode.setNextNode(nextNode_Array);
-						outputNode.setPreviousNode(previousNode_Array);
+						if (leftNodeIsConnected)
+						{
+							//sets next/previous nodes for inputNode
+							nextNode_Array = new componentNode[] { outputNode };
+							previousNode_Array = new componentNode[] { pseudoTail };
+							inputNode.setNextNode (nextNode_Array);
+							inputNode.setPreviousNode (previousNode_Array);
 
-						//sets nextNode to newly added nodes of newItem
-						global_LL.addNodeAfterPseudoTail(inputNode);
+							//sets nextNode to newly added nodes of newItem
+							global_LL.addNodeAfterPseudoTail(inputNode);
+						}
+
+						if (rightNodeIsConnected)
+						{
+							//sets next/previous nodes for outputNode
+							nextNode_Array = new componentNode[] { };
+							previousNode_Array = new componentNode[] { inputNode };
+							outputNode.setNextNode (nextNode_Array);
+							outputNode.setPreviousNode (previousNode_Array);
+
+							//sets nextNode to newly added nodes of newItem
+							global_LL.addNodeAfterPseudoTail(outputNode);
+						}
 
 					}
 					else if (newItem.name.Contains("LED_spawner"))
@@ -376,6 +420,7 @@ public class tutorialUI : MonoBehaviour {
 
 					}
 				}
+				global_LL.printList ();
 			} 
 			if (Input.GetKeyDown (KeyCode.R)) {
 				newItem.transform.eulerAngles = new Vector3 (newItem.transform.eulerAngles.x, newItem.transform.eulerAngles.y + 90f, newItem.transform.eulerAngles.z);
