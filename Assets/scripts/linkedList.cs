@@ -149,7 +149,18 @@ public class linkedList : MonoBehaviour
 
 	}
 
-	public bool combineLists()
+    public componentNode[] getPositiveEndpoints()
+    {
+        var result = new componentNode[] { };
+        return result;
+    }
+    public componentNode[] getNegativeEndpoints()
+    {
+        var result = new componentNode[] { };
+        return result;
+    }
+
+    public bool combineLists()
 	{
 		return true;
 	}

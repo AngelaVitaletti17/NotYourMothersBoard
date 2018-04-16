@@ -142,22 +142,22 @@ public class tutorialUI : MonoBehaviour {
            
                 // problem - branching out and creating parallel circuits, getPositive/NegativeEndpoints will see branches as +/- endpoint
 
+
+
+
                 //start: a component is placed on the bread board
                 if (newItem.name.Contains("battery_spawner")) //if a battery was placed
 				{
 
-					//GARBAGE BELOW
-					//global_LL = newItem.AddComponent(typeof(linkedList)) as linkedList;
-					//linkedList global_LL = new linkedList(inputNode, outputNode);
-					//GARBAGE ABOVE
-
 					//creates input and output nodes of battery
 					inputNode = new componentNode(newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[414].x, breadboard.GetComponent<gridLayout>().positionHolder[414].z, nullNode_Array, nullNode_Array);
 					outputNode = new componentNode(newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[415].x, breadboard.GetComponent<gridLayout>().positionHolder[415].z, nullNode_Array, nullNode_Array);
-					//sets positions as taken
+					
+                    //sets positions as taken
 					breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[414]] = true;
 					breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[415]] = true;
-					//sets head and tail of linked list
+					
+                    //sets head and tail of linked list
 					global_LL.head = inputNode;
 					global_LL.tail = outputNode;
 
@@ -168,7 +168,8 @@ public class tutorialUI : MonoBehaviour {
 					// gets cordinates for left and right componentNodes of newItem
 					int sc = newItem.GetComponent<gridPlacement>().spaceCount;
 					Vector3[] os = breadboard.GetComponent<gridLayout>().oldSpots;
-					if (sc % 2 == 0)
+
+					if (sc % 2 == 0)//angela Logic
 					{
 						leftN = os[(sc / 2) - 1];
 						rightN = os[sc - 1];
@@ -188,15 +189,19 @@ public class tutorialUI : MonoBehaviour {
 					Vector3 leftNVector = new Vector3(leftNx, Y_constant, leftNz);
 					Vector3 rightNVector = new Vector3(rightNx, Y_constant, rightNz);
 
-					//pseudoTail is last component placed into linkedList. Tail =  battery input
-					componentNode pseudoTail = global_LL.getPseudoTail(); 
+					//get Positive and Negative Endpoints
+					componentNode pseudoTail = global_LL.getPseudoTail();
+                    var positiveEndpoints = new componentNode[] { };
+                    var negativeEndpoints = new componentNode[] { };
+                    positiveEndpoints = global_LL.getPositiveEndpoints();
+                    negativeEndpoints = global_LL.getNegativeEndpoints();
 
 
-					//if (boardlogic.isCompleteCircuitSeries(global_LL.head))
-					// FIX. Does not account for empty next/previousNODE array.Check length of the array before getting value.
-					//errors out at boardLogic.traceback line 143, called by iscomplecircuitseries line 49
+                    //if (boardlogic.isCompleteCircuitSeries(global_LL.head))
+                    // FIX. Does not account for empty next/previousNODE array.Check length of the array before getting value.
+                    //errors out at boardLogic.traceback line 143, called by iscomplecircuitseries line 49
 
-					if (false)// circuit is complete ^^ see above
+                    if (false)// circuit is complete ^^ see above
 					{
 						print("User has placed component after circuit was completed.");
 					}
