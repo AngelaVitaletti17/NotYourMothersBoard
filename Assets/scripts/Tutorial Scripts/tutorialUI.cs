@@ -162,7 +162,7 @@ public class tutorialUI : MonoBehaviour {
 					global_LL.tail = outputNode;
 
 				}
-				else//if another component was placed
+				else//if a component was placed
 				{
 
 					// gets cordinates for left and right componentNodes of newItem
@@ -197,16 +197,8 @@ public class tutorialUI : MonoBehaviour {
                     negativeEndpoints = global_LL.getNegativeEndpoints();
 
 
-                    //if (boardlogic.isCompleteCircuitSeries(global_LL.head))
-                    // FIX. Does not account for empty next/previousNODE array.Check length of the array before getting value.
-                    //errors out at boardLogic.traceback line 143, called by iscomplecircuitseries line 49
-
-                    if (false)// circuit is complete ^^ see above
-					{
-						print("User has placed component after circuit was completed.");
-					}
-					else
-					{
+                    
+                   
 
 						if (pseudoTail.getXZ() == global_LL.head.getXZ())                        
 						{
@@ -334,7 +326,7 @@ public class tutorialUI : MonoBehaviour {
 
 						}
 
-					}
+					
 
 					if (newItem.name.Contains("chip_spawner"))
 					{
