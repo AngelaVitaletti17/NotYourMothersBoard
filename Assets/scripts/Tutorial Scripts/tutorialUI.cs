@@ -129,13 +129,21 @@ public class tutorialUI : MonoBehaviour {
 				bool leftNodeIsConnected = false;
 				bool rightNodeIsConnected = false;
 				var boardlogic = newItem.AddComponent(typeof(boardLogic)) as boardLogic;
-				//float Y_constant = 1.957507f; // height constant from in game
 				float Y_constant = newItem.transform.position.y;
 				var nullNode_Array = new componentNode[] { };
 
+                //LOGIC FOR ADDING COMPONENTS TO LINKED LIST
+                //if battery, create Linked List
+                //else if component
+                //  make nodes(right and left)
+                //  getPositiveEndpoints() //similar to pseudoTail but directional depending on side of battery
+                //  getNegativeEndpoints() //similar to pseudoTail but directional depending on side of battery
+                //  check if nodes in those endpoints. if so connect them. 
+           
+                // problem - branching out and creating parallel circuits, getPositive/NegativeEndpoints will see branches as +/- endpoint
 
-				//start: a component is placed on the bread board
-				if (newItem.name.Contains("battery_spawner")) //if a battery was placed
+                //start: a component is placed on the bread board
+                if (newItem.name.Contains("battery_spawner")) //if a battery was placed
 				{
 
 					//GARBAGE BELOW
