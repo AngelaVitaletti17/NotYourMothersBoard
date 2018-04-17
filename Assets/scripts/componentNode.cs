@@ -26,6 +26,7 @@ public class componentNode : MonoBehaviour
 	//Empty constructor
 	public componentNode()
 	{
+		objectID = 0;
 		parentComponent = null;
 		xPos = -1f;
 		yPos = -1f;

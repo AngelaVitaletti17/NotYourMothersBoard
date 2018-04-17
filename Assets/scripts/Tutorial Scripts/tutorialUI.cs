@@ -378,18 +378,6 @@ public class tutorialUI : MonoBehaviour {
 						var nextNode_Array = new componentNode[] { };
 						var previousNode_Array = new componentNode[] { };
 
-						if (leftNodeIsConnected)
-						{
-							//sets next/previous nodes for inputNode
-							nextNode_Array = new componentNode[] { outputNode };
-							previousNode_Array = new componentNode[] { pseudoTail };
-							inputNode.setNextNode (nextNode_Array);
-							inputNode.setPreviousNode (previousNode_Array);
-
-							//sets nextNode to newly added nodes of newItem
-							global_LL.addNodeAfterPseudoTail(inputNode);
-						}
-
 						if (rightNodeIsConnected)
 						{
 							//sets next/previous nodes for outputNode
@@ -400,6 +388,18 @@ public class tutorialUI : MonoBehaviour {
 
 							//sets nextNode to newly added nodes of newItem
 							global_LL.addNodeAfterPseudoTail(outputNode);
+						}
+
+						if (leftNodeIsConnected)
+						{
+							//sets next/previous nodes for inputNode
+							nextNode_Array = new componentNode[] { outputNode };
+							previousNode_Array = new componentNode[] { pseudoTail };
+							inputNode.setNextNode (nextNode_Array);
+							inputNode.setPreviousNode (previousNode_Array);
+
+							//sets nextNode to newly added nodes of newItem
+							global_LL.addNodeAfterPseudoTail(inputNode);
 						}
 
 					}
