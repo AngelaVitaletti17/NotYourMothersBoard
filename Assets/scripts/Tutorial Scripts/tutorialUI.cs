@@ -202,6 +202,7 @@ public class tutorialUI : MonoBehaviour {
 							print("pseduoTail is head");
 							//check if newItem's Nodes in same column as battery nodes
 
+
 							componentNode head = global_LL.head;
 							float headx = head.getXPos(); //gets column cordinate
 
@@ -233,7 +234,7 @@ public class tutorialUI : MonoBehaviour {
 							// Linked list looping back to tail?
 							// checking power rails(columns) for matches
 
-							print("pseduoTail is head");
+							print("pseduoTail is tail");
 							//check if newItem's Nodes in same column as battery nodes
 
 							componentNode tail = global_LL.tail;
@@ -401,7 +402,6 @@ public class tutorialUI : MonoBehaviour {
 							//sets nextNode to newly added nodes of newItem
 							global_LL.addNodeAfterPseudoTail(inputNode);
 						}
-
 					}
 					else if (newItem.name.Contains("LED_spawner"))
 					{
