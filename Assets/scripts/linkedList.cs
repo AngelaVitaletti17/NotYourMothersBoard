@@ -107,7 +107,7 @@ public class linkedList : MonoBehaviour
 
 		if (pseudoTail.getXPos() == -1.0f)
 		{
-			print("Calling empty node");
+			//print("Calling empty node");
 		}
 
 		if(pseudoTail.nextNode.Length == 0 )
@@ -120,43 +120,91 @@ public class linkedList : MonoBehaviour
 			x++;
 
 			pseudoTail = pseudoTail.nextNode[0];
-			print("Iterating through Linked List! at component#: "+ x);
+			//print("Iterating through Linked List! at component#: "+ x);
 		}
 
 		if (pseudoTail.getXZ() == head.getXZ())
 		{
 
-			print("THIS IS A HEAD (BATTERY)");
+			//print("THIS IS A HEAD (BATTERY)");
 		}
 
 		if (pseudoTail.getXZ() == tail.getXZ())// circuit is complete, from head to tail
 		{
 
-			print("THIS IS THE TAIL");
+			//print("THIS IS THE TAIL");
 		}
 
 		return pseudoTail;
 	}
 	public void addNodeAfterPseudoTail(componentNode node)
 	{
-		componentNode refrence = this.head;
-		while (refrence.nextNode.Length != 0)
-		{
+		componentNode refrence = this.head; // pointer in linked list
 
+		while (refrence.nextNode.Length != 0)//find last node in list
+		{
 			refrence = refrence.nextNode[0];
 		}
-		refrence.nextNode = new componentNode[] { node };
 
+        //set next and previous for nodes
+		refrence.nextNode = new componentNode[] { node };
+        node.previousNode = new componentNode[] { refrence };      
 	}
 
-    public componentNode[] getPositiveEndpoints()
+    public componentNode[] getPositiveEndpoints(componentNode node)
     {
-        var result = new componentNode[] { };
+        var result = new componentNode[] { }; // result array
+        componentNode refrence = node; // pointer in linked list
+
+        while (refrence.nextNode.Length != 0)//find last node in list
+        {
+            if (refrence.nextNode.Length > 1)//if fork is found
+            {
+                for (int x = 0; x < refrence.nextNode.Length - 1; x++)// for every fork
+                {
+                    refrence = refrence.nextNode[x];//each fork
+                    componentNode[] resultAddition = getPositiveEndpoints(refrence);// get endpoints for each fork
+
+                    var list = new List<componentNode>();
+                    list.AddRange(result);
+                    list.AddRange(resultAddition);
+
+                    result = list.ToArray();
+                }
+                break;
+            }
+            refrence = refrence.nextNode[0];// go to next node
+        }
+
+        result = new componentNode[] { refrence};
         return result;
     }
-    public componentNode[] getNegativeEndpoints()
+    public componentNode[] getNegativeEndpoints(componentNode node)
     {
-        var result = new componentNode[] { };
+        var result = new componentNode[] { }; // result array
+        componentNode refrence = node; // pointer in linked list
+
+        while (refrence.previousNode.Length != 0)//find last node in list
+        {
+            if (refrence.previousNode.Length > 1)//if fork is found
+            {
+                for (int x = 0; x < refrence.previousNode.Length - 1; x++)// for every fork
+                {
+                    refrence = refrence.previousNode[x];//each fork
+                    componentNode[] resultAddition = getNegativeEndpoints(refrence);// get endpoints for each fork
+
+                    var list = new List<componentNode>();
+                    list.AddRange(result);
+                    list.AddRange(resultAddition);
+
+                    result = list.ToArray();
+                }
+                break;
+            }
+            refrence = refrence.previousNode[0];// go to next node
+        }
+
+        result = new componentNode[] { refrence };
         return result;
     }
 
