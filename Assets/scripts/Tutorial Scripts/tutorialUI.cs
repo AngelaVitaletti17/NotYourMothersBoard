@@ -38,6 +38,10 @@ public class tutorialUI : MonoBehaviour {
 	//For nodes
 	public componentNode cn;
 
+	//For clearing the board
+	private List<GameObject> placed;
+	private int placedIndex = 0;
+
 	void Awake(){
 		cam = mainCam.GetComponent<cameraLook> ();
 		grid = FindObjectOfType<gridLayout> ();
@@ -45,6 +49,7 @@ public class tutorialUI : MonoBehaviour {
 
 	void Start () {
 		global_LL = breadboard.AddComponent(typeof(linkedList)) as linkedList;
+		placed = new List<GameObject> ();
 
 		//*OPEN-CLOSE INVENTORY*
 		//Inventory is closed by default
@@ -89,6 +94,10 @@ public class tutorialUI : MonoBehaviour {
 					else
 						newItem.transform.localScale = newItem.GetComponent<gridPlacement> ().oScale;
 				}
+				//Check to see if newItem is in the placed list
+				if (placed.Contains (newItem)) {
+					placed.Remove (newItem);
+				}
 			}
 		} else if (isSpawned) { //If we are currently dragging the item
 			closePartsCatalogue (); //Keep the parts catalogue closed to avoid spawning multiple items
@@ -101,6 +110,8 @@ public class tutorialUI : MonoBehaviour {
 				canBePlaced = newItem.GetComponent<gridPlacement> ().getComponentPlacementStatus (); //check to see if the item can be placed (is the spot valid?)
 			}
 			if (canBePlaced && Input.GetMouseButton (1)) { //The item is placed on the board if it is in a valid spot
+				//Item has been placed, keep track of it
+				placed.Add(newItem); //Add the item
 				isSpawned = false;
 				if (newItem.tag == "component") { //If we are dragging the component, place it in the nearest spot on the grid
 					PlaceItem (Camera.main.ScreenToWorldPoint (itemPosition), newItem);
@@ -459,5 +470,10 @@ public class tutorialUI : MonoBehaviour {
 			hit.transform.position = final;
 		else
 			hit.transform.position = (breadboard.GetComponent<gridLayout> ().oldSpots [0] + breadboard.GetComponent<gridLayout> ().oldSpots [1]) / 2f;
+	}
+
+	public void clearBoard(){
+		foreach (GameObject item in placed)
+			Destroy	(item);
 	}
 }
