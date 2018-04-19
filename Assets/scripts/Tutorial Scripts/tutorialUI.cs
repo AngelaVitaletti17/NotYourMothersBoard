@@ -198,7 +198,7 @@ public class tutorialUI : MonoBehaviour {
 					// FIX. Does not account for empty next/previousNODE array.Check length of the array before getting value.
 					//errors out at boardLogic.traceback line 143, called by iscomplecircuitseries line 49
 
-					if (false)// circuit is complete ^^ see above
+					if (boardlogic.isCompleteCircuitSeries(global_LL.head))// circuit is complete ^^ see above
 					{
 						print("User has placed component after circuit was completed.");
 					}
@@ -387,31 +387,28 @@ public class tutorialUI : MonoBehaviour {
 						inputNode = new componentNode(newItem.GetInstanceID(), newItem.GetComponent<resistor>(), inX, inZ, nullNode_Array, nullNode_Array);
 						outputNode = new componentNode(newItem.GetInstanceID(),  newItem.GetComponent<resistor>(), outX, outZ, nullNode_Array, nullNode_Array);
 
-						var nextNode_Array = new componentNode[] { };
-						var previousNode_Array = new componentNode[] { };
-
-						if (rightNodeIsConnected)
+						if (leftNodeIsConnected || rightNodeIsConnected)
 						{
-							//sets next/previous nodes for outputNode
-							nextNode_Array = new componentNode[] { };
-							previousNode_Array = new componentNode[] { inputNode };
-							outputNode.setNextNode (nextNode_Array);
-							outputNode.setPreviousNode (previousNode_Array);
+							var nextNode_Array = new componentNode[] { };
+							var previousNode_Array = new componentNode[] { };
 
-							//sets nextNode to newly added nodes of newItem
-							global_LL.addNodeAfterPseudoTail(outputNode);
-						}
-
-						if (leftNodeIsConnected)
-						{
 							//sets next/previous nodes for inputNode
 							nextNode_Array = new componentNode[] { outputNode };
 							previousNode_Array = new componentNode[] { pseudoTail };
 							inputNode.setNextNode (nextNode_Array);
 							inputNode.setPreviousNode (previousNode_Array);
 
-							//sets nextNode to newly added nodes of newItem
-							global_LL.addNodeAfterPseudoTail(inputNode);
+							previousNode_Array = new componentNode[] { inputNode };
+							pseudoTail.setNextNode (previousNode_Array);
+
+							outputNode.setNextNode (nullNode_Array);
+							outputNode.setPreviousNode (previousNode_Array);
+
+							if (outputNode.getXPos () == global_LL.tail.getXPos ()) {
+								previousNode_Array = new componentNode[] { global_LL.tail };
+								outputNode.setNextNode (previousNode_Array);
+								global_LL.tail.setPreviousNode (nextNode_Array);
+							}
 						}
 					}
 					else if (newItem.name.Contains("LED_spawner"))

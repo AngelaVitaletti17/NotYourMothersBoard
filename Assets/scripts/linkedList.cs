@@ -159,20 +159,23 @@ public class linkedList : MonoBehaviour
 
 		do {
 			print (refrence.objectID);
-			if (refrence.getXPos () != this.tail.getXPos ()) {
-				if (refrence.nextNode.Length != 0) {
-					refrence = refrence.nextNode [0];
-				} else
-					break;
-			} else
+			if (refrence.getXPos () != this.tail.getXPos ())
 			{
-				refrence = refrence.nextNode [0];
-				print (refrence.objectID);
-				refrence = refrence.nextNode [0];
-				//print (refrence.objectID);
-				//refrence = refrence.nextNode [0];
-				print (refrence.objectID);
-				break;
+				if (refrence.nextNode.Length != 0)
+				{
+					refrence = refrence.nextNode [0];
+				}
+				else break;
+			}
+			else
+			{
+				if (refrence.nextNode.Length != 0)
+				{
+					refrence = refrence.nextNode [0];
+					print (refrence.objectID);
+					break;
+				}
+				else break;
 			}
 		} while(true);
 		//while((refrence.getXPos () != this.tail.getXPos ()) && (refrence.getYPos () != this.tail.getYPos ()));
