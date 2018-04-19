@@ -198,7 +198,7 @@ public class tutorialUI : MonoBehaviour {
 					// FIX. Does not account for empty next/previousNODE array.Check length of the array before getting value.
 					//errors out at boardLogic.traceback line 143, called by iscomplecircuitseries line 49
 
-					if (boardlogic.isCompleteCircuitSeries(global_LL.head))// circuit is complete ^^ see above
+					if (false)// circuit is complete ^^ see above
 					{
 						print("User has placed component after circuit was completed.");
 					}
