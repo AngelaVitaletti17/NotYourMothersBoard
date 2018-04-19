@@ -24,6 +24,7 @@ public class tutorialUI : MonoBehaviour {
 	public GameObject breadboard;
 	private gridLayout grid;
 	public linkedList global_LL = new linkedList();
+	public boardLogic boardlogic = new boardLogic();
 
 	//For dragging/placing
 	public bool canBePlaced = true;
@@ -49,6 +50,7 @@ public class tutorialUI : MonoBehaviour {
 
 	void Start () {
 		global_LL = breadboard.AddComponent(typeof(linkedList)) as linkedList;
+		boardlogic = breadboard.AddComponent (typeof(boardLogic)) as boardLogic;
 		placed = new List<GameObject> ();
 
 		//*OPEN-CLOSE INVENTORY*
@@ -78,27 +80,41 @@ public class tutorialUI : MonoBehaviour {
 			//Get the raycast data
 			RaycastHit hit; 
 			Ray ray = mainCam.GetComponent<Camera> ().ScreenPointToRay (Input.mousePosition);
-			if (Physics.Raycast (ray, out hit)) { //If we hit something, let's see what we hit
+			if (Physics.Raycast (ray, out hit))
+			{ //If we hit something, let's see what we hit
 				if (hit.transform.name == "BreadBoard") { //If we hit the breadboard, zoom into it
 					hit.transform.gameObject.GetComponent<selectGlow> ().zoomedIn = true;
 					hit.transform.gameObject.GetComponent<Collider> ().enabled = false; //Maybe don't do this
 					StartCoroutine (cam.zoomIn (hit.transform.gameObject)); //Start the coroutine to zoom in
-				} else if (hit.transform.gameObject.tag == "battery" && !breadboard.GetComponent<selectGlow>().zoomedIn) { //If we selected the battery, let's drag in around
+				} else if (hit.transform.gameObject.tag == "battery" && !breadboard.GetComponent<selectGlow> ().zoomedIn) { //If we selected the battery, let's drag in around
 					isSpawned = true;
 					newItem = hit.transform.gameObject;
-				} else if (hit.transform.gameObject.tag == "component" && breadboard.GetComponent<selectGlow>().zoomedIn) { //If we selected a component, let's drag it around
+				} else if (hit.transform.gameObject.tag == "component" && breadboard.GetComponent<selectGlow> ().zoomedIn) { //If we selected a component, let's drag it around
 					isSpawned = true;
 					newItem = hit.transform.gameObject;
 					if (newItem.transform.childCount > 0) //There are most likely leads on this object
-						newItem.transform.GetChild(0).localScale = newItem.GetComponent<gridPlacement>().oScale;
+						newItem.transform.GetChild (0).localScale = newItem.GetComponent<gridPlacement> ().oScale;
 					else
 						newItem.transform.localScale = newItem.GetComponent<gridPlacement> ().oScale;
+				} else if (hit.transform.name == "button") {
+
+					//Next line should check for null on global_LL.head 1==1
+					if (1==1) {
+						if (global_LL.head.nextNode.Length != 0) {
+							if (boardlogic.isCompleteCircuitSeries (global_LL.head.nextNode [0])) {// circuit is complete ^^ see above
+								print ("Circuit completed.");
+							}
+							print ("Test complete.");
+						} else
+							print ("Just a battery.");
+					} else
+						print ("Nope.");
 				}
 				//Check to see if newItem is in the placed list
 				if (placed.Contains (newItem)) {
 					placed.Remove (newItem);
 				}
-			}
+			 }
 		} else if (isSpawned) { //If we are currently dragging the item
 			closePartsCatalogue (); //Keep the parts catalogue closed to avoid spawning multiple items
 			//Have the component follow where the mouse moves
@@ -139,7 +155,6 @@ public class tutorialUI : MonoBehaviour {
 				float outZ = -3f;
 				bool leftNodeIsConnected = false;
 				bool rightNodeIsConnected = false;
-				var boardlogic = newItem.AddComponent(typeof(boardLogic)) as boardLogic;
 				//float Y_constant = 1.957507f; // height constant from in game
 				float Y_constant = newItem.transform.position.y;
 				var nullNode_Array = new componentNode[] { };
@@ -148,12 +163,6 @@ public class tutorialUI : MonoBehaviour {
 				//start: a component is placed on the bread board
 				if (newItem.name.Contains("battery_spawner")) //if a battery was placed
 				{
-
-					//GARBAGE BELOW
-					//global_LL = newItem.AddComponent(typeof(linkedList)) as linkedList;
-					//linkedList global_LL = new linkedList(inputNode, outputNode);
-					//GARBAGE ABOVE
-
 					//creates input and output nodes of battery
 					inputNode = new componentNode(newItem.GetInstanceID (), newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[414].x, breadboard.GetComponent<gridLayout>().positionHolder[414].z, nullNode_Array, nullNode_Array);
 					outputNode = new componentNode(newItem.GetInstanceID (), newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[415].x, breadboard.GetComponent<gridLayout>().positionHolder[415].z, nullNode_Array, nullNode_Array);

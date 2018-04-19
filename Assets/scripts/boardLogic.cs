@@ -132,14 +132,17 @@ public class boardLogic : MonoBehaviour
 
 	public bool traceBack(componentNode referenceNode, int componentType)
 	{
-			//If this node's parent is a battery, return true
+		print ("start traceback");	
+		//If this node's parent is a battery, return true
 			if (referenceNode.parentComponent.componentType == 99)
 			{
+			print ("traceback battery");
 				return true;
 			}
 			//If not, go back a node and check again
-			else if (referenceNode.previousNode != null)
+			else if (referenceNode.previousNode.Length != 0)
 			{
+			print ("next back");
 				return traceBack(referenceNode.previousNode[0], 99);
 			}
 			//If there's no battery, return false
@@ -148,15 +151,18 @@ public class boardLogic : MonoBehaviour
 
 	public bool traceForward(componentNode referenceNode, int componentType)
 	{
+		print ("start traceforward");
 		//If this node's parent is a battery, return true
 		if (referenceNode.parentComponent.componentType == 99)
 		{
+			print ("traceforward battery");
 			return true;
 		}
 		//If not, go forward a node and check again
-		else if (referenceNode.nextNode != null)
+		else if (referenceNode.nextNode.Length != 0)
 		{
-			return traceBack(referenceNode.nextNode[0], 99);
+			print ("next forward");
+			return traceForward(referenceNode.nextNode[0], 99);
 		}
 		//If there's no battery, return false
 		else return false;

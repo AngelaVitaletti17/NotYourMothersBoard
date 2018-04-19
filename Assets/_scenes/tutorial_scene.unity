@@ -502,7 +502,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 331268284}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &90347950
 MeshRenderer:
@@ -1017,6 +1017,7 @@ MonoBehaviour:
   mainCam: {fileID: 1399447596}
   breadboard: {fileID: 2007839463}
   global_LL: {fileID: 0}
+  boardlogic: {fileID: 0}
   canBePlaced: 1
   isSpawned: 0
   batteryLocation: {x: 0, y: 0, z: 0}
@@ -1514,9 +1515,9 @@ Transform:
   m_LocalPosition: {x: 6.4, y: 8.51, z: 11.3}
   m_LocalScale: {x: 157.89853, y: 157.8985, z: 157.8985}
   m_Children:
-  - {fileID: 1932765154}
-  - {fileID: 482792703}
   - {fileID: 90347949}
+  - {fileID: 482792703}
+  - {fileID: 1932765154}
   - {fileID: 666388603}
   - {fileID: 1511458954}
   m_Father: {fileID: 0}
@@ -1534,7 +1535,6 @@ GameObject:
   - component: {fileID: 339510889}
   - component: {fileID: 339510892}
   - component: {fileID: 339510891}
-  - component: {fileID: 339510894}
   - component: {fileID: 339510893}
   - component: {fileID: 339510895}
   m_Layer: 0
@@ -1636,7 +1636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4da079a85c9e0146afd3f5c3f64f883, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  componentType: 1
+  componentType: 99
   inputNode: []
   outputNode: []
   componentCurrent: 0
@@ -1644,22 +1644,6 @@ MonoBehaviour:
   componentResistance: 0
   isLocked: 1
   voltage: 0
---- !u!114 &339510894
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 339510887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0feefc870eb2ef54f85c2c2c0a7ecd1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentComponent: {fileID: 0}
-  xPos: -1
-  yPos: -1
-  previousNode: []
-  nextNode: []
 --- !u!54 &339510895
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2119,6 +2103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentComponent: {fileID: 0}
+  objectID: 0
   xPos: -1
   yPos: -1
   previousNode: []
@@ -2189,6 +2174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentComponent: {fileID: 391553309}
+  objectID: 0
   xPos: -1
   yPos: -1
   previousNode: []
@@ -4702,7 +4688,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.072488636, y: 0.308349}
   m_AnchorMax: {x: 0.47637787, y: 0.46384138}
-  m_AnchoredPosition: {x: -5.4999847, y: 1.5}
+  m_AnchoredPosition: {x: -5.5, y: 1.5}
   m_SizeDelta: {x: 7.899994, y: -1.7000122}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &940940400
@@ -4969,6 +4955,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentComponent: {fileID: 0}
+  objectID: 0
   xPos: -1
   yPos: -1
   previousNode: []
@@ -6392,7 +6379,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.072488636, y: 0.13965099}
   m_AnchorMax: {x: 0.47637787, y: 0.29700002}
-  m_AnchoredPosition: {x: -5.500046, y: 0.43041992}
+  m_AnchoredPosition: {x: -5.500061, y: 0.43041992}
   m_SizeDelta: {x: 7.899994, y: -2.699997}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1237243431
@@ -6825,7 +6812,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.072488636, y: 0.47420684}
   m_AnchorMax: {x: 0.47637787, y: 0.63000005}
-  m_AnchoredPosition: {x: -5.500107, y: 1.5}
+  m_AnchoredPosition: {x: -5.500122, y: 1.5}
   m_SizeDelta: {x: 7.899994, y: -1.699997}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1250298258
@@ -7493,14 +7480,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1376917244}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0feefc870eb2ef54f85c2c2c0a7ecd1a, type: 3}
+  m_Script: {fileID: 11500000, guid: 21a1626ac3ef16a4b946fb706c4777e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parentComponent: {fileID: 0}
-  xPos: -1
-  yPos: -1
-  previousNode: []
-  nextNode: []
+  componentType: 2
+  inputNode: []
+  outputNode: []
+  componentCurrent: 0
+  componentVoltage: 0
+  componentResistance: 0
+  isLocked: 1
+  ohms: 0
 --- !u!65 &1376917246
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8086,7 +8076,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.072488636, y: 0.6423809}
   m_AnchorMax: {x: 0.47637787, y: 0.799}
-  m_AnchoredPosition: {x: -5.500107, y: 0.5}
+  m_AnchoredPosition: {x: -5.500122, y: 0.5}
   m_SizeDelta: {x: 7.899994, y: -1.699997}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1433382656
@@ -9221,6 +9211,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentComponent: {fileID: 0}
+  objectID: 0
   xPos: -1
   yPos: -1
   previousNode: []
@@ -9612,6 +9603,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentComponent: {fileID: 0}
+  objectID: 0
   xPos: -1
   yPos: -1
   previousNode: []
@@ -10508,7 +10500,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.072488636, y: 0.8082856}
   m_AnchorMax: {x: 0.47637787, y: 0.96500003}
-  m_AnchoredPosition: {x: -5.500229, y: 0.7043457}
+  m_AnchoredPosition: {x: -5.5002136, y: 0.7043457}
   m_SizeDelta: {x: 7.9, y: -2.691}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1838967502
@@ -10787,6 +10779,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentComponent: {fileID: 0}
+  objectID: 0
   xPos: -1
   yPos: -1
   previousNode: []
@@ -11190,7 +11183,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 331268284}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1932765155
 MeshRenderer:
@@ -11383,6 +11376,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentComponent: {fileID: 0}
+  objectID: 0
   xPos: -1
   yPos: -1
   previousNode: []
@@ -12744,6 +12738,22 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b7bccd20b4024d64d929a34473d062a9, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &2130987913 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: b7bccd20b4024d64d929a34473d062a9, type: 3}
+  m_PrefabInternal: {fileID: 2118635937}
+--- !u!135 &2130987914
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2130987913}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.009965152
+  m_Center: {x: 0.00000014902861, y: -0.00000011916726, z: 0.0022707582}
 --- !u!1001 &2146688803
 Prefab:
   m_ObjectHideFlags: 0
