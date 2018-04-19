@@ -120,7 +120,7 @@ public class linkedList : MonoBehaviour
 			x++;
 
 			pseudoTail = pseudoTail.nextNode[0];
-			print("Iterating through Linked List! at component#: "+ x);
+			//print("Iterating through Linked List! at component#: "+ x);
 		}
 
 		if (pseudoTail.getXZ() == head.getXZ())
@@ -140,9 +140,8 @@ public class linkedList : MonoBehaviour
 	public void addNodeAfterPseudoTail(componentNode node)
 	{
 		componentNode refrence = this.head;
-		while (refrence.nextNode.Length != 0)
+		 while (refrence.nextNode.Length != 0)
 		{
-
 			refrence = refrence.nextNode[0];
 		}
 		refrence.nextNode = new componentNode[] { node };
@@ -152,5 +151,30 @@ public class linkedList : MonoBehaviour
 	public bool combineLists()
 	{
 		return true;
+	}
+
+	public void printList()
+	{
+		componentNode refrence = this.head;
+
+		do {
+			print (refrence.objectID);
+			if (refrence.getXPos () != this.tail.getXPos ()) {
+				if (refrence.nextNode.Length != 0) {
+					refrence = refrence.nextNode [0];
+				} else
+					break;
+			} else
+			{
+				refrence = refrence.nextNode [0];
+				print (refrence.objectID);
+				refrence = refrence.nextNode [0];
+				//print (refrence.objectID);
+				//refrence = refrence.nextNode [0];
+				print (refrence.objectID);
+				break;
+			}
+		} while(true);
+		//while((refrence.getXPos () != this.tail.getXPos ()) && (refrence.getYPos () != this.tail.getYPos ()));
 	}
 }

@@ -13,6 +13,8 @@ public class componentNode : MonoBehaviour
 
 	//Identifies the circuit board component that the componentNode is a part of
 	public circuitComponent parentComponent;
+
+	public int objectID;
 	//Location of the componentNode on the board
 	public float xPos;
 	public float yPos;
@@ -24,6 +26,7 @@ public class componentNode : MonoBehaviour
 	//Empty constructor
 	public componentNode()
 	{
+		objectID = 0;
 		parentComponent = null;
 		xPos = -1f;
 		yPos = -1f;
@@ -32,8 +35,9 @@ public class componentNode : MonoBehaviour
 	}
 
 	//Full constructor
-	public componentNode(circuitComponent initParentComponent, float initXPos, float initYPos, componentNode[] initPreviousNode, componentNode[] initNextNode)
+	public componentNode(int initObjectID, circuitComponent initParentComponent, float initXPos, float initYPos, componentNode[] initPreviousNode, componentNode[] initNextNode)
 	{
+		this.objectID = initObjectID;
 		this.parentComponent = initParentComponent;
 		this.xPos = initXPos;
 		this.yPos = initYPos;
