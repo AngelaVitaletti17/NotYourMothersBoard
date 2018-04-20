@@ -98,6 +98,7 @@ public class tutorialUI : MonoBehaviour {
 						newItem.transform.localScale = newItem.GetComponent<gridPlacement> ().oScale;
 				} else if (hit.transform.name == "button") {
 
+					/*
 					//Next line should check for null on global_LL.head 1==1
 					if (1==1) {
 						if (global_LL.head.nextNode.Length != 0) {
@@ -109,6 +110,8 @@ public class tutorialUI : MonoBehaviour {
 							print ("Just a battery.");
 					} else
 						print ("Nope.");
+					*/
+					print(boardlogic.doCircuitLogicSeries (global_LL.head, global_LL.tail));
 				}
 				//Check to see if newItem is in the placed list
 				if (placed.Contains (newItem)) {

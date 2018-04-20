@@ -28,10 +28,11 @@ public class boardLogic : MonoBehaviour
 			//Apply Ohm's Law to find circuit current
 			double circuitCurrent = getCurrent(circuitVoltage, circuitResistance);
 
-			//Update values based on results
-			updateComponentValues (startNode, endNode, circuitVoltage, circuitCurrent);
-
-			return true;
+			if (circuitResistance != -1 && circuitVoltage != -1 && circuitCurrent != -1) {
+				//Update values based on results
+				return updateComponentValues (startNode, endNode, circuitVoltage, circuitCurrent);
+			} else
+				return false;
 		}
 		else return false;
 	}
@@ -54,14 +55,19 @@ public class boardLogic : MonoBehaviour
 	public bool updateComponentValues(componentNode startNode, componentNode endNode, double circuitVoltage, double circuitCurrent)
 	{
 		componentNode currentNode = startNode;
-		while (currentNode.nextNode != null && currentNode != endNode)
+		while (currentNode.getXZ() != endNode.getXZ())
 		{
-			componentNode nexNode = currentNode.nextNode [0];
-			if (currentNode.parentComponent == nexNode.parentComponent)
-			{
-				currentNode.parentComponent.doComponentLogic(circuitVoltage,circuitCurrent);
+			if (currentNode.nextNode.Length != 0) {
+				componentNode nexNode = currentNode.nextNode [0];
+				if (currentNode.parentComponent == nexNode.parentComponent) {
+					currentNode.parentComponent.doComponentLogic (circuitVoltage, circuitCurrent);
+				}
+				currentNode.parentComponent.componentCurrent = circuitCurrent;
+				currentNode.parentComponent.componentVoltage = circuitVoltage;
+				currentNode = currentNode.nextNode [0];
 			}
-			currentNode = currentNode.nextNode [0];
+			else
+				return false;
 		}
 		return true;
 	}
@@ -90,17 +96,24 @@ public class boardLogic : MonoBehaviour
 		double resistance = 0.0;
 		componentNode currentNode = startNode;
 
-		while (currentNode.nextNode != null && currentNode != endNode)
+		while (currentNode.getXZ() != endNode.getXZ())
 		{
-			//If the node's parent component is a resistor...
-			if(currentNode.parentComponent.componentType == 3)
+			if(currentNode.nextNode.Length != 0)
 			{
-				//Find value of current node's parent's resistance. Add it to resistance running total
-				resistance += currentNode.parentComponent.componentResistance;
+			//If the node's parent component is a resistor...
+			if(currentNode.parentComponent.componentType == 2)
+			{
+				componentNode nexNode = currentNode.nextNode [0];
+				if (currentNode.parentComponent == nexNode.parentComponent) {
+					//Find value of current node's parent's resistance. Add it to resistance running total
+					resistance += currentNode.parentComponent.componentResistance;
+				}
 			}
 
 			//Move to next node
 			currentNode = currentNode.nextNode[0];
+			}
+			else return -1;
 		}
 		return resistance;
 	}
@@ -111,11 +124,17 @@ public class boardLogic : MonoBehaviour
 		double voltage = 0.0;
 		componentNode currentNode = startNode;
 
-		while (currentNode.nextNode != null && currentNode != endNode)
+		while (currentNode.getXZ() != endNode.getXZ())
 		{
-			//Find value of current node's parent's voltage drop. Subtract it from the voltage running total
-			voltage += currentNode.parentComponent.componentVoltage;
-			currentNode = currentNode.nextNode[0];
+			if (currentNode.nextNode.Length != 0) {
+				componentNode nexNode = currentNode.nextNode [0];
+				if (currentNode.parentComponent == nexNode.parentComponent) {
+					//Find value of current node's parent's voltage drop. Subtract it from the voltage running total
+					voltage += currentNode.parentComponent.componentVoltage;
+				}
+				currentNode = currentNode.nextNode [0];
+			} else
+				return -1;
 		}
 
 		//Find power source's voltage and subtract the running total from it
@@ -175,10 +194,10 @@ public class boardLogic : MonoBehaviour
 		{	
 				//If this node's parent is a battery, return its voltage
 				if (referenceNode.parentComponent.componentType == 99) {
-					return referenceNode.parentComponent.componentVoltage;
+				return referenceNode.parentComponent.GetComponent<battery>().voltage;
 				}
 				//If not, go back a node and try again
-				else if (referenceNode.previousNode != null) {
+				else if (referenceNode.previousNode.Length != 0) {
 					return getOriginalVoltage(referenceNode.previousNode [0]);
 				}
 				//If there's no battery, return a negative value for voltage
