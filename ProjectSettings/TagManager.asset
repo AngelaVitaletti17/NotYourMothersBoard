@@ -7,6 +7,8 @@ TagManager:
   - battery
   - component
   - highlight
+  - pen
+  - solder
   layers:
   - Default
   - TransparentFX

@@ -43,6 +43,9 @@ public class tutorialUI : MonoBehaviour {
 	private List<GameObject> placed;
 	private int placedIndex = 0;
 
+	//For soldering pen
+	public Vector3 sPenOrigin, sAngleOrig, sAngleNew;
+
 	void Awake(){
 		cam = mainCam.GetComponent<cameraLook> ();
 		grid = FindObjectOfType<gridLayout> ();
@@ -52,6 +55,11 @@ public class tutorialUI : MonoBehaviour {
 		global_LL = breadboard.AddComponent(typeof(linkedList)) as linkedList;
 		boardlogic = breadboard.AddComponent (typeof(boardLogic)) as boardLogic;
 		placed = new List<GameObject> ();
+
+		GameObject pen = GameObject.FindGameObjectWithTag ("pen");
+		sPenOrigin = pen.transform.position;
+		sAngleOrig = pen.transform.eulerAngles;
+		sAngleNew = new Vector3(pen.transform.eulerAngles.x, 270f, pen.transform.eulerAngles.z);
 
 		//*OPEN-CLOSE INVENTORY*
 		//Inventory is closed by default
@@ -86,9 +94,11 @@ public class tutorialUI : MonoBehaviour {
 					hit.transform.gameObject.GetComponent<selectGlow> ().zoomedIn = true;
 					hit.transform.gameObject.GetComponent<Collider> ().enabled = false; //Maybe don't do this
 					StartCoroutine (cam.zoomIn (hit.transform.gameObject)); //Start the coroutine to zoom in
-				} else if (hit.transform.gameObject.tag == "battery" && !breadboard.GetComponent<selectGlow> ().zoomedIn) { //If we selected the battery, let's drag in around
+				} else if ((hit.transform.gameObject.tag == "battery" && !breadboard.GetComponent<selectGlow> ().zoomedIn) || (hit.transform.gameObject.tag == "pen" && breadboard.GetComponent<selectGlow> ().zoomedIn)) { //If we selected the battery, let's drag in around
 					isSpawned = true;
 					newItem = hit.transform.gameObject;
+					if (hit.transform.gameObject.tag == "pen")
+						hit.transform.eulerAngles = sAngleNew;
 				} else if (hit.transform.gameObject.tag == "component" && breadboard.GetComponent<selectGlow> ().zoomedIn) { //If we selected a component, let's drag it around
 					isSpawned = true;
 					newItem = hit.transform.gameObject;
@@ -121,12 +131,19 @@ public class tutorialUI : MonoBehaviour {
 		} else if (isSpawned) { //If we are currently dragging the item
 			closePartsCatalogue (); //Keep the parts catalogue closed to avoid spawning multiple items
 			//Have the component follow where the mouse moves
-			itemPosition = Input.mousePosition; 
-			itemPosition.z = 0.4f;
+			itemPosition = Input.mousePosition;
+				itemPosition.z = 0.4f;
 			newItem.transform.position = Camera.main.ScreenToWorldPoint (itemPosition);
 			if (newItem.tag != "battery"){
 				newItem.GetComponent<gridPlacement> ().enabled = true; //Make sure this is enabled to get the highlights
 				canBePlaced = newItem.GetComponent<gridPlacement> ().getComponentPlacementStatus (); //check to see if the item can be placed (is the spot valid?)
+			}
+			if (Input.GetMouseButton (0) && newItem.tag == "pen") { //We gonna place some solder
+				GameObject solder = GameObject.CreatePrimitive(PrimitiveType.Cube);
+				solder.GetComponent<Collider> ().enabled = false;
+				solder.transform.localScale = solder.transform.localScale * 0.017f;
+				solder.tag = "solder";
+				PlaceItem (Camera.main.ScreenToWorldPoint (itemPosition), solder);
 			}
 			if (canBePlaced && Input.GetMouseButton (1)) { //The item is placed on the board if it is in a valid spot
 				//Item has been placed, keep track of it
@@ -139,6 +156,10 @@ public class tutorialUI : MonoBehaviour {
 					//Put item in preset spot
 					newItem.transform.position = batteryLocation;
 					//Make these positions unable to be taken, set the dictionary 
+				} else if (newItem.tag == "pen") {
+					newItem.transform.position = sPenOrigin;
+					newItem.transform.eulerAngles = sAngleOrig;
+
 				}
 				grid.set_spots ();
 
@@ -472,13 +493,19 @@ public class tutorialUI : MonoBehaviour {
 		itemPosition = position;
 	}
 
-	void PlaceItem(Vector3 clickPoint, GameObject hit){ //For placing components WILL NOT WORK WITH BATTERY YET NOTE
+	void PlaceItem(Vector3 clickPoint, GameObject hit){ //For placing components
 		Vector3 final;
-		final = grid.GetGridPoint (clickPoint, hit.gameObject.GetComponent<gridPlacement>().spaceCount); //For placing components
-		if (hit.gameObject.GetComponent<gridPlacement> ().spaceCount % 2 != 0)
+		if (hit.tag == "solder") {
+			final = grid.GetGridPoint (clickPoint, 1);
 			hit.transform.position = final;
-		else
-			hit.transform.position = (breadboard.GetComponent<gridLayout> ().oldSpots [0] + breadboard.GetComponent<gridLayout> ().oldSpots [1]) / 2f;
+		}
+		else {
+			final = grid.GetGridPoint (clickPoint, hit.gameObject.GetComponent<gridPlacement> ().spaceCount); //For placing components
+			if (hit.gameObject.GetComponent<gridPlacement> ().spaceCount % 2 != 0)
+				hit.transform.position = final;
+			else
+				hit.transform.position = (breadboard.GetComponent<gridLayout> ().oldSpots [0] + breadboard.GetComponent<gridLayout> ().oldSpots [1]) / 2f;
+		}
 	}
 
 	public void clearBoard(){

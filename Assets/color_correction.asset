@@ -40,7 +40,7 @@ MonoBehaviour:
         stationaryBlending: 0.95
         motionBlending: 0.85
   ambientOcclusion:
-    m_Enabled: 0
+    m_Enabled: 1
     m_Settings:
       intensity: 1
       radius: 0.3
@@ -77,7 +77,7 @@ MonoBehaviour:
       useCameraFov: 0
       kernelSize: 1
   motionBlur:
-    m_Enabled: 0
+    m_Enabled: 1
     m_Settings:
       shutterAngle: 270
       sampleCount: 10
@@ -100,14 +100,14 @@ MonoBehaviour:
     m_Enabled: 1
     m_Settings:
       bloom:
-        intensity: 0.18
+        intensity: 0.2
         threshold: 1
         softKnee: 0.29
         radius: 3
         antiFlicker: 1
       lensDirt:
         texture: {fileID: 0}
-        intensity: 3
+        intensity: 0
   colorGrading:
     m_Enabled: 1
     m_Settings:
@@ -134,7 +134,7 @@ MonoBehaviour:
       colorWheels:
         mode: 1
         log:
-          slope: {r: 1, g: 1, b: 1, a: 0}
+          slope: {r: 0.98941195, g: 0.9967471, b: 1, a: 0}
           power: {r: 1, g: 1, b: 1, a: 0}
           offset: {r: 1, g: 1, b: 1, a: 0}
         linear:

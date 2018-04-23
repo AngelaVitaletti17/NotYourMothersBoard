@@ -45,7 +45,10 @@ public class gridPlacement : MonoBehaviour {
 			for (int i = 0; i < highlightedSpots.Length; i++) {
 				if (highlightedSpots [i] != grid.nullValue) { //As long as we have a valid spot on the board
 					if (useRed) {
-						this.GetComponent<Renderer> ().material.SetColor ("_EmissionColor", notValid);
+						if (this.tag == "pen")
+							this.GetComponentInChildren<Renderer>().material.SetColor ("_EmissionColor", Color.black);
+						else 
+							this.GetComponent<Renderer> ().material.SetColor ("_EmissionColor", notValid);
 					} else if (!useRed && (grid.gridPositions.ContainsKey (highlightedSpots [i]) && grid.gridPositions [highlightedSpots [i]] == false)) {
 						GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Plane); //Create a plane to represent the highlight
 						cube.GetComponent<Renderer> ().material.color = Color.green;
@@ -55,7 +58,10 @@ public class gridPlacement : MonoBehaviour {
 						cube.transform.position = new Vector3(highlightedSpots [i].x, highlightedSpots[i].y - 0.01f, highlightedSpots[i].z);
 						cube.tag = "highlight";
 						highlights [i] = cube;
-						this.GetComponent<Renderer> ().material.SetColor ("_EmissionColor", Color.black);
+						if (this.tag == "pen")
+							this.GetComponentInChildren<Renderer>().material.SetColor ("_EmissionColor", Color.black);
+						else
+							this.GetComponent<Renderer> ().material.SetColor ("_EmissionColor", Color.black);
 					}
 				}
 			}
