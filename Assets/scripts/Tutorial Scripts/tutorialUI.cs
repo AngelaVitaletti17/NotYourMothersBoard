@@ -122,11 +122,15 @@ public class tutorialUI : MonoBehaviour {
 				float leftNz;
 				float rightNx;
 				float rightNz;
-				float inX = -3f;
-				float inZ = -3f;
-				float outX = -3f;
-				float outZ = -3f;
-				bool leftNodeIsConnected = false;
+				float RightinX = -3f;
+				float RightinZ = -3f;
+				float RightoutX = -3f;
+				float RightoutZ = -3f;
+                float LeftinX = -3f;
+                float LeftinZ = -3f;
+                float LeftoutX = -3f;
+                float LeftoutZ = -3f;
+                bool leftNodeIsConnected = false;
 				bool rightNodeIsConnected = false;
 				var boardlogic = newItem.AddComponent(typeof(boardLogic)) as boardLogic;
 				float Y_constant = newItem.transform.position.y;
@@ -160,7 +164,6 @@ public class tutorialUI : MonoBehaviour {
                     //sets head and tail of linked list
 					global_LL.head = inputNode;
 					global_LL.tail = outputNode;
-
 				}
 				else//if a component was placed
 				{
@@ -189,146 +192,223 @@ public class tutorialUI : MonoBehaviour {
 					Vector3 leftNVector = new Vector3(leftNx, Y_constant, leftNz);
 					Vector3 rightNVector = new Vector3(rightNx, Y_constant, rightNz);
 
-					//get Positive and Negative Endpoints
-					componentNode pseudoTail = global_LL.getPseudoTail();
+					//get Positive and Negative Endpoints					
                     var positiveEndpoints = new componentNode[] { };
                     var negativeEndpoints = new componentNode[] { };
-                    positiveEndpoints = global_LL.getPositiveEndpoints();
-                    negativeEndpoints = global_LL.getNegativeEndpoints();
+                    positiveEndpoints = global_LL.getPositiveEndpoints(global_LL.head);
+                    negativeEndpoints = global_LL.getNegativeEndpoints(global_LL.tail);
+                                    
+                   float headx = global_LL.head.getXPos();
+                   float tailx = global_LL.head.getXPos();
 
+                   // CHECK IF NEW COMPONENT IS CONNECTED TO BATTERY ################################################
 
+						if (headx == leftNx)//check if left node in the power rail
+						{
+							print("LEFT NODE CONNECTED TO HEAD BATTERY");
+							leftNodeIsConnected = true;
+							//set cordinates of inputNode and outputNode
+							LeftinX = leftNx;
+							LeftinZ = leftNz;
+                            LeftoutX = rightNx;
+                            LeftoutZ = rightNz;
+                           
+						}
+						if (headx == rightNx)//check if right node in the power rail
+						{
+							print("RIGHT NODE CONNECTED HEAD BATTERY");
+							rightNodeIsConnected = true;
+							//set cordinates of inputNode and outputNode
+							RightinX = rightNx;
+                            RightinZ = rightNz;
+                            RightoutX = leftNx;
+                            RightoutZ = leftNz;
+						}						
                     
-                   
+                        if (tailx == leftNx)//check if left node in the power rail
+                        {
+                            print("LEFT NODE CONNECTED TAIL BATTERY");
+                            leftNodeIsConnected = true;
+                        //set cordinates of inputNode and outputNode
+                            LeftinX = leftNx;
+                            LeftinZ = leftNz;
+                            LeftoutX = rightNx;
+                            LeftoutZ = rightNz;
 
-						if (pseudoTail.getXZ() == global_LL.head.getXZ())                        
-						{
-							// Linked list only head and tail, (only battery in list) 
-							// checking power rails(columns) for matches
-
-							print("pseduoTail is head");
-							//check if newItem's Nodes in same column as battery nodes
-
-							componentNode head = global_LL.head;
-							float headx = head.getXPos(); //gets column cordinate
-
-							if (headx == leftNx)//check if left node in the power rail
-							{
-								print("LEFT NODE CONNECTED ");
-								leftNodeIsConnected = true;
-								//set cordinates of inputNode and outputNode
-								inX = leftNx;
-								inZ = leftNz;
-								outX = rightNx;
-								outZ = rightNz;
-							}
-							if (headx == rightNx)//check if right node in the power rail
-							{
-								print("RIGHT NODE CONNECTED ");
-								rightNodeIsConnected = true;
-								//set cordinates of inputNode and outputNode
-								inX = rightNx;
-								inZ = rightNz;
-								outX = leftNx;
-								outZ = leftNz;
-							}
-
-						}
-						else //List is not empty, checking if newItem's nodes in same row as pseudoTail outputNode
-						{
-
-							// check if newItem's Nodes in same row as pseudoTail's nodes
-							componentNode lastNode = global_LL.getPseudoTail();
-							float lastNodez = lastNode.getYPos(); // really z in unity terms 
-							float lastNodex = lastNode.getXPos();                            
-							Vector3 lastNodeVector = new Vector3(lastNodex,Y_constant,lastNodez);
-
-							//get breadboard index for left/right node of newItem and outputNode of pseudoTail
-							int lastNodeIndex = System.Array.IndexOf(breadboard.GetComponent<gridLayout>().positionHolder, lastNodeVector);
-							int leftNodeIndex = System.Array.IndexOf(breadboard.GetComponent<gridLayout>().positionHolder, leftNVector);
-							int rigthNodeIndex = System.Array.IndexOf(breadboard.GetComponent<gridLayout>().positionHolder, rightNVector);
-
-							//get remainder so see what column index is in. 
-							//index = (1-18)
-							//(1-2) (17-18) = battery terminals
-							//(3-9) = left grid
-							//(10-16) = right grid
-							int lastNodeIndexCol = (lastNodeIndex % 18) + 1;
-							int leftNodeIndexCol = (leftNodeIndex % 18) + 1;
-							int rigthNodeIndexCol = (rigthNodeIndex % 18) + 1;
-
-							print("HERE IS WHERE PROBLEM IS");
-							print("Z position of pseudoTail: "+ lastNodez);
-							print("Z position of leftNode: "+leftNz);
-							print("Z position of rigthNode: "+rightNz);
-
-							//if leftNode is in the same row as pseudoTail Node
-							if (lastNodez == leftNz)
-							{
-								print("LEFT NODE IN SAME ROW AS NODE");
-								//checks if Both nodes are in left grid
-								if (((lastNodeIndexCol <=9)&&(lastNodeIndexCol >= 2))&& ((leftNodeIndexCol <= 9) && (leftNodeIndexCol >= 2))) // both in same row and col range
-								{
-
-									print("LEFT NODE CONNECTED ");
-									leftNodeIsConnected = true;
-									//set cordinates of inputNode and outputNode
-									inX = leftNx;
-									inZ = leftNz;
-									outX = rightNx;
-									outZ = rightNz;
-								}
-								//checks if Both nodes are in right grid
-								if (((lastNodeIndexCol <= 16) && (lastNodeIndexCol >= 10)) && ((leftNodeIndexCol <= 16) && (leftNodeIndexCol >= 10)))// both in same row and col range 
-								{
-									print("LEFT NODE CONNECTED ");
-									leftNodeIsConnected = true;
-									//set cordinates of inputNode and outputNode
-									inX = leftNx;
-									inZ = leftNz;
-									outX = rightNx;
-									outZ = rightNz;
-								}
-
-
-							}
-							//if rightNode is in the same row as pseudoTail Node
-							if (lastNodez == rightNz)
-							{
-								print("RIGHT NODE IN SAME ROW AS NODE");
-								//checks if Both nodes are in left grid
-								if (((lastNodeIndexCol <= 9) && (lastNodeIndexCol >= 2)) && ((rigthNodeIndexCol <= 9) && (rigthNodeIndexCol >= 2))) // both in same row and col range
-								{
-									print("RIGHT NODE CONNECTED ");
-									rightNodeIsConnected = true;
-									inX = rightNx;
-									inZ = rightNz;
-									outX = leftNx;
-									outZ = leftNz;
-								}
-								//checks if Both nodes are in right grid
-								if (((lastNodeIndexCol <= 16) && (lastNodeIndexCol >= 10)) && ((rigthNodeIndexCol <= 16) && (rigthNodeIndexCol >= 10)))// both in same row and col range 
-								{
-									print("RIGHT NODE CONNECTED ");
-									rightNodeIsConnected = true;
-									inX = rightNx;
-									inZ = rightNz;
-									outX = leftNx;
-									outZ = leftNz;
-								}
-							}
+                        }
+                        if (tailx == rightNx)//check if right node in the power rail
+                        {
+                            print("RIGHT NODE CONNECTED TAIL BATTERY");
+                            rightNodeIsConnected = true;
+                        //set cordinates of inputNode and outputNode
+                            RightinX = rightNx;
+                            RightinZ = rightNz;
+                            RightoutX = leftNx;
+                            RightoutZ = leftNz;
+                        }
 
 
 
-							//print("lastNodeIndex: "+lastNodeIndex);
-							//print("leftNodeIndex: "+leftNodeIndex);
-							//print("rigthNodeInde: "+rigthNodeIndex);
+                    // CHECK IF NEW COMPONENT IS CONNECTED TO THE ENDPOINTS OF CIRCUIT ################################################
+
+                    foreach (componentNode lastNode in positiveEndpoints) {                       
+                        
+                        float lastNodez = lastNode.getYPos(); // really z in unity terms 
+                        float lastNodex = lastNode.getXPos();
+                        Vector3 lastNodeVector = new Vector3(lastNodex, Y_constant, lastNodez);
+
+                        //get breadboard index for left/right node of newItem and outputNode of pseudoTail
+                        int lastNodeIndex = System.Array.IndexOf(breadboard.GetComponent<gridLayout>().positionHolder, lastNodeVector);
+                        int leftNodeIndex = System.Array.IndexOf(breadboard.GetComponent<gridLayout>().positionHolder, leftNVector);
+                        int rigthNodeIndex = System.Array.IndexOf(breadboard.GetComponent<gridLayout>().positionHolder, rightNVector);
+
+                        //get remainder so see what column index is in. 
+                        //index = (1-18)
+                        //(1-2) (17-18) = battery terminals
+                        //(3-9) = left grid
+                        //(10-16) = right grid
+                        int lastNodeIndexCol = (lastNodeIndex % 18) + 1;
+                        int leftNodeIndexCol = (leftNodeIndex % 18) + 1;
+                        int rigthNodeIndexCol = (rigthNodeIndex % 18) + 1;
 
 
-						}
+                        //if leftNode is in the same row as pseudoTail Node
+                        if (lastNodez == leftNz)
+                        {
+                            //print("LEFT NODE IN SAME ROW AS NODE");
+                            //checks if Both nodes are in left grid
+                            if (((lastNodeIndexCol <= 9) && (lastNodeIndexCol >= 2)) && ((leftNodeIndexCol <= 9) && (leftNodeIndexCol >= 2))) // both in same row and col range
+                            {
 
-					
+                                print("LEFT NODE CONNECTED TO COMPONENT ");
+                                leftNodeIsConnected = true;
+                                //set cordinates of inputNode and outputNode
+                                LeftinX = leftNx;
+                                LeftinZ = leftNz;
+                                LeftoutX = rightNx;
+                                LeftoutZ = rightNz;
+                            }
+                            //checks if Both nodes are in right grid
+                            if (((lastNodeIndexCol <= 16) && (lastNodeIndexCol >= 10)) && ((leftNodeIndexCol <= 16) && (leftNodeIndexCol >= 10)))// both in same row and col range 
+                            {
+                                print("LEFT NODE CONNECTED TO COMPONENT");
+                                leftNodeIsConnected = true;
+                                //set cordinates of inputNode and outputNode
+                                LeftinX = leftNx;
+                                LeftinZ = leftNz;
+                                LeftoutX = rightNx;
+                                LeftoutZ = rightNz;
+                            }
+                        }
 
-					if (newItem.name.Contains("chip_spawner"))
+                        //if rightNode is in the same row as pseudoTail Node
+                        if (lastNodez == rightNz)
+                        {
+                            //print("RIGHT NODE IN SAME ROW AS NODE");
+                            //checks if Both nodes are in left grid
+                            if (((lastNodeIndexCol <= 9) && (lastNodeIndexCol >= 2)) && ((rigthNodeIndexCol <= 9) && (rigthNodeIndexCol >= 2))) // both in same row and col range
+                            {
+                                print("RIGHT NODE CONNECTED TO COMPONENT");
+                                rightNodeIsConnected = true;
+                                RightinX = rightNx;
+                                RightinZ = rightNz;
+                                RightoutX = leftNx;
+                                RightoutZ = leftNz;
+                            }
+                            //checks if Both nodes are in right grid
+                            if (((lastNodeIndexCol <= 16) && (lastNodeIndexCol >= 10)) && ((rigthNodeIndexCol <= 16) && (rigthNodeIndexCol >= 10)))// both in same row and col range 
+                            {
+                                print("RIGHT NODE CONNECTED TO COMPONENT");
+                                rightNodeIsConnected = true;
+                                RightinX = rightNx;
+                                RightinZ = rightNz;
+                                RightoutX = leftNx;
+                                RightoutZ = leftNz;
+                            }
+                        }
+                    }
+                    
+                    foreach (componentNode lastNode in negativeEndpoints)
+                    {
+
+                        float lastNodez = lastNode.getYPos(); // really z in unity terms 
+                        float lastNodex = lastNode.getXPos();
+                        Vector3 lastNodeVector = new Vector3(lastNodex, Y_constant, lastNodez);
+
+                        //get breadboard index for left/right node of newItem and outputNode of pseudoTail
+                        int lastNodeIndex = System.Array.IndexOf(breadboard.GetComponent<gridLayout>().positionHolder, lastNodeVector);
+                        int leftNodeIndex = System.Array.IndexOf(breadboard.GetComponent<gridLayout>().positionHolder, leftNVector);
+                        int rigthNodeIndex = System.Array.IndexOf(breadboard.GetComponent<gridLayout>().positionHolder, rightNVector);
+
+                        //get remainder so see what column index is in. 
+                        //index = (1-18)
+                        //(1-2) (17-18) = battery terminals
+                        //(3-9) = left grid
+                        //(10-16) = right grid
+                        int lastNodeIndexCol = (lastNodeIndex % 18) + 1;
+                        int leftNodeIndexCol = (leftNodeIndex % 18) + 1;
+                        int rigthNodeIndexCol = (rigthNodeIndex % 18) + 1;
+
+
+                        //if leftNode is in the same row as pseudoTail Node
+                        if (lastNodez == leftNz)
+                        {
+                            //print("LEFT NODE IN SAME ROW AS NODE");
+                            //checks if Both nodes are in left grid
+                            if (((lastNodeIndexCol <= 9) && (lastNodeIndexCol >= 2)) && ((leftNodeIndexCol <= 9) && (leftNodeIndexCol >= 2))) // both in same row and col range
+                            {
+
+                                print("LEFT NODE CONNECTED TO COMPONENT");
+                                leftNodeIsConnected = true;
+                                //set cordinates of inputNode and outputNode
+                                LeftoutX = leftNx;
+                                LeftoutZ = leftNz;
+                                LeftinX = rightNx;
+                                LeftinZ = rightNz;
+                            }
+                            //checks if Both nodes are in right grid
+                            if (((lastNodeIndexCol <= 16) && (lastNodeIndexCol >= 10)) && ((leftNodeIndexCol <= 16) && (leftNodeIndexCol >= 10)))// both in same row and col range 
+                            {
+                                print("LEFT NODE CONNECTED TO COMPONENT");
+                                leftNodeIsConnected = true;
+                                //set cordinates of inputNode and outputNode
+                                LeftoutX = leftNx;
+                                LeftoutZ = leftNz;
+                                LeftinX = rightNx;
+                                LeftinZ = rightNz;
+                            }
+                        }
+
+                        //if rightNode is in the same row as pseudoTail Node
+                        if (lastNodez == rightNz)
+                        {
+                            //print("RIGHT NODE IN SAME ROW AS NODE");
+                            //checks if Both nodes are in left grid
+                            if (((lastNodeIndexCol <= 9) && (lastNodeIndexCol >= 2)) && ((rigthNodeIndexCol <= 9) && (rigthNodeIndexCol >= 2))) // both in same row and col range
+                            {
+                                print("RIGHT NODE CONNECTED TO COMPONENT");
+                                rightNodeIsConnected = true;
+                                RightoutX = rightNx;
+                                RightoutZ = rightNz;
+                                RightinX = leftNx;
+                                RightinZ = leftNz;
+                            }
+                            //checks if Both nodes are in right grid
+                            if (((lastNodeIndexCol <= 16) && (lastNodeIndexCol >= 10)) && ((rigthNodeIndexCol <= 16) && (rigthNodeIndexCol >= 10)))// both in same row and col range 
+                            {
+                                print("RIGHT NODE CONNECTED TO COMPONENT");
+                                rightNodeIsConnected = true;
+                                RightoutX = rightNx;
+                                RightoutZ = rightNz;
+                                RightinX = leftNx;
+                                RightinZ = leftNz;
+                            }
+                        }
+                    }
+
+
+
+                    if (newItem.name.Contains("chip_spawner"))
 					{
 
 					}
