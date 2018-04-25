@@ -77,9 +77,6 @@ public class tutorialUI : MonoBehaviour {
 		}
 		//Back button
 		zoomOut.onClick.AddListener(delegate {StartCoroutine(cam.zoomOut(breadboard));});
-
-		//Placing the battery
-		batteryLocation = new Vector3(-2.221f, 2.017f, -9.197f);
 	}
 
 	// Update is called once per frame
@@ -138,7 +135,7 @@ public class tutorialUI : MonoBehaviour {
 				newItem.GetComponent<gridPlacement> ().enabled = true; //Make sure this is enabled to get the highlights
 				canBePlaced = newItem.GetComponent<gridPlacement> ().getComponentPlacementStatus (); //check to see if the item can be placed (is the spot valid?)
 			}
-			if (Input.GetMouseButton (0) && newItem.tag == "pen") { //We gonna place some solder
+			if (Input.GetMouseButtonDown (0) && newItem.tag == "pen") { //We gonna place some solder
 				GameObject solder = GameObject.CreatePrimitive(PrimitiveType.Cube);
 				solder.GetComponent<Collider> ().enabled = false;
 				solder.transform.localScale = solder.transform.localScale * 0.017f;
@@ -155,6 +152,13 @@ public class tutorialUI : MonoBehaviour {
 				} else if (newItem.tag == "battery") {
 					//Put item in preset spot
 					newItem.transform.position = batteryLocation;
+					if (SceneManager.GetActiveScene().buildIndex == 1) //Tutorial Level
+						newItem.transform.eulerAngles = new Vector3 (-90f, 0f, 270f);
+					else if (SceneManager.GetActiveScene().buildIndex == 2) //Creation Level
+						newItem.transform.eulerAngles = new Vector3 (-90f, 0f, 0f);
+					else if (SceneManager.GetActiveScene().buildIndex == 3) //Repair Level
+						newItem.transform.eulerAngles = new Vector3 (-90f, 0f, 180f);
+					
 					//Make these positions unable to be taken, set the dictionary 
 				} else if (newItem.tag == "pen") {
 					newItem.transform.position = sPenOrigin;
@@ -187,12 +191,27 @@ public class tutorialUI : MonoBehaviour {
 				//start: a component is placed on the bread board
 				if (newItem.name.Contains("battery_spawner")) //if a battery was placed
 				{
+					int bnode1 = 0;
+					int bnode2 = 0;
+
+					if (SceneManager.GetActiveScene ().buildIndex == 1) { //Tutorial Level
+						bnode1 = 414;
+						bnode2 = 415;
+					} else if (SceneManager.GetActiveScene ().buildIndex == 2) { //Creation Level
+						bnode1 = 23;
+						bnode2 = 47;
+					}
+					else if (SceneManager.GetActiveScene().buildIndex == 3) { //Repair Level
+						bnode1 = 408;
+						bnode2 = 384;
+					}
+
 					//creates input and output nodes of battery
-					inputNode = new componentNode(newItem.GetInstanceID (), newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[414].x, breadboard.GetComponent<gridLayout>().positionHolder[414].z, nullNode_Array, nullNode_Array);
-					outputNode = new componentNode(newItem.GetInstanceID (), newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[415].x, breadboard.GetComponent<gridLayout>().positionHolder[415].z, nullNode_Array, nullNode_Array);
+					inputNode = new componentNode(newItem.GetInstanceID (), newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[bnode1].x, breadboard.GetComponent<gridLayout>().positionHolder[bnode1].z, nullNode_Array, nullNode_Array);
+					outputNode = new componentNode(newItem.GetInstanceID (), newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[bnode2].x, breadboard.GetComponent<gridLayout>().positionHolder[bnode2].z, nullNode_Array, nullNode_Array);
 					//sets positions as taken
-					breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[414]] = true;
-					breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[415]] = true;
+					breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[bnode1]] = true;
+					breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[bnode2]] = true;
 					//sets head and tail of linked list
 					global_LL.head = inputNode;
 					global_LL.tail = outputNode;
