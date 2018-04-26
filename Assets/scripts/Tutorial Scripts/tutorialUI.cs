@@ -28,7 +28,7 @@ public class tutorialUI : MonoBehaviour {
 
 	//For dragging/placing
 	public bool canBePlaced = true;
-	public bool isSpawned = false;
+	public bool isSpawned, batteryPlaced = false;
 	public Vector3 batteryLocation;
 	private Vector3 mousePosition, itemPosition;
 	private GameObject newItem;
@@ -46,6 +46,11 @@ public class tutorialUI : MonoBehaviour {
 	//For soldering pen
 	public Vector3 sPenOrigin, sAngleOrig, sAngleNew;
 
+	//For multimeter
+	public bool meterMode = false;
+	public GameObject pen1, pen2;
+	private Vector3 p1p, p2p, p1r, p2r;
+
 	void Awake(){
 		cam = mainCam.GetComponent<cameraLook> ();
 		grid = FindObjectOfType<gridLayout> ();
@@ -60,6 +65,11 @@ public class tutorialUI : MonoBehaviour {
 		sPenOrigin = pen.transform.position;
 		sAngleOrig = pen.transform.eulerAngles;
 		sAngleNew = new Vector3(pen.transform.eulerAngles.x, 270f, pen.transform.eulerAngles.z);
+
+		p1p = new Vector3(pen1.transform.position.x, pen1.transform.position.y + 0.075f, pen1.transform.position.z);
+		p2p = new Vector3(pen2.transform.position.x, pen2.transform.position.y + 0.075f, pen2.transform.position.z);
+		p1r = pen1.transform.eulerAngles;
+		p2r = pen2.transform.eulerAngles;
 
 		//*OPEN-CLOSE INVENTORY*
 		//Inventory is closed by default
@@ -81,12 +91,15 @@ public class tutorialUI : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetMouseButtonDown (0) && !isSpawned) { //If the left button is click and the item is not spawned
+		if (GameObject.Find ("battery_spawner(Clone)")) { //The battery already exists
+			buttonArray [0].GetComponent<Button> ().interactable = false;
+		} else
+			buttonArray [0].GetComponent<Button> ().interactable = true;
+		if (Input.GetMouseButtonDown (0) && !isSpawned && !meterMode) { //If the left button is click and the item is not spawned, and not in meter mode
 			//Get the raycast data
 			RaycastHit hit; 
 			Ray ray = mainCam.GetComponent<Camera> ().ScreenPointToRay (Input.mousePosition);
-			if (Physics.Raycast (ray, out hit))
-			{ //If we hit something, let's see what we hit
+			if (Physics.Raycast (ray, out hit)) { //If we hit something, let's see what we hit
 				if (hit.transform.name == "BreadBoard") { //If we hit the breadboard, zoom into it
 					hit.transform.gameObject.GetComponent<selectGlow> ().zoomedIn = true;
 					hit.transform.gameObject.GetComponent<Collider> ().enabled = false; //Maybe don't do this
@@ -103,6 +116,7 @@ public class tutorialUI : MonoBehaviour {
 						newItem.transform.GetChild (0).localScale = newItem.GetComponent<gridPlacement> ().oScale;
 					else
 						newItem.transform.localScale = newItem.GetComponent<gridPlacement> ().oScale;
+
 				} else if (hit.transform.name == "button") {
 
 					/*
@@ -118,25 +132,25 @@ public class tutorialUI : MonoBehaviour {
 					} else
 						print ("Nope.");
 					*/
-					print(boardlogic.doCircuitLogicSeries (global_LL.head, global_LL.tail));
+					print (boardlogic.doCircuitLogicSeries (global_LL.head, global_LL.tail));
 				}
 				//Check to see if newItem is in the placed list
 				if (placed.Contains (newItem)) {
 					placed.Remove (newItem);
 				}
-			 }
-		} else if (isSpawned) { //If we are currently dragging the item
+			}
+		} else if (isSpawned && !meterMode) { //If we are currently dragging the item and not in meterMode
 			closePartsCatalogue (); //Keep the parts catalogue closed to avoid spawning multiple items
 			//Have the component follow where the mouse moves
 			itemPosition = Input.mousePosition;
-				itemPosition.z = 0.4f;
+			itemPosition.z = 0.4f;
 			newItem.transform.position = Camera.main.ScreenToWorldPoint (itemPosition);
-			if (newItem.tag != "battery"){
+			if (newItem.tag != "battery") {
 				newItem.GetComponent<gridPlacement> ().enabled = true; //Make sure this is enabled to get the highlights
 				canBePlaced = newItem.GetComponent<gridPlacement> ().getComponentPlacementStatus (); //check to see if the item can be placed (is the spot valid?)
 			}
 			if (Input.GetMouseButtonDown (0) && newItem.tag == "pen") { //We gonna place some solder
-				GameObject solder = GameObject.CreatePrimitive(PrimitiveType.Cube);
+				GameObject solder = GameObject.CreatePrimitive (PrimitiveType.Cube);
 				solder.GetComponent<Collider> ().enabled = false;
 				solder.transform.localScale = solder.transform.localScale * 0.017f;
 				solder.tag = "solder";
@@ -144,7 +158,7 @@ public class tutorialUI : MonoBehaviour {
 			}
 			if (canBePlaced && Input.GetMouseButton (1)) { //The item is placed on the board if it is in a valid spot
 				//Item has been placed, keep track of it
-				placed.Add(newItem); //Add the item
+				placed.Add (newItem); //Add the item
 				isSpawned = false;
 				if (newItem.tag == "component") { //If we are dragging the component, place it in the nearest spot on the grid
 					PlaceItem (Camera.main.ScreenToWorldPoint (itemPosition), newItem);
@@ -152,11 +166,11 @@ public class tutorialUI : MonoBehaviour {
 				} else if (newItem.tag == "battery") {
 					//Put item in preset spot
 					newItem.transform.position = batteryLocation;
-					if (SceneManager.GetActiveScene().buildIndex == 1) //Tutorial Level
+					if (SceneManager.GetActiveScene ().buildIndex == 1) //Tutorial Level
 						newItem.transform.eulerAngles = new Vector3 (-90f, 0f, 270f);
-					else if (SceneManager.GetActiveScene().buildIndex == 2) //Creation Level
+					else if (SceneManager.GetActiveScene ().buildIndex == 2) //Creation Level
 						newItem.transform.eulerAngles = new Vector3 (-90f, 0f, 0f);
-					else if (SceneManager.GetActiveScene().buildIndex == 3) //Repair Level
+					else if (SceneManager.GetActiveScene ().buildIndex == 3) //Repair Level
 						newItem.transform.eulerAngles = new Vector3 (-90f, 0f, 180f);
 					
 					//Make these positions unable to be taken, set the dictionary 
@@ -165,7 +179,8 @@ public class tutorialUI : MonoBehaviour {
 					newItem.transform.eulerAngles = sAngleOrig;
 
 				}
-				grid.set_spots ();
+				if (newItem.tag != "pen")
+					grid.set_spots (newItem);
 
 				//Henry and Kevin
 
@@ -189,8 +204,7 @@ public class tutorialUI : MonoBehaviour {
 
 
 				//start: a component is placed on the bread board
-				if (newItem.name.Contains("battery_spawner")) //if a battery was placed
-				{
+				if (newItem.name.Contains ("battery_spawner")) { //if a battery was placed
 					int bnode1 = 0;
 					int bnode2 = 0;
 
@@ -200,37 +214,31 @@ public class tutorialUI : MonoBehaviour {
 					} else if (SceneManager.GetActiveScene ().buildIndex == 2) { //Creation Level
 						bnode1 = 23;
 						bnode2 = 47;
-					}
-					else if (SceneManager.GetActiveScene().buildIndex == 3) { //Repair Level
+					} else if (SceneManager.GetActiveScene ().buildIndex == 3) { //Repair Level
 						bnode1 = 408;
 						bnode2 = 384;
 					}
 
 					//creates input and output nodes of battery
-					inputNode = new componentNode(newItem.GetInstanceID (), newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[bnode1].x, breadboard.GetComponent<gridLayout>().positionHolder[bnode1].z, nullNode_Array, nullNode_Array);
-					outputNode = new componentNode(newItem.GetInstanceID (), newItem.GetComponent<battery>(), breadboard.GetComponent<gridLayout>().positionHolder[bnode2].x, breadboard.GetComponent<gridLayout>().positionHolder[bnode2].z, nullNode_Array, nullNode_Array);
+					inputNode = new componentNode (newItem.GetInstanceID (), newItem.GetComponent<battery> (), breadboard.GetComponent<gridLayout> ().positionHolder [bnode1].x, breadboard.GetComponent<gridLayout> ().positionHolder [bnode1].z, nullNode_Array, nullNode_Array);
+					outputNode = new componentNode (newItem.GetInstanceID (), newItem.GetComponent<battery> (), breadboard.GetComponent<gridLayout> ().positionHolder [bnode2].x, breadboard.GetComponent<gridLayout> ().positionHolder [bnode2].z, nullNode_Array, nullNode_Array);
 					//sets positions as taken
-					breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[bnode1]] = true;
-					breadboard.GetComponent<gridLayout>().gridPositions[breadboard.GetComponent<gridLayout>().positionHolder[bnode2]] = true;
+					breadboard.GetComponent<gridLayout> ().gridPositions [breadboard.GetComponent<gridLayout> ().positionHolder [bnode1]] = true;
+					breadboard.GetComponent<gridLayout> ().gridPositions [breadboard.GetComponent<gridLayout> ().positionHolder [bnode2]] = true;
 					//sets head and tail of linked list
 					global_LL.head = inputNode;
 					global_LL.tail = outputNode;
-				}
-				else//if another component was placed
-				{
+				} else {//if another component was placed
 
 					// gets cordinates for left and right componentNodes of newItem
-					int sc = newItem.GetComponent<gridPlacement>().spaceCount;
-					Vector3[] os = breadboard.GetComponent<gridLayout>().oldSpots;
-					if (sc % 2 == 0)
-					{
-						leftN = os[(sc / 2) - 1];
-						rightN = os[sc - 1];
-					}
-					else
-					{
-						leftN = os[(sc / 2)];
-						rightN = os[sc - 1];
+					int sc = newItem.GetComponent<gridPlacement> ().spaceCount;
+					Vector3[] os = breadboard.GetComponent<gridLayout> ().oldSpots;
+					if (sc % 2 == 0) {
+						leftN = os [(sc / 2) - 1];
+						rightN = os [sc - 1];
+					} else {
+						leftN = os [(sc / 2)];
+						rightN = os [sc - 1];
 					}
 					//saves x and z component of left and right side of component
 					leftNx = leftN.x;
@@ -239,39 +247,34 @@ public class tutorialUI : MonoBehaviour {
 					rightNz = rightN.z;
 
 					//create vector3 of input and output cordinates
-					Vector3 leftNVector = new Vector3(leftNx, Y_constant, leftNz);
-					Vector3 rightNVector = new Vector3(rightNx, Y_constant, rightNz);
+					Vector3 leftNVector = new Vector3 (leftNx, Y_constant, leftNz);
+					Vector3 rightNVector = new Vector3 (rightNx, Y_constant, rightNz);
 
 					//pseudoTail is last component placed into linkedList. Tail =  battery input
-					componentNode pseudoTail = global_LL.getPseudoTail(); 
+					componentNode pseudoTail = global_LL.getPseudoTail (); 
 
 
 					//if (boardlogic.isCompleteCircuitSeries(global_LL.head))
 					// FIX. Does not account for empty next/previousNODE array.Check length of the array before getting value.
 					//errors out at boardLogic.traceback line 143, called by iscomplecircuitseries line 49
 
-					if (false)// circuit is complete ^^ see above
-					{
-						print("User has placed component after circuit was completed.");
-					}
-					else
-					{
+					if (false) {// circuit is complete ^^ see above
+						print ("User has placed component after circuit was completed.");
+					} else {
 
-						if (pseudoTail.getXZ() == global_LL.head.getXZ())                        
-						{
+						if (pseudoTail.getXZ () == global_LL.head.getXZ ()) {
 							// Linked list only head and tail, (only battery in list) 
 							// checking power rails(columns) for matches
 
-							print("pseduoTail is head");
+							print ("pseduoTail is head");
 							//check if newItem's Nodes in same column as battery nodes
 
 
 							componentNode head = global_LL.head;
-							float headx = head.getXPos(); //gets column cordinate
+							float headx = head.getXPos (); //gets column cordinate
 
-							if (headx == leftNx)//check if left node in the power rail
-							{
-								print("(POWER) LEFT NODE CONNECTED ");
+							if (headx == leftNx) {//check if left node in the power rail
+								print ("(POWER) LEFT NODE CONNECTED ");
 								leftNodeIsConnected = true;
 								//set cordinates of inputNode and outputNode
 								inX = leftNx;
@@ -279,9 +282,8 @@ public class tutorialUI : MonoBehaviour {
 								outX = rightNx;
 								outZ = rightNz;
 							}
-							if (headx == rightNx)//check if right node in the power rail
-							{
-								print("(POWER) RIGHT NODE CONNECTED ");
+							if (headx == rightNx) {//check if right node in the power rail
+								print ("(POWER) RIGHT NODE CONNECTED ");
 								rightNodeIsConnected = true;
 								//set cordinates of inputNode and outputNode
 								inX = rightNx;
@@ -292,20 +294,18 @@ public class tutorialUI : MonoBehaviour {
 
 						}
 
-						if (pseudoTail.getXZ() == global_LL.tail.getXZ())                        
-						{
+						if (pseudoTail.getXZ () == global_LL.tail.getXZ ()) {
 							// Linked list looping back to tail?
 							// checking power rails(columns) for matches
 
-							print("pseduoTail is tail");
+							print ("pseduoTail is tail");
 							//check if newItem's Nodes in same column as battery nodes
 
 							componentNode tail = global_LL.tail;
-							float tailx = tail.getXPos(); //gets column cordinate
+							float tailx = tail.getXPos (); //gets column cordinate
 
-							if (tailx == leftNx)//check if left node in the power rail
-							{
-								print("(POWER) LEFT NODE CONNECTED ");
+							if (tailx == leftNx) {//check if left node in the power rail
+								print ("(POWER) LEFT NODE CONNECTED ");
 								leftNodeIsConnected = true;
 								//set cordinates of inputNode and outputNode
 								inX = leftNx;
@@ -313,9 +313,8 @@ public class tutorialUI : MonoBehaviour {
 								outX = rightNx;
 								outZ = rightNz;
 							}
-							if (tailx == rightNx)//check if right node in the power rail
-							{
-								print("(POWER) RIGHT NODE CONNECTED ");
+							if (tailx == rightNx) {//check if right node in the power rail
+								print ("(POWER) RIGHT NODE CONNECTED ");
 								rightNodeIsConnected = true;
 								//set cordinates of inputNode and outputNode
 								inX = rightNx;
@@ -324,20 +323,18 @@ public class tutorialUI : MonoBehaviour {
 								outZ = leftNz;
 							}
 
-						}
-						else //List is not empty, checking if newItem's nodes in same row as pseudoTail outputNode
-						{
+						} else { //List is not empty, checking if newItem's nodes in same row as pseudoTail outputNode
 
 							// check if newItem's Nodes in same row as pseudoTail's nodes
-							componentNode lastNode = global_LL.getPseudoTail();
-							float lastNodez = lastNode.getYPos(); // really z in unity terms 
-							float lastNodex = lastNode.getXPos();                            
-							Vector3 lastNodeVector = new Vector3(lastNodex,Y_constant,lastNodez);
+							componentNode lastNode = global_LL.getPseudoTail ();
+							float lastNodez = lastNode.getYPos (); // really z in unity terms 
+							float lastNodex = lastNode.getXPos ();                            
+							Vector3 lastNodeVector = new Vector3 (lastNodex, Y_constant, lastNodez);
 
 							//get breadboard index for left/right node of newItem and outputNode of pseudoTail
-							int lastNodeIndex = System.Array.IndexOf(breadboard.GetComponent<gridLayout>().positionHolder, lastNodeVector);
-							int leftNodeIndex = System.Array.IndexOf(breadboard.GetComponent<gridLayout>().positionHolder, leftNVector);
-							int rigthNodeIndex = System.Array.IndexOf(breadboard.GetComponent<gridLayout>().positionHolder, rightNVector);
+							int lastNodeIndex = System.Array.IndexOf (breadboard.GetComponent<gridLayout> ().positionHolder, lastNodeVector);
+							int leftNodeIndex = System.Array.IndexOf (breadboard.GetComponent<gridLayout> ().positionHolder, leftNVector);
+							int rigthNodeIndex = System.Array.IndexOf (breadboard.GetComponent<gridLayout> ().positionHolder, rightNVector);
 
 							//get remainder so see what column index is in. 
 							//index = (1-18)
@@ -354,14 +351,12 @@ public class tutorialUI : MonoBehaviour {
 							//print("Z position of rigthNode: "+rightNz);
 
 							//if leftNode is in the same row as pseudoTail Node
-							if (lastNodez == leftNz)
-							{
-								print("LEFT NODE IN SAME ROW AS NODE");
+							if (lastNodez == leftNz) {
+								print ("LEFT NODE IN SAME ROW AS NODE");
 								//checks if Both nodes are in left grid
-								if (((lastNodeIndexCol <=9)&&(lastNodeIndexCol >= 2))&& ((leftNodeIndexCol <= 9) && (leftNodeIndexCol >= 2))) // both in same row and col range
-								{
+								if (((lastNodeIndexCol <= 9) && (lastNodeIndexCol >= 2)) && ((leftNodeIndexCol <= 9) && (leftNodeIndexCol >= 2))) { // both in same row and col range
 
-									print("H LEFT NODE CONNECTED ");
+									print ("H LEFT NODE CONNECTED ");
 									leftNodeIsConnected = true;
 									//set cordinates of inputNode and outputNode
 									inX = leftNx;
@@ -370,9 +365,8 @@ public class tutorialUI : MonoBehaviour {
 									outZ = rightNz;
 								}
 								//checks if Both nodes are in right grid
-								if (((lastNodeIndexCol <= 16) && (lastNodeIndexCol >= 10)) && ((leftNodeIndexCol <= 16) && (leftNodeIndexCol >= 10)))// both in same row and col range 
-								{
-									print("H LEFT NODE CONNECTED ");
+								if (((lastNodeIndexCol <= 16) && (lastNodeIndexCol >= 10)) && ((leftNodeIndexCol <= 16) && (leftNodeIndexCol >= 10))) {// both in same row and col range 
+									print ("H LEFT NODE CONNECTED ");
 									leftNodeIsConnected = true;
 									//set cordinates of inputNode and outputNode
 									inX = leftNx;
@@ -384,13 +378,11 @@ public class tutorialUI : MonoBehaviour {
 
 							}
 							//if rightNode is in the same row as pseudoTail Node
-							if (lastNodez == rightNz)
-							{
-								print("RIGHT NODE IN SAME ROW AS NODE");
+							if (lastNodez == rightNz) {
+								print ("RIGHT NODE IN SAME ROW AS NODE");
 								//checks if Both nodes are in left grid
-								if (((lastNodeIndexCol <= 9) && (lastNodeIndexCol >= 2)) && ((rigthNodeIndexCol <= 9) && (rigthNodeIndexCol >= 2))) // both in same row and col range
-								{
-									print("H RIGHT NODE CONNECTED ");
+								if (((lastNodeIndexCol <= 9) && (lastNodeIndexCol >= 2)) && ((rigthNodeIndexCol <= 9) && (rigthNodeIndexCol >= 2))) { // both in same row and col range
+									print ("H RIGHT NODE CONNECTED ");
 									rightNodeIsConnected = true;
 									inX = rightNx;
 									inZ = rightNz;
@@ -398,9 +390,8 @@ public class tutorialUI : MonoBehaviour {
 									outZ = leftNz;
 								}
 								//checks if Both nodes are in right grid
-								if (((lastNodeIndexCol <= 16) && (lastNodeIndexCol >= 10)) && ((rigthNodeIndexCol <= 16) && (rigthNodeIndexCol >= 10)))// both in same row and col range 
-								{
-									print("H RIGHT NODE CONNECTED ");
+								if (((lastNodeIndexCol <= 16) && (lastNodeIndexCol >= 10)) && ((rigthNodeIndexCol <= 16) && (rigthNodeIndexCol >= 10))) {// both in same row and col range 
+									print ("H RIGHT NODE CONNECTED ");
 									rightNodeIsConnected = true;
 									inX = rightNx;
 									inZ = rightNz;
@@ -420,27 +411,19 @@ public class tutorialUI : MonoBehaviour {
 
 					}
 
-					if (newItem.name.Contains("chip_spawner"))
-					{
+					if (newItem.name.Contains ("chip_spawner")) {
 
-					}
-					else if (newItem.name.Contains("diode_spawner"))
-					{
+					} else if (newItem.name.Contains ("diode_spawner")) {
 
-					}
-					else if (newItem.name.Contains("elec_cap_spawner"))
-					{
+					} else if (newItem.name.Contains ("elec_cap_spawner")) {
 
-					}
-					else if (newItem.name.Contains("resistor_spawner"))
-					{
-						print("spawning resistor ");
+					} else if (newItem.name.Contains ("resistor_spawner")) {
+						print ("spawning resistor ");
 						// sets componentNodes of newItem
-						inputNode = new componentNode(newItem.GetInstanceID(), newItem.GetComponent<resistor>(), inX, inZ, nullNode_Array, nullNode_Array);
-						outputNode = new componentNode(newItem.GetInstanceID(),  newItem.GetComponent<resistor>(), outX, outZ, nullNode_Array, nullNode_Array);
+						inputNode = new componentNode (newItem.GetInstanceID (), newItem.GetComponent<resistor> (), inX, inZ, nullNode_Array, nullNode_Array);
+						outputNode = new componentNode (newItem.GetInstanceID (), newItem.GetComponent<resistor> (), outX, outZ, nullNode_Array, nullNode_Array);
 
-						if (leftNodeIsConnected || rightNodeIsConnected)
-						{
+						if (leftNodeIsConnected || rightNodeIsConnected) {
 							var nextNode_Array = new componentNode[] { };
 							var previousNode_Array = new componentNode[] { };
 
@@ -462,21 +445,13 @@ public class tutorialUI : MonoBehaviour {
 								global_LL.tail.setPreviousNode (nextNode_Array);
 							}
 						}
-					}
-					else if (newItem.name.Contains("LED_spawner"))
-					{
+					} else if (newItem.name.Contains ("LED_spawner")) {
 
-					}
-					else if (newItem.name.Contains("switch_spawner"))
-					{
+					} else if (newItem.name.Contains ("switch_spawner")) {
 
-					}
-					else if (newItem.name.Contains("wire_spawner"))
-					{
+					} else if (newItem.name.Contains ("wire_spawner")) {
 
-					}
-					else if (newItem.name.Contains("transistor_spawner"))
-					{
+					} else if (newItem.name.Contains ("transistor_spawner")) {
 
 					}
 				}
@@ -486,9 +461,47 @@ public class tutorialUI : MonoBehaviour {
 				newItem.transform.eulerAngles = new Vector3 (newItem.transform.eulerAngles.x, newItem.transform.eulerAngles.y + 90f, newItem.transform.eulerAngles.z);
 			}
 
-		} else if (!isSpawned && newItem != null){
+		} else if (!isSpawned && newItem != null && !meterMode) {
 			if (newItem.tag != "battery")
 				newItem.GetComponent<gridPlacement> ().enabled = false;
+			if (Input.GetKeyDown (KeyCode.M) && !meterMode) { //Enter meterMode
+				meterMode = true;
+
+			} 
+		} else if (Input.GetKeyDown (KeyCode.M) && meterMode) { //We also need to snap the positions of the pens back
+			meterMode = false;
+			pen1.transform.position = p1p;
+			pen2.transform.position = p2p;
+			pen1.transform.eulerAngles = p1r;
+			pen2.transform.eulerAngles = p2r;
+		} else if (meterMode) { //We are currently in meter mode, now we can snap shit
+			closePartsCatalogue();
+			if (Input.GetMouseButtonDown (0)) { //We've clicked something, let us see what it is
+				RaycastHit hit; 
+				Ray ray = mainCam.GetComponent<Camera> ().ScreenPointToRay (Input.mousePosition);
+				if (Physics.Raycast (ray, out hit)) {
+					if (hit.transform.gameObject.tag == "component") { //We are hitting a component, let's snap some pens
+						Vector3 snappedAlready = Vector3.zero;
+						for (int i = 0; i < grid.positionHolder.Length; i++) {
+							if (snappedAlready != Vector3.zero && grid.posAndSpots [grid.positionHolder [i]] == hit.transform.gameObject) {
+								pen2.transform.position = grid.positionHolder [i];
+								if (Mathf.Round(hit.transform.gameObject.transform.eulerAngles.y) == 270f || Mathf.Round(hit.transform.gameObject.transform.eulerAngles.y) == 90f)
+									pen2.transform.eulerAngles = new Vector3 (0f, 0f, 20f);
+								else if (Mathf.Round(hit.transform.gameObject.transform.eulerAngles.y) == 180f || Mathf.Round(hit.transform.gameObject.transform.eulerAngles.y) == 0f)
+									pen2.transform.eulerAngles = new Vector3 (20f, 90f, 0f);
+								break;
+							} else if (grid.posAndSpots [grid.positionHolder [i]] == hit.transform.gameObject) {
+								snappedAlready = grid.positionHolder [i];
+								pen1.transform.position = grid.positionHolder [i];
+								if (Mathf.Round(hit.transform.gameObject.transform.eulerAngles.y) == 270f || Mathf.Round(hit.transform.gameObject.transform.eulerAngles.y) == 90f)
+									pen1.transform.eulerAngles = new Vector3 (0f, 0f, 20f);
+								else if (Mathf.Round(hit.transform.gameObject.transform.eulerAngles.y) == 180f || Mathf.Round(hit.transform.gameObject.transform.eulerAngles.y) == 0f)
+									pen1.transform.eulerAngles = new Vector3 (20f, 90f, 0f);
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 

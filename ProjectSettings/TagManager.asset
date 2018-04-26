@@ -9,6 +9,7 @@ TagManager:
   - highlight
   - pen
   - solder
+  - meter
   layers:
   - Default
   - TransparentFX

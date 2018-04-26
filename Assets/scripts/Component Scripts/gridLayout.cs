@@ -10,6 +10,7 @@ public class gridLayout : MonoBehaviour
 
 	//For the math behind placing components on the grid
 	public Dictionary<Vector3, bool> gridPositions; //Used to represent the grid positions, and whether or not they are filled
+	public Dictionary<Vector3, GameObject> posAndSpots; //Used to keep track of input and output node locations
 	private List<Vector3> keys; //Used to represent a LIST of the positions from gridPositions. Needed to convert into the dictionary into an array for indices
 	public Vector3[] positionHolder, oldSpots; //An array of the positions, and the previous spots on the board that are highlighted (to show where a component will be placed)
 	public Vector3 nullValue; //Used to represent that a value is out of bounds
@@ -87,7 +88,6 @@ public class gridLayout : MonoBehaviour
 		componentCol = index % prevCC; //Zero-based column index 
 		componentRow = index / prevCC; //Recalculate
 
-
 		if (size % 2 != 0) {
 			spots [0] = componentLocation; //the first spot will be the location of where the grid spot is
 		} else {
@@ -102,8 +102,7 @@ public class gridLayout : MonoBehaviour
 		int rowN = componentRow;
 		int tracker = 0;
 
-		print (System.Array.IndexOf(positionHolder, spots[0]));
-
+		//print(System.Array.IndexOf(positionHolder, spots[0]));
 		for (int k = 0; k < width; k++) {
 			if (width != 1 && k != 0) {
 				if (k < halfSplitter) {
@@ -196,10 +195,25 @@ public class gridLayout : MonoBehaviour
 		oldSpots = spots; //Set old spots to the current spots in order to be destroyed later
 		return spots; //Return the spots to be highlighted
 	}
-	public void set_spots(){
+	public void set_spots(GameObject component){
 		for (int i = 0; i < oldSpots.Length; i++) {
 			if (oldSpots[i] != nullValue)
 				gridPositions [oldSpots [i]] = true;
+		}
+		//Also let's keep track of the gameObject's input and output nodes
+		int sc = 0;
+		if (component.tag == "battery")
+			sc = 2;
+		else
+			sc = component.GetComponent<gridPlacement> ().spaceCount;
+		if (component.tag != "battery") {
+			if (sc % 2 == 0) {
+				posAndSpots [oldSpots [(sc / 2) - 1]] = component;
+				posAndSpots [oldSpots [sc - 1]] = component;
+			} else {
+				posAndSpots [oldSpots [(sc / 2)]] = component;
+				posAndSpots [oldSpots [sc - 1]] = component;
+			}
 		}
 	}
 
@@ -343,6 +357,10 @@ public class gridLayout : MonoBehaviour
 			gridPositions = new Dictionary<Vector3, bool> (columnCount * rowCount);
 			for (int i = 0; i < positionHolder.Length; i++) {
 				gridPositions.Add (positionHolder [i], false);
+			}
+			posAndSpots = new Dictionary<Vector3, GameObject> (columnCount * rowCount);
+			for (int i = 0; i < positionHolder.Length; i++) {
+				posAndSpots.Add (positionHolder [i], null);
 			}
 		}
 		alreadyInit = true;

@@ -67,8 +67,12 @@ public class gridPlacement : MonoBehaviour {
 			}
 
 			if (getRidOfSpots != null && getRidOfSpots.Length > 0){
-				for (int i = 0; i < getRidOfSpots.Length; i++)
+				for (int i = 0; i < getRidOfSpots.Length; i++) {
 					grid.gridPositions [getRidOfSpots [i]] = false;
+					if (grid.posAndSpots.ContainsKey (getRidOfSpots [i])) {
+						grid.posAndSpots [getRidOfSpots [i]] = null;
+					}
+				}
 			}
 		} else if (!tUI.isSpawned && highlights.Length != 0) {
 			for (int i = 0; i < highlights.Length; i++) {
