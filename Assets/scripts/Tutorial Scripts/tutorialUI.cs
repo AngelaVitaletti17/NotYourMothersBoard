@@ -547,8 +547,8 @@ public class tutorialUI : MonoBehaviour {
                     } else if (newItem.name.Contains ("switch_spawner")) {
                         print("spawning switch ");
                         // sets componentNodes of newItem
-                        inputNode = new componentNode(newItem.GetInstanceID(), newItem.GetComponent<circuitSwitch2>(), inX, inZ, nullNode_Array, nullNode_Array);
-                        outputNode = new componentNode(newItem.GetInstanceID(), newItem.GetComponent<circuitSwitch2>(), outX, outZ, nullNode_Array, nullNode_Array);
+                        inputNode = new componentNode(newItem.GetInstanceID(), newItem.GetComponent<circuitSwitch>(), inX, inZ, nullNode_Array, nullNode_Array);
+                        outputNode = new componentNode(newItem.GetInstanceID(), newItem.GetComponent<circuitSwitch>(), outX, outZ, nullNode_Array, nullNode_Array);
 
                         if (leftNodeIsConnected || rightNodeIsConnected)
                         {

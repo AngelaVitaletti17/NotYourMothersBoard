@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class circuitSwitch2 : circuitComponent
+public class circuitSwitch : circuitComponent
 {
     //circuitSwtich namesapce already taken. Change in future
    
@@ -10,14 +10,14 @@ public class circuitSwitch2 : circuitComponent
     
 
     //Empty constructor
-    public circuitSwitch2()
+    public circuitSwitch()
     {
         isOn = true;
         componentType = 6;
     }
 
     //Full constructor
-    public circuitSwitch2(bool initGateOpen, componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked) : base(initInputNode, initOutputNode, initIsLocked)
+    public circuitSwitch(bool initGateOpen, componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked) : base(initInputNode, initOutputNode, initIsLocked)
     {
         this.isOn = initGateOpen;
         this.componentType = 6;
