@@ -1697,7 +1697,7 @@ MonoBehaviour:
   componentVoltage: 0
   componentResistance: 0
   isLocked: 1
-  voltage: 999
+  voltage: 1.5
 --- !u!54 &339510895
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3819,6 +3819,27 @@ Transform:
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: 762157deca9f5f7459426eb4063fc8c3, type: 3}
   m_PrefabInternal: {fileID: 715881088}
+--- !u!114 &715881091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 715881090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84aa83ee7ed35db4081eec9828be35e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  componentType: 3
+  inputNode: []
+  outputNode: []
+  componentCurrent: 0
+  componentVoltage: 0
+  componentResistance: 0
+  isLocked: 1
+  color: 
+  minCurrent: 0.015
+  maxCurrent: 0.02
 --- !u!65 &715881092
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7837,9 +7858,9 @@ MonoBehaviour:
   outputNode: []
   componentCurrent: 0
   componentVoltage: 0
-  componentResistance: 100
+  componentResistance: 0
   isLocked: 1
-  ohms: 0
+  ohms: 470
 --- !u!65 &1376917246
 BoxCollider:
   m_ObjectHideFlags: 0

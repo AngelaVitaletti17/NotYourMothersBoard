@@ -28,11 +28,10 @@ public class boardLogic : MonoBehaviour
 			//Apply Ohm's Law to find circuit current
 			double circuitCurrent = getCurrent(circuitVoltage, circuitResistance);
 
-			if (circuitResistance != -1 && circuitVoltage != -1 && circuitCurrent != -1) {
-				//Update values based on results
-				return updateComponentValues (startNode, endNode, circuitVoltage, circuitCurrent);
-			} else
-				return false;
+			//Update values based on results
+			updateComponentValues (startNode, endNode, circuitVoltage, circuitCurrent);
+
+			return true;
 		}
 		else return false;
 	}
@@ -55,19 +54,14 @@ public class boardLogic : MonoBehaviour
 	public bool updateComponentValues(componentNode startNode, componentNode endNode, double circuitVoltage, double circuitCurrent)
 	{
 		componentNode currentNode = startNode;
-		while (currentNode.getXZ() != endNode.getXZ())
+		while (currentNode.nextNode != null && currentNode != endNode)
 		{
-			if (currentNode.nextNode.Length != 0) {
-				componentNode nexNode = currentNode.nextNode [0];
-				if (currentNode.parentComponent == nexNode.parentComponent) {
-					currentNode.parentComponent.doComponentLogic (circuitVoltage, circuitCurrent);
-				}
-				currentNode.parentComponent.componentCurrent = circuitCurrent;
-				currentNode.parentComponent.componentVoltage = circuitVoltage;
-				currentNode = currentNode.nextNode [0];
+			componentNode nexNode = currentNode.nextNode [0];
+			if (currentNode.parentComponent == nexNode.parentComponent)
+			{
+				currentNode.parentComponent.doComponentLogic(circuitVoltage,circuitCurrent);
 			}
-			else
-				return false;
+			currentNode = currentNode.nextNode [0];
 		}
 		return true;
 	}
@@ -96,24 +90,17 @@ public class boardLogic : MonoBehaviour
 		double resistance = 0.0;
 		componentNode currentNode = startNode;
 
-		while (currentNode.getXZ() != endNode.getXZ())
+		while (currentNode.nextNode != null && currentNode != endNode)
 		{
-			if(currentNode.nextNode.Length != 0)
-			{
 			//If the node's parent component is a resistor...
-			if(currentNode.parentComponent.componentType == 2)
+			if(currentNode.parentComponent.componentType == 3)
 			{
-				componentNode nexNode = currentNode.nextNode [0];
-				if (currentNode.parentComponent == nexNode.parentComponent) {
-					//Find value of current node's parent's resistance. Add it to resistance running total
-					resistance += currentNode.parentComponent.componentResistance;
-				}
+				//Find value of current node's parent's resistance. Add it to resistance running total
+				resistance += currentNode.parentComponent.GetComponent<resistor>().getOhms();
 			}
 
 			//Move to next node
 			currentNode = currentNode.nextNode[0];
-			}
-			else return -1;
 		}
 		return resistance;
 	}
@@ -124,17 +111,11 @@ public class boardLogic : MonoBehaviour
 		double voltage = 0.0;
 		componentNode currentNode = startNode;
 
-		while (currentNode.getXZ() != endNode.getXZ())
+		while (currentNode.nextNode != null && currentNode != endNode)
 		{
-			if (currentNode.nextNode.Length != 0) {
-				componentNode nexNode = currentNode.nextNode [0];
-				if (currentNode.parentComponent == nexNode.parentComponent) {
-					//Find value of current node's parent's voltage drop. Subtract it from the voltage running total
-					voltage += currentNode.parentComponent.componentVoltage;
-				}
-				currentNode = currentNode.nextNode [0];
-			} else
-				return -1;
+			//Find value of current node's parent's voltage drop. Subtract it from the voltage running total
+			voltage += currentNode.parentComponent.componentVoltage;
+			currentNode = currentNode.nextNode[0];
 		}
 
 		//Find power source's voltage and subtract the running total from it
@@ -151,17 +132,14 @@ public class boardLogic : MonoBehaviour
 
 	public bool traceBack(componentNode referenceNode, int componentType)
 	{
-		print ("start traceback");	
-		//If this node's parent is a battery, return true
+			//If this node's parent is a battery, return true
 			if (referenceNode.parentComponent.componentType == 99)
 			{
-			print ("traceback battery");
 				return true;
 			}
 			//If not, go back a node and check again
-			else if (referenceNode.previousNode.Length != 0)
+			else if (referenceNode.previousNode != null)
 			{
-			print ("next back");
 				return traceBack(referenceNode.previousNode[0], 99);
 			}
 			//If there's no battery, return false
@@ -170,18 +148,15 @@ public class boardLogic : MonoBehaviour
 
 	public bool traceForward(componentNode referenceNode, int componentType)
 	{
-		print ("start traceforward");
 		//If this node's parent is a battery, return true
 		if (referenceNode.parentComponent.componentType == 99)
 		{
-			print ("traceforward battery");
 			return true;
 		}
 		//If not, go forward a node and check again
-		else if (referenceNode.nextNode.Length != 0)
+		else if (referenceNode.nextNode != null)
 		{
-			print ("next forward");
-			return traceForward(referenceNode.nextNode[0], 99);
+			return traceBack(referenceNode.nextNode[0], 99);
 		}
 		//If there's no battery, return false
 		else return false;
@@ -194,10 +169,10 @@ public class boardLogic : MonoBehaviour
 		{	
 				//If this node's parent is a battery, return its voltage
 				if (referenceNode.parentComponent.componentType == 99) {
-				return referenceNode.parentComponent.GetComponent<battery>().voltage;
+					return referenceNode.parentComponent.componentVoltage;
 				}
 				//If not, go back a node and try again
-				else if (referenceNode.previousNode.Length != 0) {
+				else if (referenceNode.previousNode != null) {
 					return getOriginalVoltage(referenceNode.previousNode [0]);
 				}
 				//If there's no battery, return a negative value for voltage

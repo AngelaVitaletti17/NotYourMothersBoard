@@ -6,26 +6,26 @@ public class led : circuitComponent  // child of diode class?
 {
     
     public string color;
-    public int minVoltage;
-    public int maxVoltage;
+    public double minCurrent;
+    public double maxCurrent;
     //public int maxReverseVoltage;
 
     //Empty constructor
     public led()
     {
         color = null;
-        minVoltage = 0;
-        maxVoltage = 0;
+        minCurrent = 0;
+        maxCurrent = 0;
         componentType = 3;
 
     }
 
     //Full constructor
-    public led(string initColor, int initMinVoltage, int initMaxVoltage, componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked) : base( initInputNode, initOutputNode, initIsLocked)
+    public led(string initColor, int initMinCurrent, int initMaxCurrent, componentNode[] initInputNode, componentNode[] initOutputNode, bool initIsLocked) : base( initInputNode, initOutputNode, initIsLocked)
     {
         this.color = initColor;
-        this.minVoltage = initMinVoltage;
-        this.maxVoltage = initMaxVoltage;
+        this.minCurrent = initMinCurrent;
+        this.maxCurrent = initMaxCurrent;
         this.componentType = 3;
     }
 
@@ -35,14 +35,14 @@ public class led : circuitComponent  // child of diode class?
         return color;
     }
 
-    public int getMinVoltage()
+    public double getMinCurrent()
     {
-        return minVoltage;
+        return minCurrent;
     }
 
-    public int getVoltage()
+    public double getCurrent()
     {
-        return minVoltage;
+        return minCurrent;
     }
 
 
@@ -52,14 +52,14 @@ public class led : circuitComponent  // child of diode class?
         this.color = newColor;
     }
 
-    public void setMinVoltage(int newVoltage)
+    public void setMinCurrent(double newCurrent)
     {
-        this.minVoltage = newVoltage;
+        this.minCurrent = newCurrent;
     }
 
-    public void setMaxVoltage(int newVoltage)
+    public void setMaxCurrent(double newCurrent)
     {
-        this.maxVoltage = newVoltage;
+        this.maxCurrent = newCurrent;
     }
 
     //method to perform component function
@@ -67,12 +67,12 @@ public class led : circuitComponent  // child of diode class?
     {
 
         // Check acceptable inputs
-        if (this.componentCurrent < this.minVoltage)
+        if (this.componentCurrent < this.minCurrent)
         {
             return false;
         }
 
-        if (this.componentVoltage > this.maxVoltage)
+        if (this.componentCurrent > this.maxCurrent)
         {
             return false;
         }
