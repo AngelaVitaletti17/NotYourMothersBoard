@@ -10,6 +10,7 @@ public class tutorialUI : MonoBehaviour {
 	public Button openInventory; //The button that opens the Parts Catalogue
 	public Button closeInventory; //The button the closes the Parts Catalogue
 	public Button zoomOut; //The button for zooming out once on the bread board
+    public Button ClearOut; //for wiping the board
 	public GameObject inventory; //The gameobject in the scene that holds the Parts Catalogue (UI Panel)
 
 	//For items in inventory
@@ -80,6 +81,9 @@ public class tutorialUI : MonoBehaviour {
 
 		//Placing the battery
 		batteryLocation = new Vector3(-2.221f, 2.017f, -9.197f);
+
+        //Clearing the board
+        ClearOut.onClick.AddListener(clearBoard);
 	}
 
 	// Update is called once per frame
