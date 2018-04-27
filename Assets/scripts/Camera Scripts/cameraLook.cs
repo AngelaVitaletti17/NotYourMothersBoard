@@ -33,8 +33,12 @@ public class cameraLook : MonoBehaviour {
 		Vector3 newPos = new Vector3 (bb.transform.position.x, bb.transform.position.y + 0.4f, bb.transform.position.z);
 		UI.GetComponent<tutorialUI> ().zoomOut.gameObject.SetActive (true);
 		while (transform.eulerAngles != newRotation) {
-			transform.position = Vector3.MoveTowards (transform.position, newPos, 10f * Time.deltaTime);
+			transform.position = Vector3.MoveTowards (transform.position, newPosition, 10f * Time.deltaTime);
 			transform.eulerAngles = Vector3.RotateTowards (transform.eulerAngles, newRotation, 10f, 260f * Time.deltaTime);
+			yield return null;
+		}
+		while (transform.position != newPosition) {
+			transform.position = Vector3.MoveTowards (transform.position, newPosition, 10f * Time.deltaTime);
 			yield return null;
 		}
 		GetComponent<Camera> ().orthographic = true;
