@@ -5,7 +5,7 @@ using UnityEngine;
 public class battery : circuitComponent
 {
 
-    public int voltage;
+	public double voltage;
 
     //Website to Unity Inheritance 
     //https://unity3d.com/learn/tutorials/topics/scripting/inheritance
@@ -13,7 +13,7 @@ public class battery : circuitComponent
     //Empty constructor
     public battery()
     {
-        voltage = 0;
+        voltage = 0f;
         componentType = 1;
     }
 
@@ -26,14 +26,14 @@ public class battery : circuitComponent
 
 
     //Accessor methods
-    public int getVoltage()
+	public double getVoltage()
     {
         return voltage;
     }
 
 
     //Mutator methods
-    public void setVoltage(int newVoltage)
+	public void setVoltage(double newVoltage)
     {
         this.voltage = newVoltage;
     }
