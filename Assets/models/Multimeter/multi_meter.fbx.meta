@@ -7,16 +7,28 @@ ModelImporter:
   fileIDToRecycleName:
     100000: dial
     100002: //RootNode
+    100004: Hemi
+    100006: meter
+    100008: meter.001
     400000: dial
     400002: //RootNode
+    400004: Hemi
+    400006: meter
+    400008: meter.001
     2100000: meter
     2100002: dial
     2300000: dial
     2300002: //RootNode
+    2300004: meter
+    2300006: meter.001
     3300000: dial
     3300002: //RootNode
+    3300004: meter
+    3300006: meter.001
     4300000: meter
     4300002: dial
+    4300004: meter.001
+    10800000: Hemi
   externalObjects: {}
   materials:
     importMaterials: 1

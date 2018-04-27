@@ -30,19 +30,23 @@ public class multimeter : MonoBehaviour {
 			cam.transform.eulerAngles = zoomRotation;
 			pickedUp = true;
 		} else if (Input.GetKeyDown (KeyCode.F) && pickedUp) { //The multimeter needs to be put down
-			cam.GetComponent<Camera>().orthographic = lastView;
+			cam.GetComponent<Camera> ().orthographic = lastView;
 			cam.transform.position = lastPos;
 			cam.transform.eulerAngles = lastRot;
 			pickedUp = false;
-		} else if (Input.GetKeyDown (KeyCode.D) && pickedUp) { //Rotate the dial to the next position
-			if (rIndex == rotationAngles.Length) //We're at the end of the array
-				rIndex = 0;
-			dial.transform.eulerAngles = rotationAngles [rIndex];
-			rIndex++;
 		} else if (!pickedUp) {
 			lastPos = cam.transform.position;
 			lastRot = cam.transform.eulerAngles;
 			lastView = cam.GetComponent<Camera> ().orthographic;
+		} else if (pickedUp) {
+			//Detect if the player is clicking the dial
+			if (Input.GetMouseButtonDown (0)) {
+				rIndex++;
+				if (rIndex == rotationAngles.Length)
+					rIndex = 0;
+				Vector3 a = new Vector3 (0f, rotationAngles [rIndex].y, 0f);
+				dial.transform.localEulerAngles = a;
+			}
 		}
 	}
 
