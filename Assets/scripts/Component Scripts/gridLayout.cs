@@ -365,7 +365,7 @@ public class gridLayout : MonoBehaviour
 		}
 		alreadyInit = true;
 	}
-	void OnDrawGizmos(){
+	/*void OnDrawGizmos(){
 		BoxCollider b = GetComponent<BoxCollider> (); //represents the collider of the breadboard
 		//Gizmos.color = Color.cyan; //the color of the spheres that will represent the grid spot
 		Vector3 start = Vector3.zero;
@@ -436,5 +436,5 @@ public class gridLayout : MonoBehaviour
 				Gizmos.DrawSphere(newPos, 0.007f); //Draw a sphere to represent a spot in the board
 			}
 		}
-	}
+	}*/
 }
