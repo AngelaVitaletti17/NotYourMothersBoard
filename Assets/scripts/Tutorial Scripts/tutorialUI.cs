@@ -134,34 +134,31 @@ public class tutorialUI : MonoBehaviour {
 					if (GameObject.Find ("battery_spawner(Clone)")) 
 						{
 							if (global_LL.head.nextNode.Length != 0) 
+							{
+								if (boardlogic.doCircuitLogicSeries (global_LL.head, global_LL.tail)) 
 								{
-							if (boardlogic.doCircuitLogicSeries (global_LL.head, global_LL.tail)) {
-								print ("Circuit Working");
-
+									print ("Circuit Working");
+								//Check if correct components were used
 								//&& boardlogic.traceForward(global_LL.head,6)
 								//add above to if statement if switch is fixed to size 2x1
-								if (boardlogic.traceForward(global_LL.head,2)&& boardlogic.traceForward(global_LL.head,3))
+									if (boardlogic.traceForward (global_LL.head, 2) && boardlogic.traceForward (global_LL.head, 3)) 
 									{
-									print("CORRECT COMPONENTS USED");
-
+										print ("CORRECT COMPONENTS USED");
+									} else {
+										print ("Correct components not used");
 									}
-								} else 
-								{
-									print ("Just a battery.");
+
 								}
-
-
-							} else {
-								print ("Circuit Broken");
-
+								else 
+								{
+									print ("Circuit not functioning correctly or broken circuit?");
+								}
+							} else 
+							{
+								print ("Just a battery.");
 							}
-									
-									//Check if correct components were used
-
-
-
 						} else
-							print ("Nope.");
+							print ("Battery not spawned");
 					
 
 				}
