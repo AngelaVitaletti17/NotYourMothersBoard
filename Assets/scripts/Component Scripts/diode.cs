@@ -50,7 +50,7 @@ public class diode : circuitComponent
     }
 
     //method to perform component function
-    public new bool doComponentLogic(double circuitVoltage, double circuitCurrent)
+    public override bool doComponentLogic(double circuitVoltage, double circuitCurrent)
     {
         // Check acceptable inputs                
         if (this.componentVoltage > this.maxVoltage)
@@ -60,7 +60,7 @@ public class diode : circuitComponent
         return true;
     }
     
-    public new bool doComponentLogic()
+    public override bool doComponentLogic()
     {
         //default part works fine
         return true;

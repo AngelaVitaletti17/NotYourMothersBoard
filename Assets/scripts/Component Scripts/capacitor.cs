@@ -33,13 +33,13 @@ public class capacitor : circuitComponent
     }
 
     //method to perform component function
-    public new bool doComponentLogic(double circuitVoltage, double circuitCurrent)
+	public override bool doComponentLogic(double circuitVoltage, double circuitCurrent)
     {
         //default part works fine
         return true;
     }
 
-    public new bool doComponentLogic()
+	public override bool doComponentLogic()
     {
         //default part works fine
         return true;

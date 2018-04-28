@@ -41,7 +41,7 @@ public class circuitSwitch : circuitComponent
     }
 
     //method to perform component function
-    public new bool doComponentLogic(double circuitVoltage, double circuitCurrent)
+    public override bool doComponentLogic(double circuitVoltage, double circuitCurrent)
     {
         //check if switch on or off
         if (this.getGateStatus())
@@ -50,7 +50,7 @@ public class circuitSwitch : circuitComponent
             return false;
     }
     
-    public new bool doComponentLogic()
+    public override bool doComponentLogic()
     {
         //default part works fine
         return true;

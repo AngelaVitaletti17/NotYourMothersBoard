@@ -130,20 +130,38 @@ public class tutorialUI : MonoBehaviour {
 
 				} else if (hit.transform.name == "button") {
 
-					/*
+
 					//Next line should check for null on global_LL.head 1==1
-					if (1==1) {
-						if (global_LL.head.nextNode.Length != 0) {
-							if (boardlogic.isCompleteCircuitSeries (global_LL.head.nextNode [0])) {// circuit is complete ^^ see above
-								print ("Circuit completed.");
+					if (GameObject.Find ("battery_spawner(Clone)")) 
+						{
+							if (global_LL.head.nextNode.Length != 0) 
+							{
+								if (boardlogic.doCircuitLogicSeries (global_LL.head, global_LL.tail)) 
+								{
+									print ("Circuit Working");
+								//Check if correct components were used
+								//&& boardlogic.traceForward(global_LL.head,6)
+								//add above to if statement if switch is fixed to size 2x1
+									if (boardlogic.traceForward (global_LL.head, 2) && boardlogic.traceForward (global_LL.head, 3)) 
+									{
+										print ("CORRECT COMPONENTS USED");
+									} else {
+										print ("Correct components not used");
+									}
+
+								}
+								else 
+								{
+									print ("Circuit not functioning correctly or broken circuit?");
+								}
+							} else 
+							{
+								print ("Just a battery.");
 							}
-							print ("Test complete.");
 						} else
-							print ("Just a battery.");
-					} else
-						print ("Nope.");
-					*/
-					print (boardlogic.doCircuitLogicSeries (global_LL.head, global_LL.tail));
+							print ("Battery not spawned");
+					
+
 				}
 				//Check to see if newItem is in the placed list
 				if (placed.Contains (newItem)) {

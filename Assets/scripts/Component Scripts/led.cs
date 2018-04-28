@@ -63,7 +63,7 @@ public class led : circuitComponent  // child of diode class?
     }
 
     //method to perform component function
-    public new bool doComponentLogic(double circuitVoltage, double circuitCurrent)
+    public override bool doComponentLogic(double circuitVoltage, double circuitCurrent)
     {
 
         // Check acceptable inputs
@@ -79,7 +79,7 @@ public class led : circuitComponent  // child of diode class?
         return true;
     }
     
-    public new bool doComponentLogic()
+    public override bool doComponentLogic()
     {
         //no circuitVoltage or cicuitCurrent to check
         return false;

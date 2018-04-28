@@ -158,7 +158,7 @@ public class linkedList : MonoBehaviour
 		componentNode refrence = this.head;
 
 		do {
-			print (refrence.objectID);
+			print (refrence.parentComponent);
 			if (refrence.getXPos () != this.tail.getXPos ())
 			{
 				if (refrence.nextNode.Length != 0)
@@ -172,7 +172,7 @@ public class linkedList : MonoBehaviour
 				if (refrence.nextNode.Length != 0)
 				{
 					refrence = refrence.nextNode [0];
-					print (refrence.objectID);
+					print (refrence.parentComponent);
 					break;
 				}
 				else break;
