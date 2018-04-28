@@ -1697,7 +1697,7 @@ MonoBehaviour:
   componentVoltage: 0
   componentResistance: 0
   isLocked: 1
-  voltage: 1.5
+  voltage: 9
 --- !u!54 &339510895
 Rigidbody:
   m_ObjectHideFlags: 0

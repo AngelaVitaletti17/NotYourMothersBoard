@@ -36,12 +36,9 @@ public class circuitComponent : MonoBehaviour
 
 	//Inherited method to perform component function. If not overridden by specific component,
 	//assume an error and return false
-	public bool doComponentLogic()
-	{
-		return false;
+	public virtual bool doComponentLogic(){ return false;}
+
+	public virtual bool doComponentLogic (double circuitVoltage, double circuitCurrent){return false;
 	}
-    public bool doComponentLogic(double circuitVoltage, double circuitCurrent)
-    {
-        return false;
-    }
+    
 }
