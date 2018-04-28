@@ -8,9 +8,10 @@ public class multimeter : MonoBehaviour {
 	public Vector3[] rotationAngles; //An array of positions for each rotation
 	public Vector3 initPos, zoomPos, initRotation, zoomRotation; //Represents the initial position and the zoomed in position
 	public GameObject breadboard, cam; //The breadboard
-	private GameObject dial, mReading; //Access to the dial and the text for the multimeter reading
+	public bool update = false;
+	public GameObject dial, mReading; //Access to the dial and the text for the multimeter reading
 	private bool pickedUp = false;
-	private int rIndex = 0;
+	public int rIndex = 0;
 	private Vector3 lastPos, lastRot;
 	private bool lastView = false;
 
@@ -41,6 +42,10 @@ public class multimeter : MonoBehaviour {
 		} else if (pickedUp) {
 			//Detect if the player is clicking the dial
 			if (Input.GetMouseButtonDown (0)) {
+				print (rIndex);
+				if (rIndex == rotationAngles.Length - 1)
+					updateReading ("");
+				update = true;
 				rIndex++;
 				if (rIndex == rotationAngles.Length)
 					rIndex = 0;
@@ -56,7 +61,7 @@ public class multimeter : MonoBehaviour {
 	}
 
 	//For checking if the right option is selected to read the value on the multimeter
-	public string checkState(GameObject component){
-		return "hi";
+	public int checkState(){
+		return rIndex;
 	}
 }

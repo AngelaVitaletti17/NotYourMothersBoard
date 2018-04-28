@@ -7177,7 +7177,7 @@ MonoBehaviour:
   componentVoltage: 0
   componentResistance: 0
   isLocked: 1
-  voltage: 999
+  voltage: 0
 --- !u!65 &1041369946
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11392,6 +11392,24 @@ Prefab:
       propertyPath: m_LocalPosition.z
       value: -0.0005
       objectReference: {fileID: 0}
+    - target: {fileID: 102625296714462668, guid: 89e1ab992070c434992886f42e138cd4,
+        type: 2}
+      propertyPath: m_Text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 102625296714462668, guid: 89e1ab992070c434992886f42e138cd4,
+        type: 2}
+      propertyPath: m_FontSize
+      value: 125
+      objectReference: {fileID: 0}
+    - target: {fileID: 4030720162381470, guid: 89e1ab992070c434992886f42e138cd4, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.0061
+      objectReference: {fileID: 0}
+    - target: {fileID: 4030720162381470, guid: 89e1ab992070c434992886f42e138cd4, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0.0143
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114857102601982730, guid: 89e1ab992070c434992886f42e138cd4, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 89e1ab992070c434992886f42e138cd4, type: 2}
@@ -11429,6 +11447,10 @@ MonoBehaviour:
   zoomRotation: {x: 90, y: 270, z: 0}
   breadboard: {fileID: 2065923309}
   cam: {fileID: 1988143593}
+  update: 0
+  dial: {fileID: 0}
+  mReading: {fileID: 0}
+  rIndex: 0
 --- !u!1 &1933461820
 GameObject:
   m_ObjectHideFlags: 0
@@ -11806,6 +11828,8 @@ MonoBehaviour:
   sPenOrigin: {x: 0, y: 0, z: 0}
   sAngleOrig: {x: 0, y: 0, z: 0}
   sAngleNew: {x: 0, y: 0, z: 0}
+  meter: {fileID: 1930725314}
+  currentObject: {fileID: 0}
   meterMode: 0
   pen1: {fileID: 1078635443}
   pen2: {fileID: 1023665230}

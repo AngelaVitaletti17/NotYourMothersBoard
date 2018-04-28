@@ -48,6 +48,7 @@ public class tutorialUI : MonoBehaviour {
 	public Vector3 sPenOrigin, sAngleOrig, sAngleNew;
 
 	//For multimeter
+	public GameObject meter, currentObject;
 	public bool meterMode = false;
 	public GameObject pen1, pen2;
 	private Vector3 p1p, p2p, p1r, p2r;
@@ -424,68 +425,64 @@ public class tutorialUI : MonoBehaviour {
 					if (newItem.name.Contains ("chip_spawner")) {
 
 					} else if (newItem.name.Contains ("diode_spawner")) {
-                        print("spawning diode ");
-                        // sets componentNodes of newItem
-                        inputNode = new componentNode(newItem.GetInstanceID(), newItem.GetComponent<diode>(), inX, inZ, nullNode_Array, nullNode_Array);
-                        outputNode = new componentNode(newItem.GetInstanceID(), newItem.GetComponent<diode>(), outX, outZ, nullNode_Array, nullNode_Array);
+						print ("spawning diode ");
+						// sets componentNodes of newItem
+						inputNode = new componentNode (newItem.GetInstanceID (), newItem.GetComponent<diode> (), inX, inZ, nullNode_Array, nullNode_Array);
+						outputNode = new componentNode (newItem.GetInstanceID (), newItem.GetComponent<diode> (), outX, outZ, nullNode_Array, nullNode_Array);
 
-                        if (leftNodeIsConnected || rightNodeIsConnected)
-                        {
-                            var nextNode_Array = new componentNode[] { };
-                            var previousNode_Array = new componentNode[] { };
+						if (leftNodeIsConnected || rightNodeIsConnected) {
+							var nextNode_Array = new componentNode[] { };
+							var previousNode_Array = new componentNode[] { };
 
-                            //sets next/previous nodes for inputNode
-                            nextNode_Array = new componentNode[] { outputNode };
-                            previousNode_Array = new componentNode[] { pseudoTail };
-                            inputNode.setNextNode(nextNode_Array);
-                            inputNode.setPreviousNode(previousNode_Array);
+							//sets next/previous nodes for inputNode
+							nextNode_Array = new componentNode[] { outputNode };
+							previousNode_Array = new componentNode[] { pseudoTail };
+							inputNode.setNextNode (nextNode_Array);
+							inputNode.setPreviousNode (previousNode_Array);
 
-                            previousNode_Array = new componentNode[] { inputNode };
-                            pseudoTail.setNextNode(previousNode_Array);
+							previousNode_Array = new componentNode[] { inputNode };
+							pseudoTail.setNextNode (previousNode_Array);
 
-                            outputNode.setNextNode(nullNode_Array);
-                            outputNode.setPreviousNode(previousNode_Array);
+							outputNode.setNextNode (nullNode_Array);
+							outputNode.setPreviousNode (previousNode_Array);
 
-                            if (outputNode.getXPos() == global_LL.tail.getXPos())
-                            {
-                                previousNode_Array = new componentNode[] { global_LL.tail };
-                                outputNode.setNextNode(previousNode_Array);
-                                global_LL.tail.setPreviousNode(nextNode_Array);
-                            }
-                        }
+							if (outputNode.getXPos () == global_LL.tail.getXPos ()) {
+								previousNode_Array = new componentNode[] { global_LL.tail };
+								outputNode.setNextNode (previousNode_Array);
+								global_LL.tail.setPreviousNode (nextNode_Array);
+							}
+						}
 
-                    } else if (newItem.name.Contains ("elec_cap_spawner")) {
-                        print("spawning capacitor ");
-                        // sets componentNodes of newItem
-                        inputNode = new componentNode(newItem.GetInstanceID(), newItem.GetComponent<capacitor>(), inX, inZ, nullNode_Array, nullNode_Array);
-                        outputNode = new componentNode(newItem.GetInstanceID(), newItem.GetComponent<capacitor>(), outX, outZ, nullNode_Array, nullNode_Array);
+					} else if (newItem.name.Contains ("elec_cap_spawner")) {
+						print ("spawning capacitor ");
+						// sets componentNodes of newItem
+						inputNode = new componentNode (newItem.GetInstanceID (), newItem.GetComponent<capacitor> (), inX, inZ, nullNode_Array, nullNode_Array);
+						outputNode = new componentNode (newItem.GetInstanceID (), newItem.GetComponent<capacitor> (), outX, outZ, nullNode_Array, nullNode_Array);
 
-                        if (leftNodeIsConnected || rightNodeIsConnected)
-                        {
-                            var nextNode_Array = new componentNode[] { };
-                            var previousNode_Array = new componentNode[] { };
+						if (leftNodeIsConnected || rightNodeIsConnected) {
+							var nextNode_Array = new componentNode[] { };
+							var previousNode_Array = new componentNode[] { };
 
-                            //sets next/previous nodes for inputNode
-                            nextNode_Array = new componentNode[] { outputNode };
-                            previousNode_Array = new componentNode[] { pseudoTail };
-                            inputNode.setNextNode(nextNode_Array);
-                            inputNode.setPreviousNode(previousNode_Array);
+							//sets next/previous nodes for inputNode
+							nextNode_Array = new componentNode[] { outputNode };
+							previousNode_Array = new componentNode[] { pseudoTail };
+							inputNode.setNextNode (nextNode_Array);
+							inputNode.setPreviousNode (previousNode_Array);
 
-                            previousNode_Array = new componentNode[] { inputNode };
-                            pseudoTail.setNextNode(previousNode_Array);
+							previousNode_Array = new componentNode[] { inputNode };
+							pseudoTail.setNextNode (previousNode_Array);
 
-                            outputNode.setNextNode(nullNode_Array);
-                            outputNode.setPreviousNode(previousNode_Array);
+							outputNode.setNextNode (nullNode_Array);
+							outputNode.setPreviousNode (previousNode_Array);
 
-                            if (outputNode.getXPos() == global_LL.tail.getXPos())
-                            {
-                                previousNode_Array = new componentNode[] { global_LL.tail };
-                                outputNode.setNextNode(previousNode_Array);
-                                global_LL.tail.setPreviousNode(nextNode_Array);
-                            }
-                        }
+							if (outputNode.getXPos () == global_LL.tail.getXPos ()) {
+								previousNode_Array = new componentNode[] { global_LL.tail };
+								outputNode.setNextNode (previousNode_Array);
+								global_LL.tail.setPreviousNode (nextNode_Array);
+							}
+						}
 
-                    } else if (newItem.name.Contains ("resistor_spawner")) {
+					} else if (newItem.name.Contains ("resistor_spawner")) {
 						print ("spawning resistor ");
 						// sets componentNodes of newItem
 						inputNode = new componentNode (newItem.GetInstanceID (), newItem.GetComponent<resistor> (), inX, inZ, nullNode_Array, nullNode_Array);
@@ -514,130 +511,122 @@ public class tutorialUI : MonoBehaviour {
 							}
 						}
 					} else if (newItem.name.Contains ("LED_spawner")) {
-                        print("spawning led ");
-                        // sets componentNodes of newItem
-                        inputNode = new componentNode(newItem.GetInstanceID(), newItem.GetComponent<led>(), inX, inZ, nullNode_Array, nullNode_Array);
-                        outputNode = new componentNode(newItem.GetInstanceID(), newItem.GetComponent<led>(), outX, outZ, nullNode_Array, nullNode_Array);
+						print ("spawning led ");
+						// sets componentNodes of newItem
+						inputNode = new componentNode (newItem.GetInstanceID (), newItem.GetComponent<led> (), inX, inZ, nullNode_Array, nullNode_Array);
+						outputNode = new componentNode (newItem.GetInstanceID (), newItem.GetComponent<led> (), outX, outZ, nullNode_Array, nullNode_Array);
 
-                        if (leftNodeIsConnected || rightNodeIsConnected)
-                        {
-                            var nextNode_Array = new componentNode[] { };
-                            var previousNode_Array = new componentNode[] { };
+						if (leftNodeIsConnected || rightNodeIsConnected) {
+							var nextNode_Array = new componentNode[] { };
+							var previousNode_Array = new componentNode[] { };
 
-                            //sets next/previous nodes for inputNode
-                            nextNode_Array = new componentNode[] { outputNode };
-                            previousNode_Array = new componentNode[] { pseudoTail };
-                            inputNode.setNextNode(nextNode_Array);
-                            inputNode.setPreviousNode(previousNode_Array);
+							//sets next/previous nodes for inputNode
+							nextNode_Array = new componentNode[] { outputNode };
+							previousNode_Array = new componentNode[] { pseudoTail };
+							inputNode.setNextNode (nextNode_Array);
+							inputNode.setPreviousNode (previousNode_Array);
 
-                            previousNode_Array = new componentNode[] { inputNode };
-                            pseudoTail.setNextNode(previousNode_Array);
+							previousNode_Array = new componentNode[] { inputNode };
+							pseudoTail.setNextNode (previousNode_Array);
 
-                            outputNode.setNextNode(nullNode_Array);
-                            outputNode.setPreviousNode(previousNode_Array);
+							outputNode.setNextNode (nullNode_Array);
+							outputNode.setPreviousNode (previousNode_Array);
 
-                            if (outputNode.getXPos() == global_LL.tail.getXPos())
-                            {
-                                previousNode_Array = new componentNode[] { global_LL.tail };
-                                outputNode.setNextNode(previousNode_Array);
-                                global_LL.tail.setPreviousNode(nextNode_Array);
-                            }
-                        }
+							if (outputNode.getXPos () == global_LL.tail.getXPos ()) {
+								previousNode_Array = new componentNode[] { global_LL.tail };
+								outputNode.setNextNode (previousNode_Array);
+								global_LL.tail.setPreviousNode (nextNode_Array);
+							}
+						}
 
-                    } else if (newItem.name.Contains ("switch_spawner")) {
-                        print("spawning switch ");
-                        // sets componentNodes of newItem
-                        inputNode = new componentNode(newItem.GetInstanceID(), newItem.GetComponent<circuitSwitch>(), inX, inZ, nullNode_Array, nullNode_Array);
-                        outputNode = new componentNode(newItem.GetInstanceID(), newItem.GetComponent<circuitSwitch>(), outX, outZ, nullNode_Array, nullNode_Array);
+					} else if (newItem.name.Contains ("switch_spawner")) {
+						print ("spawning switch ");
+						// sets componentNodes of newItem
+						inputNode = new componentNode (newItem.GetInstanceID (), newItem.GetComponent<circuitSwitch> (), inX, inZ, nullNode_Array, nullNode_Array);
+						outputNode = new componentNode (newItem.GetInstanceID (), newItem.GetComponent<circuitSwitch> (), outX, outZ, nullNode_Array, nullNode_Array);
 
-                        if (leftNodeIsConnected || rightNodeIsConnected)
-                        {
-                            var nextNode_Array = new componentNode[] { };
-                            var previousNode_Array = new componentNode[] { };
+						if (leftNodeIsConnected || rightNodeIsConnected) {
+							var nextNode_Array = new componentNode[] { };
+							var previousNode_Array = new componentNode[] { };
 
-                            //sets next/previous nodes for inputNode
-                            nextNode_Array = new componentNode[] { outputNode };
-                            previousNode_Array = new componentNode[] { pseudoTail };
-                            inputNode.setNextNode(nextNode_Array);
-                            inputNode.setPreviousNode(previousNode_Array);
+							//sets next/previous nodes for inputNode
+							nextNode_Array = new componentNode[] { outputNode };
+							previousNode_Array = new componentNode[] { pseudoTail };
+							inputNode.setNextNode (nextNode_Array);
+							inputNode.setPreviousNode (previousNode_Array);
 
-                            previousNode_Array = new componentNode[] { inputNode };
-                            pseudoTail.setNextNode(previousNode_Array);
+							previousNode_Array = new componentNode[] { inputNode };
+							pseudoTail.setNextNode (previousNode_Array);
 
-                            outputNode.setNextNode(nullNode_Array);
-                            outputNode.setPreviousNode(previousNode_Array);
+							outputNode.setNextNode (nullNode_Array);
+							outputNode.setPreviousNode (previousNode_Array);
 
-                            if (outputNode.getXPos() == global_LL.tail.getXPos())
-                            {
-                                previousNode_Array = new componentNode[] { global_LL.tail };
-                                outputNode.setNextNode(previousNode_Array);
-                                global_LL.tail.setPreviousNode(nextNode_Array);
-                            }
-                        }
+							if (outputNode.getXPos () == global_LL.tail.getXPos ()) {
+								previousNode_Array = new componentNode[] { global_LL.tail };
+								outputNode.setNextNode (previousNode_Array);
+								global_LL.tail.setPreviousNode (nextNode_Array);
+							}
+						}
 
-                    } else if (newItem.name.Contains ("wire_spawner")) {
-                        print("spawning wire ");
-                        // sets componentNodes of newItem
-                        inputNode = new componentNode(newItem.GetInstanceID(), newItem.GetComponent<wire>(), inX, inZ, nullNode_Array, nullNode_Array);
-                        outputNode = new componentNode(newItem.GetInstanceID(), newItem.GetComponent<wire>(), outX, outZ, nullNode_Array, nullNode_Array);
+					} else if (newItem.name.Contains ("wire_spawner")) {
+						print ("spawning wire ");
+						// sets componentNodes of newItem
+						inputNode = new componentNode (newItem.GetInstanceID (), newItem.GetComponent<wire> (), inX, inZ, nullNode_Array, nullNode_Array);
+						outputNode = new componentNode (newItem.GetInstanceID (), newItem.GetComponent<wire> (), outX, outZ, nullNode_Array, nullNode_Array);
 
-                        if (leftNodeIsConnected || rightNodeIsConnected)
-                        {
-                            var nextNode_Array = new componentNode[] { };
-                            var previousNode_Array = new componentNode[] { };
+						if (leftNodeIsConnected || rightNodeIsConnected) {
+							var nextNode_Array = new componentNode[] { };
+							var previousNode_Array = new componentNode[] { };
 
-                            //sets next/previous nodes for inputNode
-                            nextNode_Array = new componentNode[] { outputNode };
-                            previousNode_Array = new componentNode[] { pseudoTail };
-                            inputNode.setNextNode(nextNode_Array);
-                            inputNode.setPreviousNode(previousNode_Array);
+							//sets next/previous nodes for inputNode
+							nextNode_Array = new componentNode[] { outputNode };
+							previousNode_Array = new componentNode[] { pseudoTail };
+							inputNode.setNextNode (nextNode_Array);
+							inputNode.setPreviousNode (previousNode_Array);
 
-                            previousNode_Array = new componentNode[] { inputNode };
-                            pseudoTail.setNextNode(previousNode_Array);
+							previousNode_Array = new componentNode[] { inputNode };
+							pseudoTail.setNextNode (previousNode_Array);
 
-                            outputNode.setNextNode(nullNode_Array);
-                            outputNode.setPreviousNode(previousNode_Array);
+							outputNode.setNextNode (nullNode_Array);
+							outputNode.setPreviousNode (previousNode_Array);
 
-                            if (outputNode.getXPos() == global_LL.tail.getXPos())
-                            {
-                                previousNode_Array = new componentNode[] { global_LL.tail };
-                                outputNode.setNextNode(previousNode_Array);
-                                global_LL.tail.setPreviousNode(nextNode_Array);
-                            }
-                        }
+							if (outputNode.getXPos () == global_LL.tail.getXPos ()) {
+								previousNode_Array = new componentNode[] { global_LL.tail };
+								outputNode.setNextNode (previousNode_Array);
+								global_LL.tail.setPreviousNode (nextNode_Array);
+							}
+						}
 
-                    } else if (newItem.name.Contains ("transistor_spawner")) {
-                        print("spawning transitor ");
-                        // sets componentNodes of newItem
-                        inputNode = new componentNode(newItem.GetInstanceID(), newItem.GetComponent<resistor>(), inX, inZ, nullNode_Array, nullNode_Array);
-                        outputNode = new componentNode(newItem.GetInstanceID(), newItem.GetComponent<resistor>(), outX, outZ, nullNode_Array, nullNode_Array);
+					} else if (newItem.name.Contains ("transistor_spawner")) {
+						print ("spawning transitor ");
+						// sets componentNodes of newItem
+						inputNode = new componentNode (newItem.GetInstanceID (), newItem.GetComponent<resistor> (), inX, inZ, nullNode_Array, nullNode_Array);
+						outputNode = new componentNode (newItem.GetInstanceID (), newItem.GetComponent<resistor> (), outX, outZ, nullNode_Array, nullNode_Array);
 
-                        if (leftNodeIsConnected || rightNodeIsConnected)
-                        {
-                            var nextNode_Array = new componentNode[] { };
-                            var previousNode_Array = new componentNode[] { };
+						if (leftNodeIsConnected || rightNodeIsConnected) {
+							var nextNode_Array = new componentNode[] { };
+							var previousNode_Array = new componentNode[] { };
 
-                            //sets next/previous nodes for inputNode
-                            nextNode_Array = new componentNode[] { outputNode };
-                            previousNode_Array = new componentNode[] { pseudoTail };
-                            inputNode.setNextNode(nextNode_Array);
-                            inputNode.setPreviousNode(previousNode_Array);
+							//sets next/previous nodes for inputNode
+							nextNode_Array = new componentNode[] { outputNode };
+							previousNode_Array = new componentNode[] { pseudoTail };
+							inputNode.setNextNode (nextNode_Array);
+							inputNode.setPreviousNode (previousNode_Array);
 
-                            previousNode_Array = new componentNode[] { inputNode };
-                            pseudoTail.setNextNode(previousNode_Array);
+							previousNode_Array = new componentNode[] { inputNode };
+							pseudoTail.setNextNode (previousNode_Array);
 
-                            outputNode.setNextNode(nullNode_Array);
-                            outputNode.setPreviousNode(previousNode_Array);
+							outputNode.setNextNode (nullNode_Array);
+							outputNode.setPreviousNode (previousNode_Array);
 
-                            if (outputNode.getXPos() == global_LL.tail.getXPos())
-                            {
-                                previousNode_Array = new componentNode[] { global_LL.tail };
-                                outputNode.setNextNode(previousNode_Array);
-                                global_LL.tail.setPreviousNode(nextNode_Array);
-                            }
-                        }
+							if (outputNode.getXPos () == global_LL.tail.getXPos ()) {
+								previousNode_Array = new componentNode[] { global_LL.tail };
+								outputNode.setNextNode (previousNode_Array);
+								global_LL.tail.setPreviousNode (nextNode_Array);
+							}
+						}
 
-                    }
+					}
 				}
 				global_LL.printList ();
 			} 
@@ -658,33 +647,81 @@ public class tutorialUI : MonoBehaviour {
 			pen2.transform.position = p2p;
 			pen1.transform.eulerAngles = p1r;
 			pen2.transform.eulerAngles = p2r;
+			if (meter.GetComponent<multimeter> ().rIndex == 0) { //It's off
+				meter.GetComponent<multimeter> ().updateReading ("");
+			} else
+				meter.GetComponent<multimeter> ().updateReading ("-----");
+
 		} else if (meterMode) { //We are currently in meter mode, now we can snap shit
-			closePartsCatalogue();
-			if (Input.GetMouseButtonDown (0)) { //We've clicked something, let us see what it is
+			closePartsCatalogue ();
+			circuitComponent cc = null;
+			if (Input.GetMouseButtonDown (0)) { //We've clicked something, let us see what it is OR something needs to be updated cuz we touched the dial
 				RaycastHit hit; 
 				Ray ray = mainCam.GetComponent<Camera> ().ScreenPointToRay (Input.mousePosition);
 				if (Physics.Raycast (ray, out hit)) {
+					print (hit.transform.gameObject);
 					if (hit.transform.gameObject.tag == "component") { //We are hitting a component, let's snap some pens
 						Vector3 snappedAlready = Vector3.zero;
 						for (int i = 0; i < grid.positionHolder.Length; i++) {
 							if (snappedAlready != Vector3.zero && grid.posAndSpots [grid.positionHolder [i]] == hit.transform.gameObject) {
 								pen2.transform.position = grid.positionHolder [i];
-								if (Mathf.Round(hit.transform.gameObject.transform.eulerAngles.y) == 270f || Mathf.Round(hit.transform.gameObject.transform.eulerAngles.y) == 90f)
+								if (Mathf.Round (hit.transform.gameObject.transform.eulerAngles.y) == 270f || Mathf.Round (hit.transform.gameObject.transform.eulerAngles.y) == 90f)
 									pen2.transform.eulerAngles = new Vector3 (0f, 0f, 20f);
-								else if (Mathf.Round(hit.transform.gameObject.transform.eulerAngles.y) == 180f || Mathf.Round(hit.transform.gameObject.transform.eulerAngles.y) == 0f)
+								else if (Mathf.Round (hit.transform.gameObject.transform.eulerAngles.y) == 180f || Mathf.Round (hit.transform.gameObject.transform.eulerAngles.y) == 0f)
 									pen2.transform.eulerAngles = new Vector3 (20f, 90f, 0f);
 								break;
 							} else if (grid.posAndSpots [grid.positionHolder [i]] == hit.transform.gameObject) {
 								snappedAlready = grid.positionHolder [i];
 								pen1.transform.position = grid.positionHolder [i];
-								if (Mathf.Round(hit.transform.gameObject.transform.eulerAngles.y) == 270f || Mathf.Round(hit.transform.gameObject.transform.eulerAngles.y) == 90f)
+								if (Mathf.Round (hit.transform.gameObject.transform.eulerAngles.y) == 270f || Mathf.Round (hit.transform.gameObject.transform.eulerAngles.y) == 90f)
 									pen1.transform.eulerAngles = new Vector3 (0f, 0f, 20f);
-								else if (Mathf.Round(hit.transform.gameObject.transform.eulerAngles.y) == 180f || Mathf.Round(hit.transform.gameObject.transform.eulerAngles.y) == 0f)
+								else if (Mathf.Round (hit.transform.gameObject.transform.eulerAngles.y) == 180f || Mathf.Round (hit.transform.gameObject.transform.eulerAngles.y) == 0f)
 									pen1.transform.eulerAngles = new Vector3 (20f, 90f, 0f);
 							}
 						}
+						cc = hit.transform.gameObject.GetComponent<circuitComponent> ();
+						currentObject = hit.transform.gameObject;
+					} if (meter.GetComponent<multimeter>().update) {
+						cc = currentObject.transform.gameObject.GetComponent<circuitComponent> ();
 					}
-				}
+					//Make sure cc is not null
+					if (cc != null) {
+						if (cc.componentType == 0) { //NULL
+
+						} else if (cc.componentType == 1) { //Battery
+							double b = cc.GetComponent<battery> ().voltage;
+							if (meter.GetComponent<multimeter> ().checkState () == 1) //We're in the battery state
+							meter.GetComponent<multimeter> ().updateReading (b.ToString ());
+						} else if (cc.componentType == 2) { //Resistor
+							double cur = cc.componentCurrent;
+							double v = cc.componentVoltage;
+							double res = cc.GetComponent<resistor> ().getOhms ();
+							if (meter.GetComponent<multimeter> ().checkState () == 1) //DC Voltage
+							meter.GetComponent<multimeter> ().updateReading (v.ToString ());
+							else if (meter.GetComponent<multimeter> ().checkState () == 3) //Smol amps
+							meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "p");
+							else if (meter.GetComponent<multimeter> ().checkState () == 4) //milli amps
+							meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "m");
+							else if (meter.GetComponent<multimeter> ().checkState () == 5) // amps
+							meter.GetComponent<multimeter> ().updateReading (cur.ToString ());
+							else if (meter.GetComponent<multimeter> ().checkState () == 7) //ohms
+							meter.GetComponent<multimeter> ().updateReading (res.ToString ());
+						} else if (cc.componentType == 3) { //LED
+
+						} else if (cc.componentType == 4) { //Capacitor
+
+						} else if (cc.componentType == 5) { //Diode
+
+						} else if (cc.componentType == 6) { //Switch
+
+						} else if (cc.componentType == 7) { //Potentiometer
+
+						} else if (cc.componentType == 99) { //Wire
+
+						}
+					}
+				} 
+					meter.GetComponent<multimeter> ().update = false;
 			}
 		}
 	}

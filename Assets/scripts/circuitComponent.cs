@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class circuitComponent : MonoBehaviour
 {
-	public int componentType; // 0-NULL 1-battery 2-resistor 3-led 4-capacitor 5-diode 6-circuitSwitch 7-potentiometer
+	public int componentType; // 0-NULL 1-battery 2-resistor 3-led 4-capacitor 5-diode 6-circuitSwitch 7-potentiometer 99-Wire
 	public componentNode[] inputNode;
 	public componentNode[] outputNode;
 	public double componentCurrent;
