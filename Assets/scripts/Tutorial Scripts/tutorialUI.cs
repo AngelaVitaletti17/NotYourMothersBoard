@@ -53,12 +53,17 @@ public class tutorialUI : MonoBehaviour {
 	public GameObject pen1, pen2;
 	private Vector3 p1p, p2p, p1r, p2r;
 
+	//Particle Effects
+	public ParticleSystem sparks;
+
 	void Awake(){
 		cam = mainCam.GetComponent<cameraLook> ();
 		grid = FindObjectOfType<gridLayout> ();
 	}
 
 	void Start () {
+		sparks.Stop ();
+
 		global_LL = breadboard.AddComponent(typeof(linkedList)) as linkedList;
 		boardlogic = breadboard.AddComponent (typeof(boardLogic)) as boardLogic;
 		placed = new List<GameObject> ();
@@ -89,15 +94,17 @@ public class tutorialUI : MonoBehaviour {
 		}
 		//Back button
 		zoomOut.onClick.AddListener(delegate {StartCoroutine(cam.zoomOut(breadboard));});
-//<<<<<<< HEAD
 
 		//Placing the battery
 		batteryLocation = new Vector3(-2.221f, 2.017f, -9.197f);
 
+		/*if (SceneManager.GetActiveScene().buildIndex == 3)
+			batteryLocation = new Vector3(-0.233f, 1.651f, 3.01f);
+		else if (SceneManager.GetActiveScene().buildIndex == 2)
+			batteryLocation = new Vector3(-3.381f, 1.802f, 4.073f);*/
+
         //Clearing the board
         ClearOut.onClick.AddListener(clearBoard);
-//=======
-//>>>>>>> 8aa78a2dd168e3e18093d3c6bd343988be3a4711
 	}
 
 	// Update is called once per frame
@@ -153,6 +160,7 @@ public class tutorialUI : MonoBehaviour {
 								else 
 								{
 									print ("Circuit not functioning correctly or broken circuit?");
+									sparks.Play ();
 								}
 							} else 
 							{
@@ -197,10 +205,10 @@ public class tutorialUI : MonoBehaviour {
 					newItem.transform.position = batteryLocation;
 					if (SceneManager.GetActiveScene ().buildIndex == 1) //Tutorial Level
 						newItem.transform.eulerAngles = new Vector3 (-90f, 0f, 270f);
-					else if (SceneManager.GetActiveScene ().buildIndex == 2) //Creation Level
+					/*else if (SceneManager.GetActiveScene ().buildIndex == 2) //Creation Level
 						newItem.transform.eulerAngles = new Vector3 (-90f, 0f, 0f);
 					else if (SceneManager.GetActiveScene ().buildIndex == 3) //Repair Level
-						newItem.transform.eulerAngles = new Vector3 (-90f, 0f, 180f);
+						newItem.transform.eulerAngles = new Vector3 (-90f, 0f, 180f);*/
 					
 					//Make these positions unable to be taken, set the dictionary 
 				} else if (newItem.tag == "pen") {
@@ -237,16 +245,9 @@ public class tutorialUI : MonoBehaviour {
 					int bnode1 = 0;
 					int bnode2 = 0;
 
-					if (SceneManager.GetActiveScene ().buildIndex == 1) { //Tutorial Level
-						bnode1 = 414;
-						bnode2 = 415;
-					} else if (SceneManager.GetActiveScene ().buildIndex == 2) { //Creation Level
-						bnode1 = 23;
-						bnode2 = 47;
-					} else if (SceneManager.GetActiveScene ().buildIndex == 3) { //Repair Level
-						bnode1 = 408;
-						bnode2 = 384;
-					}
+
+					bnode1 = 414;
+					bnode2 = 415;
 
 					//creates input and output nodes of battery
 					inputNode = new componentNode (newItem.GetInstanceID (), newItem.GetComponent<battery> (), breadboard.GetComponent<gridLayout> ().positionHolder [bnode1].x, breadboard.GetComponent<gridLayout> ().positionHolder [bnode1].z, nullNode_Array, nullNode_Array);
