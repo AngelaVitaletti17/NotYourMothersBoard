@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 public class multimeter : MonoBehaviour {
 
 	public Vector3[] rotationAngles; //An array of positions for each rotation

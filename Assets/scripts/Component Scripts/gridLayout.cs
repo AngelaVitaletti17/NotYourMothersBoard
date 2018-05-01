@@ -9,10 +9,10 @@ public class gridLayout : MonoBehaviour
 	public int columnCount, rowCount; //The column and the row size
 
 	//For the math behind placing components on the grid
-	public Dictionary<Vector3, bool> gridPositions; //Used to represent the grid positions, and whether or not they are filled
-	public Dictionary<Vector3, GameObject> posAndSpots; //Used to keep track of input and output node locations
+	public Dictionary<Vector3, bool> gridPositions, OldGP; //Used to represent the grid positions, and whether or not they are filled
+	public Dictionary<Vector3, GameObject> posAndSpots, OldPS; //Used to keep track of input and output node locations
 	private List<Vector3> keys; //Used to represent a LIST of the positions from gridPositions. Needed to convert into the dictionary into an array for indices
-	public Vector3[] positionHolder, oldSpots; //An array of the positions, and the previous spots on the board that are highlighted (to show where a component will be placed)
+	public Vector3[] positionHolder, oldSpots, OldP; //An array of the positions, and the previous spots on the board that are highlighted (to show where a component will be placed)
 	public Vector3 nullValue; //Used to represent that a value is out of bounds
 	private bool alreadyInit = false;
 
@@ -21,6 +21,9 @@ public class gridLayout : MonoBehaviour
 		positionHolder = new Vector3[columnCount * rowCount]; //Initialize the position array to be a size of the total holes in the board
 		SetGridSpots();
 		nullValue = new Vector3 (-1f, -1f, -1f); //Initialize the null value vector
+		OldP = positionHolder;
+		OldGP = gridPositions;
+		OldPS = posAndSpots;
 
 	}
 
@@ -355,7 +358,7 @@ public class gridLayout : MonoBehaviour
 		}
 		set_dict ();
 	}
-	private void set_dict(){
+	public void set_dict(){
 		if (!alreadyInit) {
 			gridPositions = new Dictionary<Vector3, bool> (columnCount * rowCount);
 			for (int i = 0; i < positionHolder.Length; i++) {
@@ -367,6 +370,17 @@ public class gridLayout : MonoBehaviour
 			}
 		}
 		alreadyInit = true;
+	}
+
+	public void resetGrid(){
+		gridPositions = new Dictionary<Vector3, bool> (columnCount * rowCount);
+		for (int i = 0; i < positionHolder.Length; i++) {
+			gridPositions.Add (positionHolder [i], false);
+		}
+		posAndSpots = new Dictionary<Vector3, GameObject> (columnCount * rowCount);
+		for (int i = 0; i < positionHolder.Length; i++) {
+			posAndSpots.Add (positionHolder [i], null);
+		}
 	}
 	/*void OnDrawGizmos(){
 		BoxCollider b = GetComponent<BoxCollider> (); //represents the collider of the breadboard

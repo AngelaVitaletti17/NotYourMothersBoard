@@ -10,6 +10,7 @@ TagManager:
   - pen
   - solder
   - meter
+  - tester
   layers:
   - Default
   - TransparentFX

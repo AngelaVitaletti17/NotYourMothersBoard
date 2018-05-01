@@ -213,7 +213,7 @@ public class tutorialUI : MonoBehaviour {
 
 					//Destroy Node Visuals
 					destroyNodeVisuals(newItem);
-				} else if (hit.transform.name == "button") {
+				} else if (hit.transform.name == "button" && !inventory.activeSelf) {
 
 					//Next line should check for null on global_LL.head 1==1
 					if (GameObject.Find ("battery_spawner(Clone)")) 
@@ -817,79 +817,93 @@ public class tutorialUI : MonoBehaviour {
 						} else if (cc.componentType == 1) { //Battery
 							double b = cc.GetComponent<battery> ().voltage;
 							if (meter.GetComponent<multimeter> ().checkState () == 1) //We're in the battery state
-							meter.GetComponent<multimeter> ().updateReading (b.ToString ());
+								meter.GetComponent<multimeter> ().updateReading (b.ToString ().Substring(0,4));
+							else
+								meter.GetComponent<multimeter> ().updateReading ("0");
 						} else if (cc.componentType == 2) { //Resistor
 							double cur = cc.componentCurrent;
 							double v = cc.componentVoltage;
 							double res = cc.GetComponent<resistor> ().getOhms ();
 							if (meter.GetComponent<multimeter> ().checkState () == 1) //DC Voltage
-							meter.GetComponent<multimeter> ().updateReading (v.ToString ());
+								meter.GetComponent<multimeter> ().updateReading (v.ToString ().Substring(0,4));
 							else if (meter.GetComponent<multimeter> ().checkState () == 3) //Smol amps
-							meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "p");
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ().Substring(0,4) + "mil");
 							else if (meter.GetComponent<multimeter> ().checkState () == 4) //milli amps
-							meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "m");
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ().Substring(0,4) + "k");
 							else if (meter.GetComponent<multimeter> ().checkState () == 5) // amps
-							meter.GetComponent<multimeter> ().updateReading (cur.ToString ());
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ().Substring(0,4));
 							else if (meter.GetComponent<multimeter> ().checkState () == 7) //ohms
-							meter.GetComponent<multimeter> ().updateReading (res.ToString ());
+								meter.GetComponent<multimeter> ().updateReading (res.ToString ().Substring(0,4));
+							else
+								meter.GetComponent<multimeter> ().updateReading ("0");
 						} else if (cc.componentType == 3) { //LED
 							double cur = cc.componentCurrent;
 							double v = cc.componentVoltage;
 							if (meter.GetComponent<multimeter> ().checkState () == 1) //DC Voltage
-								meter.GetComponent<multimeter> ().updateReading (v.ToString ());
+								meter.GetComponent<multimeter> ().updateReading (v.ToString ().Substring(0,4));
 							else if (meter.GetComponent<multimeter> ().checkState () == 3) //Smol amps
-								meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "p");
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ().Substring(0,4) + "mil");
 							else if (meter.GetComponent<multimeter> ().checkState () == 4) //milli amps
-								meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "m");
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ().Substring(0,4) + "k");
 							else if (meter.GetComponent<multimeter> ().checkState () == 5) // amps
 								meter.GetComponent<multimeter> ().updateReading (cur.ToString ());
+							else
+								meter.GetComponent<multimeter> ().updateReading ("0");
 						} else if (cc.componentType == 4) { //Capacitor
 							double cur = cc.componentCurrent;
 							double v = cc.componentVoltage;
 							double cap = cc.GetComponent<capacitor> ().getFarads();
 							if (meter.GetComponent<multimeter> ().checkState () == 1) //DC Voltage
-								meter.GetComponent<multimeter> ().updateReading (v.ToString ());
+								meter.GetComponent<multimeter> ().updateReading (v.ToString ().Substring(0,4));
 							else if (meter.GetComponent<multimeter> ().checkState () == 3) //Smol amps
-								meter.GetComponent<multimeter> ().updateReading (cap.ToString () + "p");
+								meter.GetComponent<multimeter> ().updateReading (cap.ToString ().Substring(0,4) + "mil");
 							else if (meter.GetComponent<multimeter> ().checkState () == 4) //milli amps
-								meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "m");
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ().Substring(0,4) + "k");
 							else if (meter.GetComponent<multimeter> ().checkState () == 5) // amps
-								meter.GetComponent<multimeter> ().updateReading (cur.ToString ());
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ().Substring(0,4));
+							else
+								meter.GetComponent<multimeter> ().updateReading ("0");
 						} else if (cc.componentType == 5) { //Diode
 							double cur = cc.componentCurrent;
 							double v = cc.componentVoltage;
 							if (meter.GetComponent<multimeter> ().checkState () == 1) //DC Voltage
-								meter.GetComponent<multimeter> ().updateReading (v.ToString ());
+								meter.GetComponent<multimeter> ().updateReading (v.ToString ().Substring(0,4));
 							else if (meter.GetComponent<multimeter> ().checkState () == 3) //Smol amps
-								meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "p");
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ().Substring(0,4) + "mil");
 							else if (meter.GetComponent<multimeter> ().checkState () == 4) //milli amps
-								meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "m");
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ().Substring(0,4) + "k");
 							else if (meter.GetComponent<multimeter> ().checkState () == 5) // amps
-								meter.GetComponent<multimeter> ().updateReading (cur.ToString ());
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ().Substring(0,4));
+							else
+								meter.GetComponent<multimeter> ().updateReading ("0");
 						} else if (cc.componentType == 6) { //Switch
 							double cur = cc.componentCurrent;
 							double v = cc.componentVoltage;
 							if (meter.GetComponent<multimeter> ().checkState () == 1) //DC Voltage
-								meter.GetComponent<multimeter> ().updateReading (v.ToString ());
+								meter.GetComponent<multimeter> ().updateReading (v.ToString ().Substring(0,4));
 							else if (meter.GetComponent<multimeter> ().checkState () == 3) //Smol amps
-								meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "p");
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ().Substring(0,4) + "mil");
 							else if (meter.GetComponent<multimeter> ().checkState () == 4) //milli amps
-								meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "m");
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ().Substring(0,4) + "k");
 							else if (meter.GetComponent<multimeter> ().checkState () == 5) // amps
-								meter.GetComponent<multimeter> ().updateReading (cur.ToString ());
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ().Substring(0,4));
+							else
+								meter.GetComponent<multimeter> ().updateReading ("0");
 						} else if (cc.componentType == 7) { //Potentiometer
 
 						} else if (cc.componentType == 99) { //Wire
 							double cur = cc.componentCurrent;
 							double v = cc.componentVoltage;
 							if (meter.GetComponent<multimeter> ().checkState () == 1) //DC Voltage
-								meter.GetComponent<multimeter> ().updateReading (v.ToString ());
+								meter.GetComponent<multimeter> ().updateReading (v.ToString ().Substring (0, 4));
 							else if (meter.GetComponent<multimeter> ().checkState () == 3) //Smol amps
-								meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "p");
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ().Substring (0, 4) + "mil");
 							else if (meter.GetComponent<multimeter> ().checkState () == 4) //milli amps
-								meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "m");
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ().Substring (0, 4) + "k");
 							else if (meter.GetComponent<multimeter> ().checkState () == 5) // amps
-								meter.GetComponent<multimeter> ().updateReading (cur.ToString ());
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ().Substring (0, 4));
+							else
+								meter.GetComponent<multimeter> ().updateReading ("0");
 						}
 					}
 				} 
@@ -939,6 +953,7 @@ public class tutorialUI : MonoBehaviour {
 			Destroy	(item);
 		}
 		//Reset if tutorial
+		grid.resetGrid();
 		playerStep = 0;
 	}
 
