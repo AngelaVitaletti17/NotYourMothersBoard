@@ -65,6 +65,11 @@ public class tutorialUI : MonoBehaviour {
 	public GameObject help;
 	public Button helpB;
 
+	//Repair
+	public GameObject[] parts;
+	public GameObject bad;
+	public GameObject sucRep; //Success Box
+
 	void Awake(){
 		cam = mainCam.GetComponent<cameraLook> ();
 		grid = FindObjectOfType<gridLayout> ();
@@ -122,6 +127,27 @@ public class tutorialUI : MonoBehaviour {
 
 		//MeterMode
 		mmActive.gameObject.SetActive(false);
+
+		if (SceneManager.GetActiveScene ().buildIndex == 3) { //repair level, manually set the component nodes
+			sucRep.SetActive(false);
+
+			grid.posAndSpots[grid.positionHolder[90]] = parts[0];
+			grid.posAndSpots[grid.positionHolder[95]] = parts[0];
+
+			grid.posAndSpots[grid.positionHolder[96]] = parts[1];
+			grid.posAndSpots[grid.positionHolder[114]] = parts[1];
+
+			grid.posAndSpots[grid.positionHolder[115]] = parts[2];
+			grid.posAndSpots[grid.positionHolder[187]] = parts[2];
+
+			grid.posAndSpots[grid.positionHolder[188]] = parts[3];
+			grid.posAndSpots[grid.positionHolder[206]] = parts[3];
+
+			grid.posAndSpots[grid.positionHolder[199]] = parts[4];
+			grid.posAndSpots[grid.positionHolder[203]] = parts[4];
+
+			bad = parts [2];
+		}
 	}
 
 	// Update is called once per frame
@@ -226,6 +252,9 @@ public class tutorialUI : MonoBehaviour {
 							print ("Battery not spawned");
 					
 
+				}
+				if (SceneManager.GetActiveScene ().buildIndex == 3) { //repair level
+					//Check if bad component
 				}
 				//Check to see if newItem is in the placed list
 				//if (placed.Contains (newItem)) {
@@ -728,9 +757,11 @@ public class tutorialUI : MonoBehaviour {
 				newItem.transform.eulerAngles = new Vector3 (newItem.transform.eulerAngles.x, newItem.transform.eulerAngles.y + 90f, newItem.transform.eulerAngles.z);
 			}
 
-		} else if (!isSpawned && newItem != null && !meterMode) {
-			if (newItem.tag != "battery")
-				newItem.GetComponent<gridPlacement> ().enabled = false;
+		} else if (!isSpawned && !meterMode) {
+			if (newItem != null) {
+				if (newItem.tag != "battery")
+					newItem.GetComponent<gridPlacement> ().enabled = false;
+			}
 			if (Input.GetKeyDown (KeyCode.M) && !meterMode) { //Enter meterMode
 				meterMode = true;
 				mmActive.gameObject.SetActive(true);

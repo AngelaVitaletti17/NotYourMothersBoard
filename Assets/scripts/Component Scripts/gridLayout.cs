@@ -17,10 +17,14 @@ public class gridLayout : MonoBehaviour
 	private bool alreadyInit = false;
 
 	//Run when the program starts
-	void Start(){
+	void Awake(){
 		positionHolder = new Vector3[columnCount * rowCount]; //Initialize the position array to be a size of the total holes in the board
 		SetGridSpots();
 		nullValue = new Vector3 (-1f, -1f, -1f); //Initialize the null value vector
+
+	}
+
+	void Start(){
 	}
 
 	//Used to determine what is done when we place the component on the board
