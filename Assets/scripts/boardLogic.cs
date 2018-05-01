@@ -245,4 +245,26 @@ public class boardLogic : MonoBehaviour
 			referenceNode.nextNode[0] = curNode;
 		}
 	}
+
+	public bool lightUp(componentNode referenceNode)
+	{
+		print ("start lighting");	
+		//If this node's parent is a battery, return true
+		if (referenceNode.parentComponent.componentType == 3)
+		{
+			//int idNumber = referenceNode.parentComponent.GetInstanceID ();
+			//GameObject.Find (referenceNode.parentComponent.GetInstanceID ().ToString()).GetComponent<Light> ().enabled = true;
+			referenceNode.parentComponent.GetComponent<Light> ().enabled = true;
+		}
+		//If not, go back a node and check again
+		else if (referenceNode.previousNode.Length != 0)
+		{
+			print ("next light");
+			return lightUp(referenceNode.previousNode[0]);
+		}
+		//If there's no battery, return false
+		else return false;
+
+		return true;
+	}
 }

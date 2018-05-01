@@ -110,7 +110,7 @@ public class tutorialUI : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
+		/*
 		switch (playerStep) {
 		case 0:
 			print ("Start by placing the battery.");
@@ -131,6 +131,7 @@ public class tutorialUI : MonoBehaviour {
 			print ("Tutorial complete");		
 			break;
 		}
+		*/
 		if (GameObject.Find ("battery_spawner(Clone)")) { //The battery already exists
 			buttonArray [0].GetComponent<Button> ().interactable = false;
 		} else
@@ -173,6 +174,7 @@ public class tutorialUI : MonoBehaviour {
 									if (boardlogic.traceForward (global_LL.head, 2) && boardlogic.traceForward (global_LL.head, 3)) 
 									{
 										print ("CORRECT COMPONENTS USED");
+									boardlogic.lightUp (global_LL.tail);
 									//Next tutorial step
 									if (playerStep == 4)
 										playerStep++;
