@@ -36,6 +36,7 @@ public class tutorialUI : MonoBehaviour {
 
 	//For Text Information
 	public Text info; //Text element for displaying information
+	public int playerStep = 0;
 
 	//For nodes
 	public componentNode cn;
@@ -109,6 +110,27 @@ public class tutorialUI : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+
+		switch (playerStep) {
+		case 0:
+			print ("Start by placing the battery.");
+			break;
+		case 1:
+			print ("Now place a switch");		
+			break;
+		case 2:
+			print ("Then, a resistor");		
+			break;
+		case 3:
+			print ("Now an LED");		
+			break;
+		case 4:
+			print ("Test the circuit if it's complete");		
+			break;
+		case 5:
+			print ("Tutorial complete");		
+			break;
+		}
 		if (GameObject.Find ("battery_spawner(Clone)")) { //The battery already exists
 			buttonArray [0].GetComponent<Button> ().interactable = false;
 		} else
@@ -137,7 +159,6 @@ public class tutorialUI : MonoBehaviour {
 
 				} else if (hit.transform.name == "button") {
 
-
 					//Next line should check for null on global_LL.head 1==1
 					if (GameObject.Find ("battery_spawner(Clone)")) 
 						{
@@ -152,6 +173,10 @@ public class tutorialUI : MonoBehaviour {
 									if (boardlogic.traceForward (global_LL.head, 2) && boardlogic.traceForward (global_LL.head, 3)) 
 									{
 										print ("CORRECT COMPONENTS USED");
+									//Next tutorial step
+									if (playerStep == 4)
+										playerStep++;
+									
 									} else {
 										print ("Correct components not used");
 									}
@@ -210,7 +235,10 @@ public class tutorialUI : MonoBehaviour {
 						newItem.transform.eulerAngles = new Vector3 (-90f, 0f, 0f);
 					else if (SceneManager.GetActiveScene ().buildIndex == 3) //Repair Level
 						newItem.transform.eulerAngles = new Vector3 (-90f, 0f, 180f);*/
-					
+
+					//Next tutorial step
+					playerStep++;
+
 					//Make these positions unable to be taken, set the dictionary 
 				} else if (newItem.tag == "pen") {
 					newItem.transform.position = sPenOrigin;
@@ -529,6 +557,9 @@ public class tutorialUI : MonoBehaviour {
 								outputNode.setNextNode (previousNode_Array);
 								global_LL.tail.setPreviousNode (nextNode_Array);
 							}
+							//Next tutorial step
+							if (playerStep == 2)
+								playerStep++;
 						}
 					} else if (newItem.name.Contains ("LED_spawner")) {
 						print ("spawning led ");
@@ -557,6 +588,9 @@ public class tutorialUI : MonoBehaviour {
 								outputNode.setNextNode (previousNode_Array);
 								global_LL.tail.setPreviousNode (nextNode_Array);
 							}
+							//Next tutorial step
+							if (playerStep == 3)
+								playerStep++;
 						}
 
 					} else if (newItem.name.Contains ("switch_spawner")) {
@@ -585,6 +619,10 @@ public class tutorialUI : MonoBehaviour {
 								previousNode_Array = new componentNode[] { global_LL.tail };
 								outputNode.setNextNode (previousNode_Array);
 								global_LL.tail.setPreviousNode (nextNode_Array);
+							}
+							//Next tutorial step
+							if (playerStep == 1) {
+								playerStep++;
 							}
 						}
 
