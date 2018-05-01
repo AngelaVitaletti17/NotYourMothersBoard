@@ -16,31 +16,31 @@ public class textboxlogic : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public void OnPointerEnter(PointerEventData eventData)
 	{
 		if (this.gameObject.GetComponent<Button> () == menuitems [0]) {
-			TextArea.GetComponentInChildren<Text> ().text = "A battery stores and supplies charge to the circuit";
+			TextArea.GetComponentInChildren<Text> ().text = "A battery stores and supplies charge to the circuit (Multimeter: Voltage)";
 			TextArea.SetActive (true);
 		} else if (this.gameObject.GetComponent<Button> () == menuitems [1]) {
-			TextArea.GetComponentInChildren<Text> ().text = "Capacitors help regulate and store charge";
+			TextArea.GetComponentInChildren<Text> ().text = "Capacitors help regulate and store charge (Multimeter: Microfarads, Voltage)";
 			TextArea.SetActive (true);
 		} else if (this.gameObject.GetComponent<Button> () == menuitems [2]) {
-			TextArea.GetComponentInChildren<Text> ().text = "Resistors help regulate charge in a ciruit";
+			TextArea.GetComponentInChildren<Text> ().text = "Resistors help regulate charge in a ciruit (Multimeter: Resistance, Voltage)";
 			TextArea.SetActive (true);
 		} else if (this.gameObject.GetComponent<Button> () == menuitems [3]) {
-			TextArea.GetComponentInChildren<Text> ().text = "Diodes help limit current to flow into only one direction";
+			TextArea.GetComponentInChildren<Text> ().text = "Diodes help limit current to flow into only one direction (Multimeter: Diode Check, Voltage)";
 			TextArea.SetActive (true);
 		} else if (this.gameObject.GetComponent<Button> () == menuitems [4]) {
-			TextArea.GetComponentInChildren<Text> ().text = "Switches allow the current to be restricted or free based on it being on or off";
+			TextArea.GetComponentInChildren<Text> ().text = "Switches allow the current to be restricted or free based on it being on or off (Multimeter: Voltage)";
 			TextArea.SetActive (true);
 		} else if (this.gameObject.GetComponent<Button> () == menuitems [5]) {
-			TextArea.GetComponentInChildren<Text> ().text = "Chips run specific actions for the circuit";
+			TextArea.GetComponentInChildren<Text> ().text = "Chips run specific actions for the circuit (Multimeter: Voltage)";
 			TextArea.SetActive (true);
 		} else if (this.gameObject.GetComponent<Button> () == menuitems [6]) {
-			TextArea.GetComponentInChildren<Text> ().text = "LEDs light up when current runs through them";
+			TextArea.GetComponentInChildren<Text> ().text = "LEDs light up when current runs through them (Multimeter: Voltage)";
 			TextArea.SetActive (true);
 		} else if (this.gameObject.GetComponent<Button> () == menuitems [7]) {
-			TextArea.GetComponentInChildren<Text> ().text = "Transistors help regulate flow and provide mroe directions for current to follow";
+			TextArea.GetComponentInChildren<Text> ().text = "Transistors help regulate flow and provide mroe directions for current to follow (Multimeter: Voltage)";
 			TextArea.SetActive (true);
 		} else if (this.gameObject.GetComponent<Button> () == menuitems [8]) {
-			TextArea.GetComponentInChildren<Text> ().text = "Wires simply connect two components";
+			TextArea.GetComponentInChildren<Text> ().text = "Wires simply connect two components (Multimeter: Voltage)";
 			TextArea.SetActive (true);
 		}
 	}

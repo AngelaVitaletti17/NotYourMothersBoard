@@ -11,10 +11,15 @@ public class gridPlacement : MonoBehaviour {
 	public GameObject[] highlights; //An array of the actual highlight GameObject that appear on screen
 	public GameObject breadboard, sceneController; //A GameObject representing the breadboard and scene controller, respectively
 	public Vector3 oScale;
+	public GameObject[] visualNodes;
 	private bool useRed, placeable = false; //Used to determine if a red color will be used as the highlight to represent incorrect board placement
 	private Color notValid;
 	[SerializeField]
 	public circuitComponent componentScript;
+
+	void Awake(){
+		visualNodes = new GameObject[2];	
+	}
 
 	void Start () {
 		highlightedSpots = new Vector3[rows * spaceCount]; //Initialize the highlighted spots locations array (change to size of spaceCount in the future, AV)
@@ -74,6 +79,7 @@ public class gridPlacement : MonoBehaviour {
 					}
 				}
 			}
+			
 		} else if (!tUI.isSpawned && highlights.Length != 0) {
 			for (int i = 0; i < highlights.Length; i++) {
 				Destroy (highlights [i]);

@@ -1604,6 +1604,7 @@ MonoBehaviour:
   breadboard: {fileID: 923803196}
   sceneController: {fileID: 1500486552}
   oScale: {x: 0, y: 0, z: 0}
+  visualNodes: []
   componentScript: {fileID: 0}
 --- !u!114 &271789062
 MonoBehaviour:
@@ -2628,6 +2629,7 @@ MonoBehaviour:
   breadboard: {fileID: 923803196}
   sceneController: {fileID: 1500486552}
   oScale: {x: 0, y: 0, z: 0}
+  visualNodes: []
   componentScript: {fileID: 0}
 --- !u!65 &435352505
 BoxCollider:
@@ -3254,6 +3256,7 @@ MonoBehaviour:
   breadboard: {fileID: 923803196}
   sceneController: {fileID: 1500486552}
   oScale: {x: 0, y: 0, z: 0}
+  visualNodes: []
   componentScript: {fileID: 0}
 --- !u!65 &578187660
 BoxCollider:
@@ -5121,6 +5124,7 @@ GameObject:
   - component: {fileID: 802528999}
   - component: {fileID: 802528998}
   - component: {fileID: 802528997}
+  - component: {fileID: 802529003}
   m_Layer: 0
   m_Name: battery_spawner
   m_TagString: battery
@@ -5243,6 +5247,29 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 802528995}
   m_Mesh: {fileID: 4300004, guid: dbd67f68659a46f439ad5722f4d926b9, type: 3}
+--- !u!114 &802529003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 802528995}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 285e5094a65c9684c91c9de5aaebf701, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spaceCount: 0
+  rows: 0
+  grid: {fileID: 0}
+  tUI: {fileID: 0}
+  highlightedSpots: []
+  getRidOfSpots: []
+  highlights: []
+  breadboard: {fileID: 923803196}
+  sceneController: {fileID: 1500486552}
+  oScale: {x: 0, y: 0, z: 0}
+  visualNodes: []
+  componentScript: {fileID: 0}
 --- !u!1001 &805852840
 Prefab:
   m_ObjectHideFlags: 0
@@ -5354,6 +5381,7 @@ MonoBehaviour:
   breadboard: {fileID: 923803196}
   sceneController: {fileID: 1500486552}
   oScale: {x: 0, y: 0, z: 0}
+  visualNodes: []
   componentScript: {fileID: 0}
 --- !u!114 &805852845
 MonoBehaviour:
@@ -5922,6 +5950,7 @@ MonoBehaviour:
   breadboard: {fileID: 923803196}
   sceneController: {fileID: 1500486552}
   oScale: {x: 0, y: 0, z: 0}
+  visualNodes: []
   componentScript: {fileID: 0}
 --- !u!114 &834477251
 MonoBehaviour:
@@ -7001,6 +7030,7 @@ MonoBehaviour:
   breadboard: {fileID: 923803196}
   sceneController: {fileID: 1500486552}
   oScale: {x: 0, y: 0, z: 0}
+  visualNodes: []
   componentScript: {fileID: 0}
 --- !u!114 &970077884
 MonoBehaviour:
@@ -8000,6 +8030,7 @@ MonoBehaviour:
   breadboard: {fileID: 923803196}
   sceneController: {fileID: 1500486552}
   oScale: {x: 0, y: 0, z: 0}
+  visualNodes: []
   componentScript: {fileID: 0}
 --- !u!114 &1070358768
 MonoBehaviour:
@@ -8352,7 +8383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spaceCount: 2
-  rows: 2
+  rows: 1
   grid: {fileID: 0}
   tUI: {fileID: 0}
   highlightedSpots: []
@@ -8361,6 +8392,7 @@ MonoBehaviour:
   breadboard: {fileID: 923803196}
   sceneController: {fileID: 1500486552}
   oScale: {x: 0, y: 0, z: 0}
+  visualNodes: []
   componentScript: {fileID: 0}
 --- !u!114 &1163068830
 MonoBehaviour:
@@ -8727,7 +8759,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.072488636, y: 0.8082856}
   m_AnchorMax: {x: 0.47637787, y: 0.96500003}
-  m_AnchoredPosition: {x: -5.5001526, y: 0.7043457}
+  m_AnchoredPosition: {x: -5.500122, y: 0.7043457}
   m_SizeDelta: {x: 7.9, y: -2.691}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1227588088
@@ -9160,6 +9192,16 @@ Prefab:
         type: 2}
       propertyPath: ShapeModule.radiusThickness
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012283690144, guid: 96b2ec0239d11fa4b9792311efceb8ed,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012283690144, guid: 96b2ec0239d11fa4b9792311efceb8ed,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
       objectReference: {fileID: 0}
     - target: {fileID: 198000012283690144, guid: 96b2ec0239d11fa4b9792311efceb8ed,
         type: 2}
@@ -10474,6 +10516,7 @@ MonoBehaviour:
   batteryPlaced: 0
   batteryLocation: {x: -2.221, y: 2.017, z: -9.197}
   info: {fileID: 0}
+  playerStep: 0
   cn: {fileID: 0}
   sPenOrigin: {x: 0, y: 0, z: 0}
   sAngleOrig: {x: 0, y: 0, z: 0}
@@ -12185,6 +12228,7 @@ MonoBehaviour:
   breadboard: {fileID: 923803196}
   sceneController: {fileID: 1500486552}
   oScale: {x: 0, y: 0, z: 0}
+  visualNodes: []
   componentScript: {fileID: 0}
 --- !u!65 &1822403450
 BoxCollider:

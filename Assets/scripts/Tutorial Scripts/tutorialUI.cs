@@ -147,6 +147,9 @@ public class tutorialUI : MonoBehaviour {
 				} else if ((hit.transform.gameObject.tag == "battery" && !breadboard.GetComponent<selectGlow> ().zoomedIn) || (hit.transform.gameObject.tag == "pen" && breadboard.GetComponent<selectGlow> ().zoomedIn)) { //If we selected the battery, let's drag in around
 					isSpawned = true;
 					newItem = hit.transform.gameObject;
+					if (hit.transform.gameObject.tag == "battery")
+						//Destroy Node Visuals
+						destroyNodeVisuals(newItem);
 					if (hit.transform.gameObject.tag == "pen")
 						hit.transform.eulerAngles = sAngleNew;
 				} else if (hit.transform.gameObject.tag == "component" && breadboard.GetComponent<selectGlow> ().zoomedIn) { //If we selected a component, let's drag it around
@@ -157,6 +160,8 @@ public class tutorialUI : MonoBehaviour {
 					else
 						newItem.transform.localScale = newItem.GetComponent<gridPlacement> ().oScale;
 
+					//Destroy Node Visuals
+					destroyNodeVisuals(newItem);
 				} else if (hit.transform.name == "button") {
 
 					//Next line should check for null on global_LL.head 1==1
@@ -221,7 +226,6 @@ public class tutorialUI : MonoBehaviour {
 			if (canBePlaced && Input.GetMouseButton (1)) { //The item is placed on the board if it is in a valid spot
 				//Item has been placed, keep track of it
 				placed.Add (newItem); //Add the item
-				print(placed.Count);
 				isSpawned = false;
 				if (newItem.tag == "component") { //If we are dragging the component, place it in the nearest spot on the grid
 					PlaceItem (Camera.main.ScreenToWorldPoint (itemPosition), newItem);
@@ -287,6 +291,8 @@ public class tutorialUI : MonoBehaviour {
 					//sets head and tail of linked list
 					global_LL.head = inputNode;
 					global_LL.tail = outputNode;
+
+					createNodeVisuals (bnode1, bnode2, newItem); 
 				} else {//if another component was placed
 
 					// gets cordinates for left and right componentNodes of newItem
@@ -295,10 +301,14 @@ public class tutorialUI : MonoBehaviour {
 					if (sc % 2 == 0) {
 						leftN = os [(sc / 2) - 1];
 						rightN = os [sc - 1];
+						createNodeVisuals (System.Array.IndexOf(grid.positionHolder, os[(sc / 2) - 1]), System.Array.IndexOf(grid.positionHolder, os[sc - 1]), newItem);
 					} else {
 						leftN = os [(sc / 2)];
 						rightN = os [sc - 1];
+						createNodeVisuals (System.Array.IndexOf(grid.positionHolder, os[(sc / 2)]), System.Array.IndexOf(grid.positionHolder, os[sc - 1]), newItem);
 					}
+
+
 					//saves x and z component of left and right side of component
 					leftNx = leftN.x;
 					leftNz = leftN.z;
@@ -717,7 +727,6 @@ public class tutorialUI : MonoBehaviour {
 				RaycastHit hit; 
 				Ray ray = mainCam.GetComponent<Camera> ().ScreenPointToRay (Input.mousePosition);
 				if (Physics.Raycast (ray, out hit)) {
-					print (hit.transform.gameObject);
 					if (hit.transform.gameObject.tag == "component") { //We are hitting a component, let's snap some pens
 						Vector3 snappedAlready = Vector3.zero;
 						for (int i = 0; i < grid.positionHolder.Length; i++) {
@@ -765,17 +774,63 @@ public class tutorialUI : MonoBehaviour {
 							else if (meter.GetComponent<multimeter> ().checkState () == 7) //ohms
 							meter.GetComponent<multimeter> ().updateReading (res.ToString ());
 						} else if (cc.componentType == 3) { //LED
-
+							double cur = cc.componentCurrent;
+							double v = cc.componentVoltage;
+							if (meter.GetComponent<multimeter> ().checkState () == 1) //DC Voltage
+								meter.GetComponent<multimeter> ().updateReading (v.ToString ());
+							else if (meter.GetComponent<multimeter> ().checkState () == 3) //Smol amps
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "p");
+							else if (meter.GetComponent<multimeter> ().checkState () == 4) //milli amps
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "m");
+							else if (meter.GetComponent<multimeter> ().checkState () == 5) // amps
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ());
 						} else if (cc.componentType == 4) { //Capacitor
-
+							double cur = cc.componentCurrent;
+							double v = cc.componentVoltage;
+							double cap = cc.GetComponent<capacitor> ().getFarads();
+							if (meter.GetComponent<multimeter> ().checkState () == 1) //DC Voltage
+								meter.GetComponent<multimeter> ().updateReading (v.ToString ());
+							else if (meter.GetComponent<multimeter> ().checkState () == 3) //Smol amps
+								meter.GetComponent<multimeter> ().updateReading (cap.ToString () + "p");
+							else if (meter.GetComponent<multimeter> ().checkState () == 4) //milli amps
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "m");
+							else if (meter.GetComponent<multimeter> ().checkState () == 5) // amps
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ());
 						} else if (cc.componentType == 5) { //Diode
-
+							double cur = cc.componentCurrent;
+							double v = cc.componentVoltage;
+							if (meter.GetComponent<multimeter> ().checkState () == 1) //DC Voltage
+								meter.GetComponent<multimeter> ().updateReading (v.ToString ());
+							else if (meter.GetComponent<multimeter> ().checkState () == 3) //Smol amps
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "p");
+							else if (meter.GetComponent<multimeter> ().checkState () == 4) //milli amps
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "m");
+							else if (meter.GetComponent<multimeter> ().checkState () == 5) // amps
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ());
 						} else if (cc.componentType == 6) { //Switch
-
+							double cur = cc.componentCurrent;
+							double v = cc.componentVoltage;
+							if (meter.GetComponent<multimeter> ().checkState () == 1) //DC Voltage
+								meter.GetComponent<multimeter> ().updateReading (v.ToString ());
+							else if (meter.GetComponent<multimeter> ().checkState () == 3) //Smol amps
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "p");
+							else if (meter.GetComponent<multimeter> ().checkState () == 4) //milli amps
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "m");
+							else if (meter.GetComponent<multimeter> ().checkState () == 5) // amps
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ());
 						} else if (cc.componentType == 7) { //Potentiometer
 
 						} else if (cc.componentType == 99) { //Wire
-
+							double cur = cc.componentCurrent;
+							double v = cc.componentVoltage;
+							if (meter.GetComponent<multimeter> ().checkState () == 1) //DC Voltage
+								meter.GetComponent<multimeter> ().updateReading (v.ToString ());
+							else if (meter.GetComponent<multimeter> ().checkState () == 3) //Smol amps
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "p");
+							else if (meter.GetComponent<multimeter> ().checkState () == 4) //milli amps
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString () + "m");
+							else if (meter.GetComponent<multimeter> ().checkState () == 5) // amps
+								meter.GetComponent<multimeter> ().updateReading (cur.ToString ());
 						}
 					}
 				} 
@@ -822,5 +877,30 @@ public class tutorialUI : MonoBehaviour {
 	public void clearBoard(){
 		foreach (GameObject item in placed)
 			Destroy	(item);
+	}
+
+	public void createNodeVisuals(int leftIndex, int rightIndex, GameObject newItem){
+		GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Plane); //Create a plane to represent the highlight
+		cube.GetComponent<Renderer> ().material.color = Color.blue;
+		cube.GetComponent<Collider> ().enabled = false;
+		cube.transform.localScale = cube.transform.localScale * 0.002f;
+		cube.transform.position = new Vector3(grid.positionHolder [leftIndex].x, grid.positionHolder[leftIndex].y - 0.01f, grid.positionHolder[leftIndex].z);
+
+		//Second Node
+		GameObject cube2 = GameObject.CreatePrimitive (PrimitiveType.Plane);
+		cube2.GetComponent<Renderer> ().material.color = Color.blue;
+		cube2.GetComponent<Collider> ().enabled = false;
+		cube2.transform.localScale = cube2.transform.localScale * 0.002f;
+		cube2.transform.position = new Vector3(grid.positionHolder [rightIndex].x, grid.positionHolder[rightIndex].y - 0.01f, grid.positionHolder[rightIndex].z);
+	
+		newItem.GetComponent<gridPlacement> ().visualNodes [0] = cube;
+		newItem.GetComponent<gridPlacement> ().visualNodes [1] = cube2;
+	}
+
+	public void destroyNodeVisuals (GameObject newItem){
+
+		//Get rid of node visuals
+		for (int i = 0; i < newItem.GetComponent<gridPlacement>().visualNodes.Length; i++)
+			Destroy (newItem.GetComponent<gridPlacement>().visualNodes [i]);
 	}
 }

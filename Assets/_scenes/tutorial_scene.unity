@@ -1253,6 +1253,7 @@ MonoBehaviour:
   batteryPlaced: 0
   batteryLocation: {x: -2.221, y: 2.017, z: -9.197}
   info: {fileID: 0}
+  playerStep: 0
   cn: {fileID: 0}
   sPenOrigin: {x: 0, y: 0, z: 0}
   sAngleOrig: {x: 0, y: 0, z: 0}
@@ -1777,6 +1778,7 @@ GameObject:
   - component: {fileID: 339510891}
   - component: {fileID: 339510893}
   - component: {fileID: 339510895}
+  - component: {fileID: 339510894}
   m_Layer: 0
   m_Name: battery_spawner
   m_TagString: battery
@@ -1884,6 +1886,29 @@ MonoBehaviour:
   componentResistance: 0
   isLocked: 1
   voltage: 9
+--- !u!114 &339510894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 339510887}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 285e5094a65c9684c91c9de5aaebf701, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spaceCount: 0
+  rows: 0
+  grid: {fileID: 0}
+  tUI: {fileID: 0}
+  highlightedSpots: []
+  getRidOfSpots: []
+  highlights: []
+  breadboard: {fileID: 2007839463}
+  sceneController: {fileID: 254529381}
+  oScale: {x: 0, y: 0, z: 0}
+  visualNodes: []
+  componentScript: {fileID: 0}
 --- !u!54 &339510895
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2401,6 +2426,7 @@ MonoBehaviour:
   breadboard: {fileID: 2007839463}
   sceneController: {fileID: 254529381}
   oScale: {x: 0, y: 0, z: 0}
+  visualNodes: []
   componentScript: {fileID: 0}
 --- !u!114 &391553312
 MonoBehaviour:
@@ -4135,6 +4161,7 @@ MonoBehaviour:
   breadboard: {fileID: 2007839463}
   sceneController: {fileID: 254529381}
   oScale: {x: 0, y: 0, z: 0}
+  visualNodes: []
   componentScript: {fileID: 0}
 --- !u!114 &715881095
 MonoBehaviour:
@@ -5453,6 +5480,7 @@ MonoBehaviour:
   breadboard: {fileID: 2007839463}
   sceneController: {fileID: 254529381}
   oScale: {x: 0, y: 0, z: 0}
+  visualNodes: []
   componentScript: {fileID: 0}
 --- !u!114 &953075155
 MonoBehaviour:
@@ -6793,6 +6821,7 @@ MonoBehaviour:
   breadboard: {fileID: 2007839463}
   sceneController: {fileID: 254529381}
   oScale: {x: 0, y: 0, z: 0}
+  visualNodes: []
   componentScript: {fileID: 0}
 --- !u!1001 &1156969707
 Prefab:
@@ -8492,6 +8521,7 @@ MonoBehaviour:
   breadboard: {fileID: 2007839463}
   sceneController: {fileID: 254529381}
   oScale: {x: 0, y: 0, z: 0}
+  visualNodes: []
   componentScript: {fileID: 0}
 --- !u!114 &1376917249
 MonoBehaviour:
@@ -10434,6 +10464,7 @@ MonoBehaviour:
   breadboard: {fileID: 2007839463}
   sceneController: {fileID: 254529381}
   oScale: {x: 0, y: 0, z: 0}
+  visualNodes: []
   componentScript: {fileID: 0}
 --- !u!114 &1588001294
 MonoBehaviour:
@@ -10805,6 +10836,7 @@ MonoBehaviour:
   breadboard: {fileID: 2007839463}
   sceneController: {fileID: 254529381}
   oScale: {x: 0, y: 0, z: 0}
+  visualNodes: []
   componentScript: {fileID: 0}
 --- !u!114 &1682558190
 MonoBehaviour:
@@ -11974,6 +12006,7 @@ MonoBehaviour:
   breadboard: {fileID: 2007839463}
   sceneController: {fileID: 254529381}
   oScale: {x: 0, y: 0, z: 0}
+  visualNodes: []
   componentScript: {fileID: 0}
 --- !u!65 &1848404826
 BoxCollider:
@@ -12645,7 +12678,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spaceCount: 2
-  rows: 2
+  rows: 1
   grid: {fileID: 0}
   tUI: {fileID: 0}
   highlightedSpots: []
@@ -12654,6 +12687,7 @@ MonoBehaviour:
   breadboard: {fileID: 2007839463}
   sceneController: {fileID: 254529381}
   oScale: {x: 0, y: 0, z: 0}
+  visualNodes: []
   componentScript: {fileID: 0}
 --- !u!114 &1958716189
 MonoBehaviour:
@@ -14034,6 +14068,76 @@ Prefab:
         type: 2}
       propertyPath: lengthInSec
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012283690144, guid: 96b2ec0239d11fa4b9792311efceb8ed,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012283690144, guid: 96b2ec0239d11fa4b9792311efceb8ed,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012283690144, guid: 96b2ec0239d11fa4b9792311efceb8ed,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012283690144, guid: 96b2ec0239d11fa4b9792311efceb8ed,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012283690144, guid: 96b2ec0239d11fa4b9792311efceb8ed,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012283690144, guid: 96b2ec0239d11fa4b9792311efceb8ed,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012283690144, guid: 96b2ec0239d11fa4b9792311efceb8ed,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012283690144, guid: 96b2ec0239d11fa4b9792311efceb8ed,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012283690144, guid: 96b2ec0239d11fa4b9792311efceb8ed,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012283690144, guid: 96b2ec0239d11fa4b9792311efceb8ed,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012283690144, guid: 96b2ec0239d11fa4b9792311efceb8ed,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012283690144, guid: 96b2ec0239d11fa4b9792311efceb8ed,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012283690144, guid: 96b2ec0239d11fa4b9792311efceb8ed,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012283690144, guid: 96b2ec0239d11fa4b9792311efceb8ed,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
       objectReference: {fileID: 0}
     - target: {fileID: 198000012283690144, guid: 96b2ec0239d11fa4b9792311efceb8ed,
         type: 2}
