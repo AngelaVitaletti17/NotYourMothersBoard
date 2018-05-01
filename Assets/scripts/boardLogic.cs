@@ -254,7 +254,7 @@ public class boardLogic : MonoBehaviour
 		{
 			//int idNumber = referenceNode.parentComponent.GetInstanceID ();
 			//GameObject.Find (referenceNode.parentComponent.GetInstanceID ().ToString()).GetComponent<Light> ().enabled = true;
-			referenceNode.parentComponent.GetComponent<Light> ().enabled = true;
+			referenceNode.parentComponent.gameObject.transform.GetChild(1).gameObject.SetActive(true);
 		}
 		//If not, go back a node and check again
 		else if (referenceNode.previousNode.Length != 0)

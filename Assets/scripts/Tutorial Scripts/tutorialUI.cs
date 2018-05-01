@@ -110,7 +110,7 @@ public class tutorialUI : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		/*
+		
 		switch (playerStep) {
 		case 0:
 			print ("Start by placing the battery.");
@@ -131,7 +131,7 @@ public class tutorialUI : MonoBehaviour {
 			print ("Tutorial complete");		
 			break;
 		}
-		*/
+
 		if (GameObject.Find ("battery_spawner(Clone)")) { //The battery already exists
 			buttonArray [0].GetComponent<Button> ().interactable = false;
 		} else
@@ -877,8 +877,10 @@ public class tutorialUI : MonoBehaviour {
 	}
 
 	public void clearBoard(){
-		foreach (GameObject item in placed)
+		foreach (GameObject item in placed) {
+			destroyNodeVisuals (item);
 			Destroy	(item);
+		}
 	}
 
 	public void createNodeVisuals(int leftIndex, int rightIndex, GameObject newItem){
