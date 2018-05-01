@@ -52,10 +52,18 @@ public class tutorialUI : MonoBehaviour {
 	public GameObject meter, currentObject;
 	public bool meterMode = false;
 	public GameObject pen1, pen2;
+	public Text mmActive;
 	private Vector3 p1p, p2p, p1r, p2r;
 
 	//Particle Effects
 	public ParticleSystem sparks;
+
+	//For the tutorial help boxes
+	public GameObject walkthrough;
+
+	//For help
+	public GameObject help;
+	public Button helpB;
 
 	void Awake(){
 		cam = mainCam.GetComponent<cameraLook> ();
@@ -106,32 +114,48 @@ public class tutorialUI : MonoBehaviour {
 
         //Clearing the board
         ClearOut.onClick.AddListener(clearBoard);
+
+		//Help
+		helpB.onClick.AddListener(toggleHelp);
+		help.SetActive (false);
+		walkthrough.SetActive (false);
+
+		//MeterMode
+		mmActive.gameObject.SetActive(false);
 	}
 
 	// Update is called once per frame
 	void Update () {
-		
-		switch (playerStep) {
-		case 0:
-			print ("Start by placing the battery.");
-			break;
-		case 1:
-			print ("Now place a switch");		
-			break;
-		case 2:
-			print ("Then, a resistor");		
-			break;
-		case 3:
-			print ("Now an LED");		
-			break;
-		case 4:
-			print ("Test the circuit if it's complete");		
-			break;
-		case 5:
-			print ("Tutorial complete");		
-			break;
-		}
 
+		if (SceneManager.GetActiveScene ().buildIndex == 1 && mainCam.GetComponent<TutorialText>().doneText){ //On Tutorial 
+			walkthrough.SetActive(true);
+			switch (playerStep) {
+			case 0:
+				walkthrough.transform.GetChild (0).transform.GetChild (0).GetComponent<Text> ().text = "Start by placing a battery.";
+				print ("Start by placing the battery.");
+				break;
+			case 1:
+				walkthrough.transform.GetChild (0).transform.GetChild (0).GetComponent<Text> ().text = "Now place a switch (Hint: You might have to place a wire first).";
+				print ("Now place a switch");		
+				break;
+			case 2:
+				walkthrough.transform.GetChild (0).transform.GetChild (0).GetComponent<Text> ().text = "Then, a resistor";
+				print ("Then, a resistor");		
+				break;
+			case 3:
+				walkthrough.transform.GetChild (0).transform.GetChild (0).GetComponent<Text> ().text = "Now an LED";
+				print ("Now an LED");		
+				break;
+			case 4:
+				walkthrough.transform.GetChild (0).transform.GetChild (0).GetComponent<Text> ().text = "Test to see if the circuit is complete. (Don't forget, a wire might have to lead back to the column the battery's red wire is in)";
+				print ("Test the circuit if it's complete");		
+				break;
+			case 5:
+				walkthrough.transform.GetChild (0).transform.GetChild (0).GetComponent<Text> ().text = "Tutorial Complete! Congratulations!";
+				print ("Tutorial complete");		
+				break;
+			}
+		}
 		if (GameObject.Find ("battery_spawner(Clone)")) { //The battery already exists
 			buttonArray [0].GetComponent<Button> ().interactable = false;
 		} else
@@ -709,10 +733,12 @@ public class tutorialUI : MonoBehaviour {
 				newItem.GetComponent<gridPlacement> ().enabled = false;
 			if (Input.GetKeyDown (KeyCode.M) && !meterMode) { //Enter meterMode
 				meterMode = true;
+				mmActive.gameObject.SetActive(true);
 
 			} 
 		} else if (Input.GetKeyDown (KeyCode.M) && meterMode) { //We also need to snap the positions of the pens back
 			meterMode = false;
+			mmActive.gameObject.SetActive(false);
 			pen1.transform.position = p1p;
 			pen2.transform.position = p2p;
 			pen1.transform.eulerAngles = p1r;
@@ -881,6 +907,8 @@ public class tutorialUI : MonoBehaviour {
 			destroyNodeVisuals (item);
 			Destroy	(item);
 		}
+		//Reset if tutorial
+		playerStep = 0;
 	}
 
 	public void createNodeVisuals(int leftIndex, int rightIndex, GameObject newItem){
@@ -906,5 +934,12 @@ public class tutorialUI : MonoBehaviour {
 		//Get rid of node visuals
 		for (int i = 0; i < newItem.GetComponent<gridPlacement>().visualNodes.Length; i++)
 			Destroy (newItem.GetComponent<gridPlacement>().visualNodes [i]);
+	}
+
+	public void toggleHelp(){
+		if (help.activeSelf)
+			help.SetActive (false);
+		else
+			help.SetActive (true);
 	}
 }

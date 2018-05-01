@@ -9,6 +9,7 @@ public class TutorialText : MonoBehaviour {
 
 	public GameObject[] tutText;
 	public GameObject sc;
+	public bool doneText = false;
 	private int index = 0;
 
 	void Start () {
@@ -53,6 +54,7 @@ public class TutorialText : MonoBehaviour {
 				StartCoroutine (sc.GetComponent<tutorialUI> ().mainCam.GetComponent<cameraLook> ().zoomOut (sc.GetComponent<tutorialUI> ().breadboard));
 				sc.GetComponent<tutorialUI> ().breadboard.GetComponent<selectGlow> ().zoomedIn = false;
 				tutText [tutText.Length - 1].SetActive (false);
+				doneText = true;
 			}
 		}
 	}
