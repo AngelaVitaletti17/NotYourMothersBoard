@@ -199,9 +199,9 @@ public class tutorialUI : MonoBehaviour {
 
 				}
 				//Check to see if newItem is in the placed list
-				if (placed.Contains (newItem)) {
-					placed.Remove (newItem);
-				}
+				//if (placed.Contains (newItem)) {
+				//	placed.Remove (newItem);
+				//}
 			}
 		} else if (isSpawned && !meterMode) { //If we are currently dragging the item and not in meterMode
 			closePartsCatalogue (); //Keep the parts catalogue closed to avoid spawning multiple items
@@ -223,6 +223,7 @@ public class tutorialUI : MonoBehaviour {
 			if (canBePlaced && Input.GetMouseButton (1)) { //The item is placed on the board if it is in a valid spot
 				//Item has been placed, keep track of it
 				placed.Add (newItem); //Add the item
+				print(placed.Count);
 				isSpawned = false;
 				if (newItem.tag == "component") { //If we are dragging the component, place it in the nearest spot on the grid
 					PlaceItem (Camera.main.ScreenToWorldPoint (itemPosition), newItem);

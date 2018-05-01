@@ -101,9 +101,6 @@ public class gridLayout : MonoBehaviour
 		int colN = componentCol;
 		int rowN = componentRow;
 		int tracker = 0;
-
-		print(System.Array.IndexOf(positionHolder, spots[0]));
-
 		//print(System.Array.IndexOf(positionHolder, spots[0]));
 		for (int k = 0; k < width; k++) {
 			if (width != 1 && k != 0) {
