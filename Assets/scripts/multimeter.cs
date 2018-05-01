@@ -18,8 +18,8 @@ public class multimeter : MonoBehaviour {
 	void Start () {
 		dial = this.transform.GetChild (0).gameObject;
 		mReading = this.transform.GetChild (1).gameObject;
-
-		int scene = SceneManager.GetActiveScene ().buildIndex;
+		initPos = transform.position;
+		initRotation = transform.eulerAngles;
 		zoomPos = new Vector3 (dial.transform.position.x, dial.transform.position.y + 0.35f, dial.transform.position.z);
 	}
 	
@@ -63,5 +63,18 @@ public class multimeter : MonoBehaviour {
 	//For checking if the right option is selected to read the value on the multimeter
 	public int checkState(){
 		return rIndex;
+	}
+
+	public void m_zoom(){
+		cam.GetComponent<Camera> ().orthographic = false;
+		cam.transform.position = zoomPos;
+		cam.transform.eulerAngles = zoomRotation;
+	}
+
+	public void m_out(){
+
+		cam.GetComponent<Camera> ().orthographic = lastView;
+		cam.transform.position = lastPos;
+		cam.transform.eulerAngles = lastRot;
 	}
 }

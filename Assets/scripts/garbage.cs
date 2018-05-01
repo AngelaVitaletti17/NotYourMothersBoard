@@ -17,5 +17,6 @@ public class garbage : MonoBehaviour {
 			Destroy (hl [i]);
 		Destroy (other.gameObject);
 		sc.GetComponent<tutorialUI> ().isSpawned = false;
+		sc.GetComponent<tutorialUI> ().canBePlaced = true;
 	}
 }

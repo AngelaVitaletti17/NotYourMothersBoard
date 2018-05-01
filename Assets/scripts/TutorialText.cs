@@ -35,6 +35,12 @@ public class TutorialText : MonoBehaviour {
 				if (index == 8) {
 					sc.GetComponent<tutorialUI> ().closePartsCatalogue ();
 				}
+				if (index == 10) {
+					sc.GetComponent<tutorialUI> ().meter.GetComponent<multimeter> ().m_zoom ();
+				}
+				if (index == 13) {
+					StartCoroutine(Camera.main.GetComponent<cameraLook> ().zoomIn (sc.GetComponent<tutorialUI> ().breadboard));
+				}
 				index++;
 			} else if (Input.GetKeyDown (KeyCode.Y) && index == tutText.Length) { //Reset the tutorial
 				StartCoroutine (sc.GetComponent<tutorialUI> ().mainCam.GetComponent<cameraLook> ().zoomOut (sc.GetComponent<tutorialUI> ().breadboard));
